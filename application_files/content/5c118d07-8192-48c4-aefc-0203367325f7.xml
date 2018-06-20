@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70156</versionUuid>
+    <rule>
+        <name>CMN_generateGoogleIconURl</name>
+        <uuid>5c118d07-8192-48c4-aefc-0203367325f7</uuid>
+        <description>This rule returns the google icon URL based on the data passed to it</description>
+        <parentUuid>_a-0000dcd7-2308-8000-5130-010000010000_35076</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>="https://chart.googleapis.com/chart?chst=d_bubble_text_small&amp;chld=bbT"
+&amp;#"_a-0000dd0c-ffa4-8000-5130-010000010000_42773"
+&amp;ri!value
+&amp;#"_a-0000dd0c-ffa4-8000-5130-010000010000_42773"
+&amp;if(ri!modified=true,"BAE096","FFFFFF")
+&amp;#"_a-0000dd0c-ffa4-8000-5130-010000010000_42773"
+&amp;if(ri!status=true,"FA0213","000000")</definition>
+        <namedTypedValue>
+            <name>value</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>modified</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>status</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70156"/>
+    </history>
+</contentHaul>

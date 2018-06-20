@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<processModelFolderHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_g-0000e0e6-ca67-8000-6ee0-010000010000_64</versionUuid>
+    <processModelFolder>
+        <name>Utilities</name>
+        <uuid>_g-0000dcff-7596-8000-5131-010000010000_144</uuid>
+        <description>Folder Contains Utility Process for EPAS</description>
+        <parentFolderUuid>_g-0000dcd6-cfce-8000-5131-010000010000_112</parentFolderUuid>
+    </processModelFolder>
+    <roleMap>
+        <role name="ADMIN_OWNER">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_171</groupUuid>
+            </groups>
+        </role>
+        <role name="EDITOR">
+            <users/>
+            <groups/>
+        </role>
+        <role name="EXPLICIT_NONMEMBER">
+            <users/>
+            <groups/>
+        </role>
+        <role name="VIEWER">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+            </groups>
+        </role>
+        <role name="MANAGER">
+            <users/>
+            <groups/>
+        </role>
+        <role name="INITIATOR">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_g-0000e0e6-ca67-8000-6ee0-010000010000_64"/>
+    </history>
+</processModelFolderHaul>

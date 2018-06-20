@@ -1,0 +1,485 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70122</versionUuid>
+    <report>
+        <name>Opt Performance By Work Item</name>
+        <uuid>_a-0000d229-1b2b-8000-7be3-680000680000_2444</uuid>
+        <description>Average Completion Hours, Lag Hours, and Overdue Hours for every task in a process model. Drill down to Opt Task Performance by User and Opt Detailed Task Report.&#xD;
+Can adjust this to use workdays instead of hours for longer tasks.</description>
+        <parentUuid>_a-0000d229-1b2b-8000-7be3-680000680000_2442</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <reportData>
+            <metadata>
+                <baseFilters>
+                    <dueTodayFilter>
+                        <apply>false</apply>
+                    </dueTodayFilter>
+                    <runningFilter>
+                        <apply>false</apply>
+                    </runningFilter>
+                    <lastNDaysFilter>
+                        <apply>false</apply>
+                        <dayCount>0.0</dayCount>
+                    </lastNDaysFilter>
+                    <completedFilter>
+                        <apply>false</apply>
+                    </completedFilter>
+                    <lastNCompletedFilter>
+                        <apply>false</apply>
+                        <completedCount>0</completedCount>
+                    </lastNCompletedFilter>
+                    <outsideNStandardDeviationsFilter>
+                        <apply>false</apply>
+                        <standardDeviationCount>0.0</standardDeviationCount>
+                    </outsideNStandardDeviationsFilter>
+                    <aheadOfScheduleFilter>
+                        <apply>false</apply>
+                    </aheadOfScheduleFilter>
+                    <behindScheduleFilter>
+                        <apply>false</apply>
+                    </behindScheduleFilter>
+                    <simpleColumnFilter>
+                        <apply>false</apply>
+                        <columnLocalId>6</columnLocalId>
+                        <comparison>0</comparison>
+                        <typedValue>
+                            <type>
+<name>IntervalDays</name>
+<namespace>http://www.appian.com/ae/types/2009</namespace>
+                            </type>
+                            <value>0.02</value>
+                        </typedValue>
+                        <reportPortletFilter>false</reportPortletFilter>
+                    </simpleColumnFilter>
+                </baseFilters>
+                <batchSize>15</batchSize>
+                <columns>
+                    <column>
+                        <drillPath>
+                            <enabled>false</enabled>
+                            <expression>=tp!name</expression>
+                            <linkType>3</linkType>
+                            <otherReportColumnLocalId>8</otherReportColumnLocalId>
+                        </drillPath>
+                        <expression>=tp!name</expression>
+                        <formatToken>string</formatToken>
+                        <group>true</group>
+                        <lastFormatToken>string</lastFormatToken>
+                        <localId>0</localId>
+                        <name>Work Item</name>
+                        <show>true</show>
+                    </column>
+                    <column>
+                        <columnAggregationFunction>23</columnAggregationFunction>
+                        <drillPath>
+                            <otherReportUuid>_a-0000d229-1b2b-8000-7be3-680000680000_2445</otherReportUuid>
+                            <enabled>false</enabled>
+                            <expression>=tp!name</expression>
+                            <linkType>3</linkType>
+                            <otherReportColumnLocalId>8</otherReportColumnLocalId>
+                        </drillPath>
+                        <expression>=NetLag()</expression>
+                        <formatToken>durations</formatToken>
+                        <group>false</group>
+                        <lastAggregateToken>durations</lastAggregateToken>
+                        <lastFormatToken>durations</lastFormatToken>
+                        <localId>5</localId>
+                        <name>Average Lag Biz Days</name>
+                        <show>true</show>
+                    </column>
+                    <column>
+                        <columnAggregationFunction>23</columnAggregationFunction>
+                        <drillPath>
+                            <otherReportUuid>_a-0000d229-1b2b-8000-7be3-680000680000_2445</otherReportUuid>
+                            <enabled>true</enabled>
+                            <expression>=tp!name</expression>
+                            <linkType>3</linkType>
+                            <otherReportColumnLocalId>8</otherReportColumnLocalId>
+                        </drillPath>
+                        <expression>=NetWork()</expression>
+                        <formatToken>durations</formatToken>
+                        <group>false</group>
+                        <lastAggregateToken>durations</lastAggregateToken>
+                        <lastFormatToken>durations</lastFormatToken>
+                        <localId>6</localId>
+                        <name>Average Work Biz Days</name>
+                        <show>true</show>
+                    </column>
+                    <column>
+                        <columnAggregationFunction>27</columnAggregationFunction>
+                        <drillPath>
+                            <enabled>false</enabled>
+                        </drillPath>
+                        <expression>=tp!starttime</expression>
+                        <formatToken>datetime</formatToken>
+                        <group>false</group>
+                        <lastAggregateToken>datetime</lastAggregateToken>
+                        <lastFormatToken>datetime</lastFormatToken>
+                        <localId>7</localId>
+                        <name>starttime</name>
+                        <show>false</show>
+                    </column>
+                    <column>
+                        <columnAggregationFunction>23</columnAggregationFunction>
+                        <drillPath>
+                            <otherReportUuid>_a-0000d229-1b2b-8000-7be3-680000680000_2450</otherReportUuid>
+                            <enabled>true</enabled>
+                            <expression>=tp!name</expression>
+                            <linkType>3</linkType>
+                            <otherReportColumnLocalId>10</otherReportColumnLocalId>
+                        </drillPath>
+                        <expression>=max(task_completion_time()-tp!deadline,0)</expression>
+                        <formatToken>number</formatToken>
+                        <group>false</group>
+                        <lastAggregateToken>number</lastAggregateToken>
+                        <localId>8</localId>
+                        <name>Average Days Biz Overdue</name>
+                        <show>true</show>
+                    </column>
+                </columns>
+                <contexts/>
+                <contextType>1</contextType>
+                <quickFilters>
+                    <quickFilter>
+                        <defaultItem>0</defaultItem>
+                        <quickFilterItems>
+                            <quickFilterItem>
+<filters>
+    <dueTodayFilter>
+        <apply>false</apply>
+    </dueTodayFilter>
+    <lastNDaysFilter>
+        <apply>false</apply>
+        <dayCount>0.0</dayCount>
+    </lastNDaysFilter>
+    <lastNCompletedFilter>
+        <apply>false</apply>
+        <completedCount>0</completedCount>
+    </lastNCompletedFilter>
+    <outsideNStandardDeviationsFilter>
+        <apply>false</apply>
+        <standardDeviationCount>0.0</standardDeviationCount>
+    </outsideNStandardDeviationsFilter>
+    <aheadOfScheduleFilter>
+        <apply>false</apply>
+    </aheadOfScheduleFilter>
+    <behindScheduleFilter>
+        <apply>false</apply>
+    </behindScheduleFilter>
+</filters>
+<name>Any Time</name>
+                            </quickFilterItem>
+                            <quickFilterItem>
+<filters>
+    <dueTodayFilter>
+        <apply>false</apply>
+    </dueTodayFilter>
+    <lastNDaysFilter>
+        <apply>true</apply>
+        <dayCount>1.0</dayCount>
+    </lastNDaysFilter>
+    <lastNCompletedFilter>
+        <apply>false</apply>
+        <completedCount>0</completedCount>
+    </lastNCompletedFilter>
+    <outsideNStandardDeviationsFilter>
+        <apply>false</apply>
+        <standardDeviationCount>0.0</standardDeviationCount>
+    </outsideNStandardDeviationsFilter>
+    <aheadOfScheduleFilter>
+        <apply>false</apply>
+    </aheadOfScheduleFilter>
+    <behindScheduleFilter>
+        <apply>false</apply>
+    </behindScheduleFilter>
+</filters>
+<name>Last 24 Hours</name>
+                            </quickFilterItem>
+                            <quickFilterItem>
+<filters>
+    <dueTodayFilter>
+        <apply>false</apply>
+    </dueTodayFilter>
+    <lastNDaysFilter>
+        <apply>true</apply>
+        <dayCount>7.0</dayCount>
+    </lastNDaysFilter>
+    <lastNCompletedFilter>
+        <apply>false</apply>
+        <completedCount>0</completedCount>
+    </lastNCompletedFilter>
+    <outsideNStandardDeviationsFilter>
+        <apply>false</apply>
+        <standardDeviationCount>0.0</standardDeviationCount>
+    </outsideNStandardDeviationsFilter>
+    <aheadOfScheduleFilter>
+        <apply>false</apply>
+    </aheadOfScheduleFilter>
+    <behindScheduleFilter>
+        <apply>false</apply>
+    </behindScheduleFilter>
+</filters>
+<name>Last 7 days</name>
+                            </quickFilterItem>
+                            <quickFilterItem>
+<filters>
+    <dueTodayFilter>
+        <apply>false</apply>
+    </dueTodayFilter>
+    <lastNDaysFilter>
+        <apply>true</apply>
+        <dayCount>30.0</dayCount>
+    </lastNDaysFilter>
+    <lastNCompletedFilter>
+        <apply>false</apply>
+        <completedCount>0</completedCount>
+    </lastNCompletedFilter>
+    <outsideNStandardDeviationsFilter>
+        <apply>false</apply>
+        <standardDeviationCount>0.0</standardDeviationCount>
+    </outsideNStandardDeviationsFilter>
+    <aheadOfScheduleFilter>
+        <apply>false</apply>
+    </aheadOfScheduleFilter>
+    <behindScheduleFilter>
+        <apply>false</apply>
+    </behindScheduleFilter>
+</filters>
+<name>Last 30 days</name>
+                            </quickFilterItem>
+                            <quickFilterItem>
+<filters>
+    <dueTodayFilter>
+        <apply>false</apply>
+    </dueTodayFilter>
+    <lastNDaysFilter>
+        <apply>true</apply>
+        <dayCount>365.25</dayCount>
+    </lastNDaysFilter>
+    <lastNCompletedFilter>
+        <apply>false</apply>
+        <completedCount>0</completedCount>
+    </lastNCompletedFilter>
+    <outsideNStandardDeviationsFilter>
+        <apply>false</apply>
+        <standardDeviationCount>0.0</standardDeviationCount>
+    </outsideNStandardDeviationsFilter>
+    <aheadOfScheduleFilter>
+        <apply>false</apply>
+    </aheadOfScheduleFilter>
+    <behindScheduleFilter>
+        <apply>false</apply>
+    </behindScheduleFilter>
+</filters>
+<name>Last 365 days</name>
+                            </quickFilterItem>
+                        </quickFilterItems>
+                        <name>Started</name>
+                        <selectedItem>0</selectedItem>
+                    </quickFilter>
+                    <quickFilter>
+                        <defaultItem>0</defaultItem>
+                        <quickFilterItems>
+                            <quickFilterItem>
+<filters>
+    <dueTodayFilter>
+        <apply>false</apply>
+    </dueTodayFilter>
+    <lastNDaysFilter>
+        <apply>false</apply>
+        <dayCount>0.0</dayCount>
+    </lastNDaysFilter>
+    <lastNCompletedFilter>
+        <apply>false</apply>
+        <completedCount>0</completedCount>
+    </lastNCompletedFilter>
+    <outsideNStandardDeviationsFilter>
+        <apply>false</apply>
+        <standardDeviationCount>0.0</standardDeviationCount>
+    </outsideNStandardDeviationsFilter>
+    <aheadOfScheduleFilter>
+        <apply>false</apply>
+    </aheadOfScheduleFilter>
+    <behindScheduleFilter>
+        <apply>false</apply>
+    </behindScheduleFilter>
+</filters>
+<name>All</name>
+                            </quickFilterItem>
+                            <quickFilterItem>
+<filters>
+    <dueTodayFilter>
+        <apply>false</apply>
+    </dueTodayFilter>
+    <lastNDaysFilter>
+        <apply>false</apply>
+        <dayCount>0.0</dayCount>
+    </lastNDaysFilter>
+    <lastNCompletedFilter>
+        <apply>false</apply>
+        <completedCount>0</completedCount>
+    </lastNCompletedFilter>
+    <outsideNStandardDeviationsFilter>
+        <apply>false</apply>
+        <standardDeviationCount>0.0</standardDeviationCount>
+    </outsideNStandardDeviationsFilter>
+    <aheadOfScheduleFilter>
+        <apply>false</apply>
+    </aheadOfScheduleFilter>
+    <behindScheduleFilter>
+        <apply>false</apply>
+    </behindScheduleFilter>
+    <simpleColumnFilter>
+        <apply>true</apply>
+        <columnLocalId>5</columnLocalId>
+        <comparison>4</comparison>
+        <typedValue>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value>0</value>
+        </typedValue>
+        <reportPortletFilter>false</reportPortletFilter>
+    </simpleColumnFilter>
+</filters>
+<name>Assigned</name>
+                            </quickFilterItem>
+                            <quickFilterItem>
+<filters>
+    <dueTodayFilter>
+        <apply>false</apply>
+    </dueTodayFilter>
+    <lastNDaysFilter>
+        <apply>false</apply>
+        <dayCount>0.0</dayCount>
+    </lastNDaysFilter>
+    <lastNCompletedFilter>
+        <apply>false</apply>
+        <completedCount>0</completedCount>
+    </lastNCompletedFilter>
+    <outsideNStandardDeviationsFilter>
+        <apply>false</apply>
+        <standardDeviationCount>0.0</standardDeviationCount>
+    </outsideNStandardDeviationsFilter>
+    <aheadOfScheduleFilter>
+        <apply>false</apply>
+    </aheadOfScheduleFilter>
+    <behindScheduleFilter>
+        <apply>false</apply>
+    </behindScheduleFilter>
+    <simpleColumnFilter>
+        <apply>true</apply>
+        <columnLocalId>5</columnLocalId>
+        <comparison>4</comparison>
+        <typedValue>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value>1</value>
+        </typedValue>
+        <reportPortletFilter>false</reportPortletFilter>
+    </simpleColumnFilter>
+</filters>
+<name>Accepted</name>
+                            </quickFilterItem>
+                        </quickFilterItems>
+                        <name>Status</name>
+                        <selectedItem>0</selectedItem>
+                    </quickFilter>
+                </quickFilters>
+                <recursive>false</recursive>
+                <sortColumnLocalId>7</sortColumnLocalId>
+                <sortOrder>0</sortOrder>
+                <startIndex>0</startIndex>
+                <type>2</type>
+            </metadata>
+            <display>
+                <description>Average Completion Hours, Lag Hours, and Overdue Hours for every task in a process model. Drill down to Opt Task Performance by User and Opt Detailed Task Report.&#xD;Can adjust this to use workdays instead of hours for longer tasks.</description>
+                <displayThresholds>false</displayThresholds>
+                <displayType>0</displayType>
+                <name>Opt Performance By Work Item</name>
+                <quickFilterDisplay>1</quickFilterDisplay>
+                <showLegend>true</showLegend>
+                <showQuickFiltersInToolbar>true</showQuickFiltersInToolbar>
+                <supportedTypes>
+                    <supportedType>0</supportedType>
+                    <supportedType>1</supportedType>
+                    <supportedType>2</supportedType>
+                    <supportedType>3</supportedType>
+                </supportedTypes>
+                <thresholdColumnLocalId>6</thresholdColumnLocalId>
+                <thresholdColumnName>Performance</thresholdColumnName>
+                <thresholds>
+                    <threshold>
+                        <iconUuid>SYSTEM_DOC_PERFORMANCE_INDICATOR_GREEN</iconUuid>
+                        <defaultIconName>indicatorgreen</defaultIconName>
+                        <label>Quickly Addressed</label>
+                        <upperBound>20.0</upperBound>
+                    </threshold>
+                    <threshold>
+                        <iconUuid>SYSTEM_DOC_PERFORMANCE_INDICATOR_YELLOW</iconUuid>
+                        <defaultIconName>indicatoryellow</defaultIconName>
+                        <label>Addressed In Time</label>
+                        <upperBound>50.0</upperBound>
+                    </threshold>
+                    <threshold>
+                        <iconUuid>SYSTEM_DOC_PERFORMANCE_INDICATOR_RED</iconUuid>
+                        <defaultIconName>indicatorred</defaultIconName>
+                        <label>Addressed Late</label>
+                    </threshold>
+                </thresholds>
+                <useCustomToolbar>false</useCustomToolbar>
+                <useDefaultBarGraphXML>true</useDefaultBarGraphXML>
+                <useDefaultLineGraphXML>true</useDefaultLineGraphXML>
+                <useDefaultPieGraphXML>true</useDefaultPieGraphXML>
+            </display>
+            <modified>false</modified>
+            <showDisplayOptions>false</showDisplayOptions>
+            <showTitle>false</showTitle>
+            <showToolbar>false</showToolbar>
+            <view>0</view>
+            <writeAccess>false</writeAccess>
+        </reportData>
+    </report>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70122"/>
+    </history>
+</contentHaul>

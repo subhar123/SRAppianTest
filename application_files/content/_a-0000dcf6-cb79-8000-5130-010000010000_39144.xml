@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69979</versionUuid>
+    <rule>
+        <name>EPAS_MilestoneStep</name>
+        <uuid>_a-0000dcf6-cb79-8000-5130-010000010000_39144</uuid>
+        <description>Milestone step for Study</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42722</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=if(&#xD;
+  and(&#xD;
+    /*` Only add a link to this step if the user isn't currently on it `*/&#xD;
+    ri!currentStep &lt;&gt; ri!index,&#xD;
+    /*` Only add a link to this step if the user has already gone this far through the wizard `*/&#xD;
+    ri!visitedStep &gt;= ri!index&#xD;
+  ),&#xD;
+  #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+    value: ri!index,&#xD;
+    saveInto: ri!currentStep&#xD;
+  ),&#xD;
+  null&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>currentStep</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>visitedStep</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69979"/>
+    </history>
+</contentHaul>

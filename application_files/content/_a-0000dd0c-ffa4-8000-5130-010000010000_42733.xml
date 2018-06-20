@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70139</versionUuid>
+    <rule>
+        <name>EPAS_applyComponentsPrimRevwResp</name>
+        <uuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42733</uuid>
+        <description>Primary Reviewer Response</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42722</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>with(
+  local!columns: remove(
+    ri!columnValues,
+    {1,2}
+  ),
+  local!response: index(
+    ri!responseInfo,
+    wherecontains(
+      ri!allQuestions[ri!index],
+      ri!responseInfo.questionName
+    ),
+    null
+  ).response,
+  local!unionResponse: union(
+    local!response,
+    local!response
+  ),
+  #"SYSTEM_SYSRULES_gridRowLayout"(
+    id: ri!index,
+    contents: {
+      #"SYSTEM_SYSRULES_textField"(
+        label: ri!allQuestions[ri!index],
+        value: ri!allQuestions[ri!index],
+        readOnly: true()
+      ),
+      #"SYSTEM_SYSRULES_imageField"(
+        label: "Conflict?",
+        size: "ICON",
+        images: if(
+          length(
+            local!unionResponse
+          ) =#"_a-0000d806-c17f-8000-5892-010000010000_3484"(local!columns),
+          #"SYSTEM_SYSRULES_documentImage"(
+            #"SYSTEM_SYSRULES_iconIndicator"(
+              "STATUS_ERROR"
+            )
+          ),
+          #"SYSTEM_SYSRULES_documentImage"(
+            #"SYSTEM_SYSRULES_iconIndicator"(
+              "STATUS_OK"
+            )
+          )
+          
+        )
+      ),
+      apply(
+        #"_a-0000dd0c-ffa4-8000-5130-010000010000_42739"(
+          columnValues: local!columns,
+          questionName: ri!allQuestions[ri!index],
+          responseInfo: ri!responseInfo,
+          userIndex: _
+        ),
+        1 + enumerate(
+          #"_a-0000d806-c17f-8000-5892-010000010000_3484"(
+            local!columns
+          )
+        )
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>columnValues</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>allQuestions</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>responseInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>itemsToken</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70139"/>
+    </history>
+</contentHaul>

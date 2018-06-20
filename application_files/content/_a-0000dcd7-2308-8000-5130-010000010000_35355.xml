@@ -1,0 +1,286 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69941</versionUuid>
+    <rule>
+        <name>EPAS_UserAdminPage</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35355</uuid>
+        <description>Interface for Admin to Add, Modify, Delete users into System and also to view the graph of users</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42707</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+  local!selectedUserIds,&#xD;
+  local!usersInfo: #"_a-0000dcd7-2308-8000-5130-010000010000_35357"(),&#xD;
+  local!gridSelection: #"SYSTEM_SYSRULES_gridSelection"(&#xD;
+    pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(&#xD;
+      startIndex: 1,&#xD;
+      batchSize: 5,&#xD;
+      sort: #"SYSTEM_SYSRULES_sortInfo"(&#xD;
+        field: "firstName",&#xD;
+        ascending: true&#xD;
+      )&#xD;
+    )&#xD;
+  ),&#xD;
+  with(&#xD;
+    local!datasubset: if(&#xD;
+      isnull(&#xD;
+        local!usersInfo&#xD;
+      ),&#xD;
+      {},&#xD;
+      todatasubset(&#xD;
+        local!usersInfo,&#xD;
+        local!gridSelection.pagingInfo&#xD;
+      )&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_formLayout"(&#xD;
+      label: "User Management",&#xD;
+      firstColumnContents: {&#xD;
+        #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+          firstColumnContents: {&#xD;
+            #"SYSTEM_SYSRULES_imageField"(&#xD;
+              labelPosition: "ADJACENT",&#xD;
+              images: {&#xD;
+                #"SYSTEM_SYSRULES_documentImage"(&#xD;
+                  document: #"_a-0000dcd7-2308-8000-5130-010000010000_35363",&#xD;
+                  altText: "Add User",&#xD;
+                  caption: "Click to Add Users",&#xD;
+                  link: #"SYSTEM_SYSRULES_submitLink"(&#xD;
+                    value: #"_a-0000dc65-81d6-8000-a73e-010000010000_2374",&#xD;
+                    saveInto: ri!buttonValue_txt&#xD;
+                  )&#xD;
+                )&#xD;
+              },&#xD;
+              size: "MEDIUM"&#xD;
+            )&#xD;
+          },&#xD;
+          secondColumnContents: {&#xD;
+            #"SYSTEM_SYSRULES_imageField"(&#xD;
+              labelPosition: "ADJACENT",&#xD;
+              images: {&#xD;
+                #"SYSTEM_SYSRULES_documentImage"(&#xD;
+                  document: #"_a-0000dcd7-2308-8000-5130-010000010000_35364",&#xD;
+                  caption: "Select the user(s) and then click to delete",&#xD;
+                  link: #"SYSTEM_SYSRULES_submitLink"(&#xD;
+                    confirmMessage: #"_a-0000dc65-81d6-8000-a73e-010000010000_2386",&#xD;
+                    value: #"_a-0000dc65-81d6-8000-a73e-010000010000_2376",&#xD;
+                    saveInto: {&#xD;
+                      ri!buttonValue_txt,&#xD;
+                      a!save(&#xD;
+                        ri!selectedUserIds,&#xD;
+                        local!selectedUserIds&#xD;
+                      )&#xD;
+                    },&#xD;
+                    skipValidation: true&#xD;
+                  )&#xD;
+                )&#xD;
+              },&#xD;
+              size: "SMALL"&#xD;
+            )&#xD;
+          }&#xD;
+        ),&#xD;
+        #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+          firstColumnContents: {&#xD;
+            if(&#xD;
+              local!datasubset.totalCount = 0,&#xD;
+              {},&#xD;
+              {&#xD;
+             #"SYSTEM_SYSRULES_gridField"(&#xD;
+                  label: "",&#xD;
+                  totalCount: local!datasubset.totalCount,&#xD;
+                  columns: {&#xD;
+                    #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+                      label: "User #",&#xD;
+                      field: "userAccountId",&#xD;
+                      data: index(&#xD;
+                        local!datasubset.data,&#xD;
+                        "userAccountId",&#xD;
+                        {}&#xD;
+                      ),&#xD;
+                      links: apply(&#xD;
+                        #"SYSTEM_SYSRULES_submitLink"(&#xD;
+                          value: _,&#xD;
+                          saveInto: {&#xD;
+                            ri!selectedUser,&#xD;
+                            a!save(&#xD;
+                              ri!selectedUserIds,&#xD;
+                              local!selectedUserIds&#xD;
+                            ),&#xD;
+                            a!save(&#xD;
+                              ri!buttonValue_txt,&#xD;
+                              #"_a-0000dc65-81d6-8000-a73e-010000010000_2375"&#xD;
+                            )&#xD;
+                          }&#xD;
+                        ),&#xD;
+                        local!datasubset.data&#xD;
+                      )&#xD;
+                    ),&#xD;
+                    #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+                      label: "First Name",&#xD;
+                      field: "firstName",&#xD;
+                      data: index(&#xD;
+                        local!datasubset.data,&#xD;
+                        "firstName",&#xD;
+                        {}&#xD;
+                      )&#xD;
+                    ),&#xD;
+                    #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+                      label: "Last Name",&#xD;
+                      field: "lastName",&#xD;
+                      data: index(&#xD;
+                        local!datasubset.data,&#xD;
+                        "lastName",&#xD;
+                        {}&#xD;
+                      )&#xD;
+                    ),&#xD;
+                    #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+                      label: "Role",&#xD;
+                      field: "role",&#xD;
+                      data: index(&#xD;
+                        local!datasubset.data,&#xD;
+                        "role",&#xD;
+                        {}&#xD;
+                      )&#xD;
+                    ),&#xD;
+/*                     a!gridImageColumn(&#xD;
+                      label: "Status",&#xD;
+                      field: "status",&#xD;
+                      data: if(&#xD;
+                        rule!APN_isEmpty(&#xD;
+                          local!datasubset.data&#xD;
+                        ),&#xD;
+                        null,&#xD;
+                        apply(&#xD;
+                          rule!EAS_studyStatusIcon(&#xD;
+                            _&#xD;
+                          ),&#xD;
+                          index(&#xD;
+                            local!datasubset.data,&#xD;
+                            "status",&#xD;
+                            null&#xD;
+                          )&#xD;
+                        )&#xD;
+                      ),&#xD;
+                      size: "ICON"&#xD;
+                    ) */&#xD;
+					#"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+                      label: "Contact #",&#xD;
+                      field: "contactPhone",&#xD;
+                      data: index(&#xD;
+                        local!datasubset.data,&#xD;
+                        "contactPhone",&#xD;
+                        {}&#xD;
+                      )&#xD;
+                    )&#xD;
+                  },&#xD;
+                  identifiers: index(&#xD;
+                    local!datasubset.data,&#xD;
+                    "userAccountId",&#xD;
+                    {}&#xD;
+                  ),&#xD;
+                  value: local!gridSelection,&#xD;
+                  saveInto: {&#xD;
+                    local!gridSelection,&#xD;
+                    a!save(&#xD;
+                      local!selectedUserIds,&#xD;
+                      index(&#xD;
+                        save!value,&#xD;
+                        "selected",&#xD;
+                        null&#xD;
+                      )&#xD;
+                    )&#xD;
+                  },&#xD;
+                  selection: true&#xD;
+                )&#xD;
+              }&#xD;
+            )&#xD;
+          }&#xD;
+        ),&#xD;
+		#"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+		firstColumnContents:{#"_a-0000dcd7-2308-8000-5130-010000010000_35368"()},&#xD;
+		secondColumnContents:{&#xD;
+		    /*rule!EPAS_tasksPerUserChart(*/&#xD;
+      /*  mids: {cons!EPAS_ADJUDICIATIONFLOW_MODELID, cons!EPAS_STUDY_MODELID}*/&#xD;
+      /*)*/&#xD;
+		},&#xD;
+		  iscollapsible: true&#xD;
+		)&#xD;
+      },&#xD;
+      buttons: #"SYSTEM_SYSRULES_ButtonLayout"(&#xD;
+        secondaryButtons: {&#xD;
+          #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(&#xD;
+            label: #"_a-0000dc65-81d6-8000-a73e-010000010000_2373",&#xD;
+            style: "NORMAL",&#xD;
+            confirmMessage: #"_a-0000dc65-81d6-8000-a73e-010000010000_2387",&#xD;
+            value: #"_a-0000dc65-81d6-8000-a73e-010000010000_2381",&#xD;
+            saveInto: ri!buttonValue_txt,&#xD;
+            skipValidation: true&#xD;
+          )&#xD;
+        }&#xD;
+      )&#xD;
+    )&#xD;
+  )&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>selectedUserIds</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>buttonValue_txt</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>selectedUser</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69941"/>
+    </history>
+</contentHaul>

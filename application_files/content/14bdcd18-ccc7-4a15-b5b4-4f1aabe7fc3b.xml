@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70098</versionUuid>
+    <rule>
+        <name>CMN_getPriorityIndicatorIcon</name>
+        <uuid>14bdcd18-ccc7-4a15-b5b4-4f1aabe7fc3b</uuid>
+        <description>This rule returns the indicator icon</description>
+        <parentUuid>_a-0000dcd7-2308-8000-5130-010000010000_35076</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=  
+  #"SYSTEM_SYSRULES_documentImage"(document: #"SYSTEM_SYSRULES_iconIndicator"(icon: 
+  displayvalue(ri!priority,{0;1;2;3;4;5},{"PRIORITY_LOW","TREND_FLAT","PRIORITY_HIGH"},"TREND_FLAT")
+  
+  )
+  , altText: 
+  displayvalue(ri!priority,{0;1;2;3;4;5},{"PRIORITY_LOW","TREND_FLAT","PRIORITY_HIGH"},"TREND_FLAT")
+  
+  )</definition>
+        <namedTypedValue>
+            <name>priority</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70098"/>
+    </history>
+</contentHaul>

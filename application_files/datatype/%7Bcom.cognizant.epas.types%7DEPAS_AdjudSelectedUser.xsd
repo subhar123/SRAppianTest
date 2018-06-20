@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="com.cognizant.epas.types"
+  xmlns:tns="com.cognizant.epas.types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="EPAS_AdjudSelectedUser">
+    <xsd:annotation>
+      <xsd:appinfo source="appian.jpa">@Table(name="epasadjudselecteduser" )</xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="selectUserId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Id @GeneratedValue @Column(NAME="selectuserid")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="adjudId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">       
+		  @Column(name="adjudid", columnDefinition = "bigint")
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="userInfoId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">       
+		  @Column(name="userinfoid", columnDefinition = "bigint")
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

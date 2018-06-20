@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<recordTypeHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>c08b9fd7-2587-44d5-975b-6f8918ca665e</versionUuid>
+    <recordType a:uuid="9fd0ee82-e322-43ff-9e63-85b61d93a3c9" name="End Point Adjudication Record">
+        <a:pluralName>End Point Adjudication Records</a:pluralName>
+        <a:description>Consolidated data of all End Point Adjudications</a:description>
+        <a:urlStub>Gzd45w</a:urlStub>
+        <a:source xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:type="a:DataStoreEntity" a:uuid="eaa21998-b81b-47cf-8f74-8d31010bae10@_a-0000dcb6-5d2b-8000-5130-010000010000_32104"/>
+        <a:listViewTemplateExpr>#"SYSTEM_SYSRULES_recordGridLayoutColumns"(
+  columns: {
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Adjudication ID",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_linkField"(
+        links: #"SYSTEM_SYSRULES_recordLink"(
+          label: rf!adjudInfoId,
+          recordType: rp!type,
+          identifier: rp!id
+        )
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Study Name",
+      width: "NARROW",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayValue: rf!studyName
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Site Name",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayvalue: rf!endpointType
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Endpoint Date",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_dateField"(
+        displayvalue: rf!endpointDate
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Adjudication Status",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayValue: rf!adjudicationStatus
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "EndPoint Name",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_textField"(
+        displayvalue: rf!endpointName
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Within SLA",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_imageField"(
+        images: {&#xD;
+          if(rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[1],&#xD;
+          {#"SYSTEM_SYSRULES_documentImage"(&#xD;
+            document:#"SYSTEM_SYSRULES_iconIndicator"(icon:"STATUS_WARN")&#xD;
+)},&#xD;
+        if(rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2],&#xD;
+          {#"SYSTEM_SYSRULES_documentImage"(&#xD;
+            document:#"SYSTEM_SYSRULES_iconIndicator"(icon:"STATUS_WARN")&#xD;
+)},&#xD;
+        if(or(&#xD;
+          rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[4],&#xD;
+          rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[5]&#xD;
+          ),&#xD;
+          {#"SYSTEM_SYSRULES_documentImage"(&#xD;
+            document:#"SYSTEM_SYSRULES_iconIndicator"(icon:"STATUS_OK")&#xD;
+)},&#xD;
+        if(rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[3],&#xD;
+          {#"SYSTEM_SYSRULES_documentImage"(&#xD;
+            document:#"SYSTEM_SYSRULES_iconIndicator"(icon:"WAIT_CLOCK")&#xD;
+)},&#xD;
+          {&#xD;
+            #"SYSTEM_SYSRULES_documentImage"(&#xD;
+            document:#"SYSTEM_SYSRULES_iconIndicator"(icon:"PROGRESS_RUNNING")&#xD;
+            )&#xD;
+          }&#xD;
+          )&#xD;
+        )))},
+        size: "THUMBNAIL"
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "% Completion",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_progressBarField"(
+        percentage: if(rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[1],20,
+        if(rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2],40,
+        if(rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[3],60,
+        if(rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[4],80,
+        if(rf!adjudicationStatus=#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[5],100,0)
+        ))))
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Created On",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_dateTimeField"(
+        displayvalue: rf!createdOn
+      )
+    ),
+    #"SYSTEM_SYSRULES_gridLayoutColumn"(
+      label: "Created By",
+      width: "DISTRIBUTE",
+      component: #"SYSTEM_SYSRULES_recordGrid_imageField"(
+        images: #"_a-0000dcd1-5675-8000-5130-010000010000_33327"(rf!createdBy),
+        size: "THUMBNAIL"
+      )
+    )  
+  },
+  pageSize: 25,
+  defaultSort: #"SYSTEM_SYSRULES_sortInfo"(
+    field: "adjudInfoId",
+    ascending: false
+  )
+)</a:listViewTemplateExpr>
+        <a:fieldCfg name="Site Name">
+            <a:description></a:description>
+            <a:sourceRef>endpointType</a:sourceRef>
+            <a:isSortable>false</a:isSortable>
+            <a:isSearchable>false</a:isSearchable>
+            <a:isFacet>true</a:isFacet>
+            <a:facetType>CUSTOM_BUCKETS_CLOSED</a:facetType>
+            <a:isExclusiveFacet>true</a:isExclusiveFacet>
+            <a:facetLabelExpr>"Site Name"</a:facetLabelExpr>
+            <a:facetOption>
+                <a:labelExpr>"A - E"</a:labelExpr>
+                <a:facetOperator>BETWEEN</a:facetOperator>
+                <a:lowerLimitExpr>"A"</a:lowerLimitExpr>
+                <a:upperLimitExpr>"E"</a:upperLimitExpr>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>"F - J"</a:labelExpr>
+                <a:facetOperator>BETWEEN</a:facetOperator>
+                <a:lowerLimitExpr>"F"</a:lowerLimitExpr>
+                <a:upperLimitExpr>"J"</a:upperLimitExpr>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>"K - O"</a:labelExpr>
+                <a:facetOperator>BETWEEN</a:facetOperator>
+                <a:lowerLimitExpr>"K"</a:lowerLimitExpr>
+                <a:upperLimitExpr>"O"</a:upperLimitExpr>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>"P - T"</a:labelExpr>
+                <a:facetOperator>BETWEEN</a:facetOperator>
+                <a:lowerLimitExpr>"P"</a:lowerLimitExpr>
+                <a:upperLimitExpr>"T"</a:upperLimitExpr>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>"U - Z"</a:labelExpr>
+                <a:facetOperator>BETWEEN</a:facetOperator>
+                <a:lowerLimitExpr>"U"</a:lowerLimitExpr>
+                <a:upperLimitExpr>"Z"</a:upperLimitExpr>
+            </a:facetOption>
+            <a:sortOrderIndex>0</a:sortOrderIndex>
+            <a:facetOrderIndex>0</a:facetOrderIndex>
+            <a:visibilityExpr></a:visibilityExpr>
+            <a:defaultOptionExpr></a:defaultOptionExpr>
+            <a:allowMultipleSelections>false</a:allowMultipleSelections>
+        </a:fieldCfg>
+        <a:fieldCfg name="Status">
+            <a:description></a:description>
+            <a:sourceRef>adjudicationStatus</a:sourceRef>
+            <a:isSortable>false</a:isSortable>
+            <a:isSearchable>false</a:isSearchable>
+            <a:isFacet>true</a:isFacet>
+            <a:facetType>CUSTOM_BUCKETS_CLOSED</a:facetType>
+            <a:isExclusiveFacet>true</a:isExclusiveFacet>
+            <a:facetLabelExpr>"Adjudication Status"</a:facetLabelExpr>
+            <a:facetOption>
+                <a:labelExpr>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[1]</a:labelExpr>
+                <a:facetOperator>IN</a:facetOperator>
+                <a:lowerLimitExpr></a:lowerLimitExpr>
+                <a:upperLimitExpr></a:upperLimitExpr>
+                <a:values>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[1]</a:values>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2]</a:labelExpr>
+                <a:facetOperator>IN</a:facetOperator>
+                <a:lowerLimitExpr></a:lowerLimitExpr>
+                <a:upperLimitExpr></a:upperLimitExpr>
+                <a:values>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2]</a:values>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[3]</a:labelExpr>
+                <a:facetOperator>IN</a:facetOperator>
+                <a:lowerLimitExpr></a:lowerLimitExpr>
+                <a:upperLimitExpr></a:upperLimitExpr>
+                <a:values>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[3]</a:values>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[4]</a:labelExpr>
+                <a:facetOperator>IN</a:facetOperator>
+                <a:lowerLimitExpr></a:lowerLimitExpr>
+                <a:upperLimitExpr></a:upperLimitExpr>
+                <a:values>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[4]</a:values>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[5]</a:labelExpr>
+                <a:facetOperator>IN</a:facetOperator>
+                <a:lowerLimitExpr></a:lowerLimitExpr>
+                <a:upperLimitExpr></a:upperLimitExpr>
+                <a:values>#"_a-0000dcff-77ee-8000-5130-010000010000_40527"[5]</a:values>
+            </a:facetOption>
+            <a:sortOrderIndex>1</a:sortOrderIndex>
+            <a:facetOrderIndex>1</a:facetOrderIndex>
+            <a:visibilityExpr></a:visibilityExpr>
+            <a:defaultOptionExpr></a:defaultOptionExpr>
+            <a:allowMultipleSelections>false</a:allowMultipleSelections>
+        </a:fieldCfg>
+        <a:fieldCfg name="Created In">
+            <a:description></a:description>
+            <a:sourceRef>createdOn</a:sourceRef>
+            <a:isSortable>false</a:isSortable>
+            <a:isSearchable>false</a:isSearchable>
+            <a:isFacet>true</a:isFacet>
+            <a:facetType>CUSTOM_BUCKETS_CLOSED</a:facetType>
+            <a:isExclusiveFacet>true</a:isExclusiveFacet>
+            <a:facetLabelExpr>"Created In"</a:facetLabelExpr>
+            <a:facetOption>
+                <a:labelExpr>"Last 2 Weeks"</a:labelExpr>
+                <a:facetOperator>BETWEEN</a:facetOperator>
+                <a:lowerLimitExpr>now()-14</a:lowerLimitExpr>
+                <a:upperLimitExpr>now()</a:upperLimitExpr>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>"Last Month"</a:labelExpr>
+                <a:facetOperator>BETWEEN</a:facetOperator>
+                <a:lowerLimitExpr>now()-30</a:lowerLimitExpr>
+                <a:upperLimitExpr>now()</a:upperLimitExpr>
+            </a:facetOption>
+            <a:facetOption>
+                <a:labelExpr>"Last 3 Months"</a:labelExpr>
+                <a:facetOperator>BETWEEN</a:facetOperator>
+                <a:lowerLimitExpr>now()-90</a:lowerLimitExpr>
+                <a:upperLimitExpr>now()</a:upperLimitExpr>
+            </a:facetOption>
+            <a:sortOrderIndex>2</a:sortOrderIndex>
+            <a:facetOrderIndex>2</a:facetOrderIndex>
+            <a:visibilityExpr></a:visibilityExpr>
+            <a:defaultOptionExpr></a:defaultOptionExpr>
+            <a:allowMultipleSelections>false</a:allowMultipleSelections>
+        </a:fieldCfg>
+        <a:detailViewCfg>
+            <a:nameExpr>="Summary"</a:nameExpr>
+            <a:uiExpr>#"_a-0000dcff-77ee-8000-5130-010000010000_40528"()</a:uiExpr>
+            <a:visibilityExpr>=true()</a:visibilityExpr>
+            <a:urlStub>summary</a:urlStub>
+            <a:headerExpr></a:headerExpr>
+        </a:detailViewCfg>
+        <a:detailViewCfg>
+            <a:nameExpr>"EndPoint Details"</a:nameExpr>
+            <a:uiExpr>#"_a-0000dd0b-f547-8000-5130-010000010000_41125"(rf!studySetupId)</a:uiExpr>
+            <a:visibilityExpr>=true()</a:visibilityExpr>
+            <a:urlStub>_jlyRQA</a:urlStub>
+            <a:headerExpr></a:headerExpr>
+        </a:detailViewCfg>
+        <a:isSystem>false</a:isSystem>
+        <a:dataSrcExpr></a:dataSrcExpr>
+        <a:facetsListExpr></a:facetsListExpr>
+        <a:titleExpr></a:titleExpr>
+        <a:defaultFiltersExpr></a:defaultFiltersExpr>
+        <a:layoutType>GRID</a:layoutType>
+        <a:security>16383</a:security>
+        <a:hideLatestNews>false</a:hideLatestNews>
+        <a:isExportable>true</a:isExportable>
+    </recordType>
+    <roleMap>
+        <role name="record_type_administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_171</groupUuid>
+            </groups>
+        </role>
+        <role name="record_type_viewer">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="c08b9fd7-2587-44d5-975b-6f8918ca665e"/>
+    </history>
+</recordTypeHaul>

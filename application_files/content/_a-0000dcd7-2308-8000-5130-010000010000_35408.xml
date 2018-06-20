@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69961</versionUuid>
+    <rule>
+        <name>EPAS_wizardCreateConfigureStudy</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35408</uuid>
+        <description>SAIL Wizard for Create Configure Study</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>= load(
+  local!currentStep: 1,
+  local!isConfigureQues: false(),
+  local!isConfigureDocs: false(),
+  local!visitedStep: 1,
+  local!steps: #"_a-0000dcb6-5d2b-8000-5130-010000010000_30935",
+  local!primRvwUser,
+  local!secRvwUser,
+  local!facilitator,
+  local!primaryUserInfo: #"_a-0000dcff-77ee-8000-5130-010000010000_40107"(
+    "Primary Reviewer"
+  ),
+  local!uniquePrimUser: union(
+    local!primaryUserInfo,
+    local!primaryUserInfo
+  ),
+  local!secondaryUserInfo: #"_a-0000dcff-77ee-8000-5130-010000010000_40107"(
+    "Secondary Reviewer"
+  ),
+  local!uniqueSecUser: union(
+    local!secondaryUserInfo,
+    local!secondaryUserInfo
+  ),
+  local!facilitatorInfo: #"_a-0000dcff-77ee-8000-5130-010000010000_40107"(
+    "Facilitator"
+  ),
+  local!uniqueFacUser: union(
+    local!facilitatorInfo,
+    local!facilitatorInfo
+  ),
+  local!endpointStep: 1,
+  local!currentEndPoint: 'type!{com.cognizant.epas.types}EPAS_EndPointSetupInfo'(),
+  local!endPointSetupInfo: if(
+    isnull(
+      ri!endPointSetupInfo
+    ),
+    {
+      'type!{com.cognizant.epas.types}EPAS_EndPointSetupInfo'()
+    },
+    ri!endPointSetupInfo
+  ),
+  local!endPointupInfoToken: local!endPointSetupInfo,
+  local!selectedIndex,
+  local!actionValue,
+  local!questionsInfo,
+  local!questionIndex,
+  with(
+    local!randomPrimUser: if(ri!studySetupInfo.isRandom,index(local!uniquePrimUser, {1,2},null),null),
+    local!labels: if(
+      local!currentStep = 1,
+      "Create New Study",
+      "Configure Study"
+    ),
+    #"SYSTEM_SYSRULES_formLayout"(
+      /*label: local!randomPrimUser&amp;local!labels &amp; local!endPointSetupInfo&amp;local!primRvwUser&amp;local!secRvwUser&amp;local!facilitator,*/
+      /*label: if(ri!studySetupInfo.isRandom, local!randomPrimUser.userId, local!primRvwUser.userId)&amp;local!labels&amp;ri!studySetupInfo,*/
+      label: local!labels,
+      firstColumnContents: {
+        #"_a-0000dcf6-cb79-8000-5130-010000010000_39141"(
+          local!currentStep,
+          local!visitedStep,
+          local!steps
+        ),
+        choose(
+          local!currentStep,
+          {
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35331"(
+              ri!studySetupInfo,
+              false(),
+              null
+            )
+          },
+          {
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35335"(
+              ri!studySetupInfo,
+              null
+            ),
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35338"(
+              ri!studySetupInfo,
+              false(),
+              local!primRvwUser
+            ),
+            if(
+              ri!studySetupInfo.isRandom,
+              {},
+              #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(
+                local!uniquePrimUser,
+                local!primRvwUser,
+                "Primary Reviewers",
+                true()
+              )
+            )
+          },
+          {
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35335"(
+              ri!studySetupInfo,
+              "other"
+            ),
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(
+              local!uniqueSecUser,
+              local!secRvwUser,
+              "Secondary Reviewers",
+              true()
+            )
+          },
+          {
+            #"_a-0000dcb6-5d2b-8000-5130-010000010000_30939"(
+              ri!studySetupInfo,
+              ri!studySetupInfo.docTimeline,
+              "other",
+              null
+            ),
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(
+              local!uniqueFacUser,
+              local!facilitator,
+              "Facilitators",
+              true()
+            )
+          },
+          {
+            #"_a-0000dcb6-5d2b-8000-5130-010000010000_30939"(
+              ri!studySetupInfo,
+              ri!studySetupInfo.docTimeline,
+              "other",
+              null
+            ),
+            choose(
+              local!endpointStep,
+              {
+                #"_a-0000dcb6-5d2b-8000-5130-010000010000_31049"(
+                  local!endPointSetupInfo,
+                  local!endPointupInfoToken,
+                  local!endpointStep,
+                  local!currentEndPoint,
+                  local!selectedIndex,
+                  local!isConfigureQues,
+                  local!isConfigureDocs
+                )
+              },
+              {
+                #"_a-0000dcff-77ee-8000-5130-010000010000_39680"(
+                    /*rule!EPAS_displayQuestionaireFormV1(*/
+                  currentEndpoint: local!currentEndPoint,
+                  selectedIndex: local!selectedIndex,
+                  actionValue: local!actionValue,
+                  questionIndex: local!questionIndex,
+                  currentStep: local!endpointStep,
+                  endPointSetupInfo: local!endPointSetupInfo,
+                  isConfigureQues: local!isConfigureQues
+                )
+              },
+              {
+                #"_a-0000dcd7-2308-8000-5130-010000010000_35399"(
+                  currentEndpoint: local!currentEndPoint,
+                  selectedIndex: local!selectedIndex,
+                  currentStep: local!endpointStep,
+                  endPointSetupInfo: local!endPointSetupInfo,
+                  isConfigureDocs: local!isConfigureDocs
+                )
+              }
+            )
+          }
+        )
+      },
+      secondColumnContents: {},
+      buttons: if(
+        or(
+          local!isConfigureQues,
+          local!isConfigureDocs
+        ),
+        {},
+        #"SYSTEM_SYSRULES_ButtonLayout"(
+          primaryButtons: {
+            #"SYSTEM_SYSRULES_ButtonWidget"(
+              label: if(
+                local!currentStep &lt; #"_a-0000d806-c17f-8000-5892-010000010000_3484"(
+                  local!steps
+                ) - 1,
+                "Next",
+                "Submit"
+              ),
+              style: "PRIMARY",
+              value: if(
+                local!currentStep &lt; #"_a-0000d806-c17f-8000-5892-010000010000_3484"(
+                  local!steps
+                ),
+                local!currentStep + 1,
+                local!currentStep
+              ),
+              saveInto: {
+                local!currentStep,
+                a!save(
+                  local!visitedStep,
+                  max(
+                    local!visitedStep,
+                    save!value
+                  )
+                ),
+                a!save(
+                  ri!studySetupInfo.studySelectedUser,
+                  if(
+                    local!currentStep &gt;= #"_a-0000d806-c17f-8000-5892-010000010000_3484"(
+                      local!steps
+                    ) - 1,
+                    apply(
+                      #"_a-0000dcf6-cb79-8000-5130-010000010000_39151",
+                      append(
+                        /*{1,2,3,4}*/
+                        if(ri!studySetupInfo.isRandom, local!randomPrimUser.userId, local!primRvwUser.userId),
+                        local!secRvwUser.userId,
+                        local!facilitator.userId
+                      )
+                    ),
+                    null
+                  )
+                ),
+                /*a!save(*/
+                /*  ri!studySetupInfo.userInfo,*/
+                /*  if(*/
+                /*    local!currentStep &lt; rule!APN_arrayLength(*/
+                /*      local!steps*/
+                /*    ),*/
+                /*    ri!userInfo,*/
+                /*    append(*/
+                /*      ri!userInfo,*/
+                /*      local!primRvwUser,*/
+                /*      local!secRvwUser,*/
+                /*      local!facilitator*/
+                /*    )*/
+                /*  )*/
+                /*),*/
+                a!save(
+                  ri!studySetupInfo.endPointSetupInfo,
+                  local!endPointSetupInfo
+                )
+              },
+              validate: true(),
+              validationGroup: if(
+                local!currentStep &gt;= #"_a-0000d806-c17f-8000-5892-010000010000_3484"(
+                  local!steps
+                ) - 1,"submit","next"),
+              submit: if(
+                local!currentStep &gt;= #"_a-0000d806-c17f-8000-5892-010000010000_3484"(
+                  local!steps
+                ) - 1,
+                true(),
+                false()
+              )
+            )
+          },
+          secondaryButtons: if(
+            local!currentStep &gt; 1,
+            {
+              #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+                label: "Cancel",
+                style: "NORMAL",
+                value: true,
+                saveInto: ri!cancel
+              ),
+              #"SYSTEM_SYSRULES_ButtonWidget"(
+                label: "Back",
+                value: local!currentStep - 1,
+                saveInto: local!currentStep
+              )
+            },
+            {
+              #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+                label: "Cancel",
+                style: "NORMAL",
+                value: true,
+                saveInto: ri!cancel
+              )
+            }
+          )
+        )
+      ),
+         validations: {
+
+        if(
+          contains(#"_a-0000dd16-0574-8000-9ba2-011c48011c48_26517"(local!endPointSetupInfo),true),
+        #"SYSTEM_SYSRULES_validationMessage"(message: "Please Configure End Point Adjudication and Document Check List", validateAfter: "SUBMIT")
+        ,""
+        )
+      },
+      validationGroup: "submit"
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>cancel</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>studySetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>endPointSetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>userInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69961"/>
+    </history>
+</contentHaul>

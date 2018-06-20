@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69990</versionUuid>
+    <rule>
+        <name>EPAS_applyComponentsForDocuments</name>
+        <uuid>_a-0000dcff-77ee-8000-5130-010000010000_40036</uuid>
+        <description>Expression Rule for Apply Components for Document Upload</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42721</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_gridRowLayout"(&#xD;
+  id:ri!index,&#xD;
+  contents:{&#xD;
+	  #"SYSTEM_SYSRULES_dropdownField"(&#xD;
+		  label: "Document Type"&amp;ri!index,&#xD;
+		  placeholderLabel:"--Select--",&#xD;
+		  choiceLabels:append(ri!docList,{"Other"}),&#xD;
+		  choiceValues:append(ri!docList,{"Other"}),&#xD;
+		  required: true(),&#xD;
+		  labelPosition: "ADJACENT",&#xD;
+		  helpToolTip: "Select the Document List",&#xD;
+		  value: if(isnull(ri!uploadDocType[ri!index]),null(),ri!uploadDocType[ri!index]),&#xD;
+		  saveInto:{&#xD;
+			  ri!uploadDocType[ri!index],&#xD;
+			  if(ri!uploadDocType[ri!index]&lt;&gt;"Other",a!save(ri!uploadDocName[ri!index],save!value),{})&#xD;
+		  }&#xD;
+		),&#xD;
+		#"SYSTEM_SYSRULES_textField"(&#xD;
+			label:"Document Name"&amp;ri!index,&#xD;
+			value :if(isnull(ri!uploadDocName[ri!index]),null(),ri!uploadDocName[ri!index]),&#xD;
+			saveInto:{&#xD;
+				if(ri!uploadDocType[ri!index]="Other",a!save(ri!uploadDocName[ri!index],save!value),&#xD;
+				{})&#xD;
+			},&#xD;
+			required: true(),&#xD;
+			disabled:if(ri!uploadDocType[ri!index]="Other",false(),true())			&#xD;
+		),&#xD;
+		#"SYSTEM_SYSRULES_fileUploadField"(&#xD;
+			label: "Upload File"&amp;" "&amp;ri!index,&#xD;
+			labelPosition: "ADJACENT",&#xD;
+			required: true(),&#xD;
+			target: #"_a-0000dd0c-ffa4-8000-5130-010000010000_42745",&#xD;
+			value: if(isnull(ri!files[ri!index]),null(),ri!files[ri!index]),  &#xD;
+			saveInto: {ri!files[ri!index]/*,&#xD;
+			  a!save(ri!files,append(ri!files,{null})),&#xD;
+			  a!save(ri!uploadDocType,append(ri!uploadDocType,{null})),&#xD;
+			  a!save(ri!uploadDocName,append(ri!uploadDocName,{null})),&#xD;
+			  a!save(ri!itemsToken,append(ri!itemsToken,{null}))*/&#xD;
+			}&#xD;
+			&#xD;
+		  ),&#xD;
+		  #"SYSTEM_SYSRULES_imageField"(&#xD;
+			  label: "delete " &amp; ri!index,&#xD;
+			  images: #"SYSTEM_SYSRULES_documentImage"(&#xD;
+				document: #"SYSTEM_SYSRULES_iconIndicator"("REMOVE"),&#xD;
+				altText: "Remove",&#xD;
+			  link: #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+				  value: ri!index,&#xD;
+				  saveInto: {&#xD;
+					a!save(ri!uploadDocType, remove(ri!uploadDocType, save!value)),&#xD;
+					a!save(ri!uploadDocName, remove(ri!uploadDocName, save!value)),&#xD;
+					a!save(ri!files, remove(ri!files, save!value)),&#xD;
+					/* When modifying the size of the array used in a!applyComponents,  */&#xD;
+					/* make the same change in the "token" array variable               */&#xD;
+					a!save(ri!itemsToken, remove(ri!itemsToken, save!value))&#xD;
+				  }&#xD;
+				)&#xD;
+			  ),&#xD;
+			  size: "ICON"&#xD;
+			)&#xD;
+  }&#xD;
+)&#xD;
+&#xD;
+</definition>
+        <namedTypedValue>
+            <name>uploadDocType</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>uploadDocName</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>files</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>itemsToken</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>docList</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69990"/>
+    </history>
+</contentHaul>

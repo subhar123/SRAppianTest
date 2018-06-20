@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70030</versionUuid>
+    <rule>
+        <name>EPAS_displayEndPointGrid</name>
+        <uuid>_a-0000dd0b-f547-8000-5130-010000010000_41125</uuid>
+        <description>To display End Point Grid </description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42714</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+local!selectedEndpoint,&#xD;
+local!pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(&#xD;
+    startIndex: 1,&#xD;
+    batchSize: 20,&#xD;
+    sort: #"SYSTEM_SYSRULES_sortInfo"(&#xD;
+      field: "endpointName",&#xD;
+      ascending: true&#xD;
+    )&#xD;
+  ),&#xD;
+  local!endPoint: #"_a-0000dcff-77ee-8000-5130-010000010000_40017"(ri!studySetupId),&#xD;
+  with(&#xD;
+  local!datasubset: todatasubset(local!endPoint),&#xD;
+  local!valueEndPoint: &#xD;
+  if(isnull(local!selectedEndpoint),null,&#xD;
+  index(local!endPoint,wherecontains(cast(3,local!selectedEndpoint),cast(103,local!endPoint.endPointSetupId)),null)&#xD;
+  ),&#xD;
+   if(isnull(local!selectedEndpoint),&#xD;
+     #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+      label:"End Point Details "&amp;local!valueEndPoint,&#xD;
+      isCollapsible: true(),&#xD;
+      firstColumnContents:{&#xD;
+    #"SYSTEM_SYSRULES_gridField"(&#xD;
+      label :"",&#xD;
+      totalCount: local!datasubset.totalCount,&#xD;
+      columns: {&#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "End Point Name",&#xD;
+          field: "endpointId",&#xD;
+          data: index(local!datasubset.data, "endpointName", null),&#xD;
+		  links: apply(#"SYSTEM_SYSRULES_dynamicLink"(value: _, saveInto: local!selectedEndpoint), index(local!datasubset.data, "endPointSetupId", {}))&#xD;
+        ),&#xD;
+		#"SYSTEM_SYSRULES_gridImageColumn"(&#xD;
+                  label: "Secondary Adjudication Required",&#xD;
+                  size:"ICON",&#xD;
+                  data:                   &#xD;
+                    apply(&#xD;
+                  #"_a-0000dd0b-f547-8000-5130-010000010000_41129",&#xD;
+                    index(&#xD;
+                    local!datasubset.data,&#xD;
+                    "secondaryAdjudNeeded",&#xD;
+                    {}&#xD;
+                  ))),&#xD;
+&#xD;
+		#"SYSTEM_SYSRULES_gridImageColumn"(&#xD;
+                  label: "Question Setup Status",&#xD;
+                  size:"ICON",&#xD;
+                  data:                   &#xD;
+                            apply(&#xD;
+                  #"_a-0000dd0b-f547-8000-5130-010000010000_41131",&#xD;
+                  local!datasubset.data,&#xD;
+                  "other"&#xD;
+                  )&#xD;
+				  &#xD;
+				  ),&#xD;
+	    		#"SYSTEM_SYSRULES_gridImageColumn"(&#xD;
+                  label: "Document Setup Status",&#xD;
+                  size:"ICON",&#xD;
+                  data:                   &#xD;
+                          apply(&#xD;
+                  #"_a-0000dd0b-f547-8000-5130-010000010000_41131",&#xD;
+                  local!datasubset.data,&#xD;
+                  null&#xD;
+                  )&#xD;
+				  &#xD;
+				  )&#xD;
+      },&#xD;
+      value: local!pagingInfo,&#xD;
+      saveInto: local!pagingInfo&#xD;
+    )&#xD;
+      }&#xD;
+      ),&#xD;
+      #"_a-0000dd0c-08f6-8000-5130-010000010000_41137"(local!valueEndPoint,local!selectedEndpoint)&#xD;
+      )&#xD;
+  )&#xD;
+  )&#xD;
+  &#xD;
+</definition>
+        <namedTypedValue>
+            <name>studySetupId</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70030"/>
+    </history>
+</contentHaul>

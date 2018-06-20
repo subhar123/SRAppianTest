@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69954</versionUuid>
+    <rule>
+        <name>EPAS_userGroupsPie</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35368</uuid>
+        <description>PIe chart of count of users per group</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42719</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_pieChartField"(&#xD;
+   label:"User Groups",&#xD;
+   instructions:"number of users in each group",&#xD;
+    series: {&#xD;
+      #"SYSTEM_SYSRULES_chartSeries"(label: "CRA", data: count(getgroupmemberuserspaging(#"_a-0000dcd7-2308-8000-5130-010000010000_35080",0,-1))),&#xD;
+      #"SYSTEM_SYSRULES_chartSeries"(label: "Facilitator",  data: count(getgroupmemberuserspaging(#"_a-0000dcd7-2308-8000-5130-010000010000_35081",0,-1))),&#xD;
+      #"SYSTEM_SYSRULES_chartSeries"(label: "Study Admin",data: count(getgroupmemberuserspaging(#"_a-0000dcd7-2308-8000-5130-010000010000_35079",0,-1))),&#xD;
+      #"SYSTEM_SYSRULES_chartSeries"(label: "Primary Reviewer",data: count(getgroupmemberuserspaging(#"_a-0000dcd7-2308-8000-5130-010000010000_35082",0,-1))),&#xD;
+      #"SYSTEM_SYSRULES_chartSeries"(label: "Secondary Reviewer",data: count(getgroupmemberuserspaging(#"_a-0000dcd7-2308-8000-5130-010000010000_35083",0,-1)))&#xD;
+    },&#xD;
+  showDataLabels :false,&#xD;
+  showTooltips:true&#xD;
+)</definition>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69954"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69964</versionUuid>
+    <rule>
+        <name>EPAS_addUser</name>
+        <uuid>_a-0000dcf6-cb79-8000-5130-010000010000_38950</uuid>
+        <description>UI to add a new user to the EPAS.</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42707</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+   with(&#xD;
+   #"SYSTEM_SYSRULES_formLayout"(&#xD;
+      label :#"_a-0000dcf6-cb79-8000-5130-010000010000_38953",&#xD;
+      firstColumnContents:{&#xD;
+        #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+        firstColumnContents: {&#xD;
+         #"SYSTEM_SYSRULES_textField"(&#xD;
+         label: #"_a-0000dcf6-cb79-8000-5130-010000010000_38954" ,&#xD;
+         labelPosition:"ADJACENT",&#xD;
+         helpTooltip:"An unique ID for the User",&#xD;
+         value:ri!userInfo.userAccountId,&#xD;
+         saveInto:ri!userInfo.userAccountId,&#xD;
+         required:true&#xD;
+         ),&#xD;
+          #"SYSTEM_SYSRULES_textField"(&#xD;
+         label: #"_a-0000dcf6-cb79-8000-5130-010000010000_38955",&#xD;
+         labelPosition:"ADJACENT",&#xD;
+         helpTooltip:"User's First Name",&#xD;
+         value:ri!userInfo.firstName,&#xD;
+         saveInto:ri!userInfo.firstName,&#xD;
+         required:true&#xD;
+         ),&#xD;
+          #"SYSTEM_SYSRULES_dropdownField"(&#xD;
+         label: #"_a-0000dcf6-cb79-8000-5130-010000010000_38956",&#xD;
+         labelPosition:"ADJACENT",&#xD;
+         helpTooltip:"Select User's Role",&#xD;
+         choiceLabels:{#"_a-0000dcd7-2308-8000-5130-010000010000_35298"},&#xD;
+         choiceValues:{#"_a-0000dcd7-2308-8000-5130-010000010000_35298"},&#xD;
+         placeholderLabel:"Select",&#xD;
+         value:ri!userInfo.role,&#xD;
+         saveInto:ri!userInfo.role,&#xD;
+         required:true&#xD;
+         ),&#xD;
+        #"SYSTEM_SYSRULES_dropdownField"(&#xD;
+         label: #"_a-0000dcf6-cb79-8000-5130-010000010000_38958",&#xD;
+         labelPosition:"ADJACENT",&#xD;
+         helpTooltip:"Select User's Status",&#xD;
+         required:true,&#xD;
+         choiceLabels:{#"_a-0000dcf6-cb79-8000-5130-010000010000_38959"},&#xD;
+         choiceValues:{#"_a-0000dcf6-cb79-8000-5130-010000010000_38959"},&#xD;
+         placeholderLabel:"Select",&#xD;
+          value: ri!userInfo.status,&#xD;
+         saveInto:ri!userInfo.status&#xD;
+         )&#xD;
+      },&#xD;
+      secondColumnContents:{&#xD;
+         #"SYSTEM_SYSRULES_textField"(&#xD;
+         label: #"_a-0000dcf6-cb79-8000-5130-010000010000_38960",&#xD;
+         labelPosition:"ADJACENT",&#xD;
+         helpTooltip:"User's Email ID",&#xD;
+         value: ri!userInfo.email,&#xD;
+         saveInto: ri!userInfo.email,&#xD;
+         required:true&#xD;
+         ),&#xD;
+          #"SYSTEM_SYSRULES_textField"(&#xD;
+         label: #"_a-0000dcf6-cb79-8000-5130-010000010000_38961",&#xD;
+         labelPosition:"ADJACENT",&#xD;
+         helpTooltip:"User's Last Name",&#xD;
+         value: ri!userInfo.lastName,&#xD;
+         saveInto: ri!userInfo.lastName,&#xD;
+         required:true&#xD;
+         ),&#xD;
+        if(&#xD;
+        ri!userInfo.role="CRA",&#xD;
+        #"SYSTEM_SYSRULES_textField"(&#xD;
+         label: #"_a-0000dcf6-cb79-8000-5130-010000010000_38962",&#xD;
+         labelPosition:"ADJACENT",&#xD;
+         value:ri!userInfo.siteName,&#xD;
+         saveInto:ri!userInfo.siteName&#xD;
+         ),&#xD;
+        {}&#xD;
+        ),&#xD;
+          #"SYSTEM_SYSRULES_textField"(&#xD;
+         label: #"_a-0000dcf6-cb79-8000-5130-010000010000_38963",&#xD;
+         labelPosition:"ADJACENT",&#xD;
+/*         helpTooltip:"User's Contact #", */&#xD;
+         value: ri!userInfo.contactPhone,&#xD;
+         saveInto: ri!userInfo.contactPhone,&#xD;
+         required:true&#xD;
+         )&#xD;
+         &#xD;
+      }&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+      firstColumnContents :{&#xD;
+        if(ri!duplicateUser,&#xD;
+        #"SYSTEM_SYSRULES_textField"(value:"User already exists.",readOnly:true()),{})&#xD;
+      }&#xD;
+    )&#xD;
+      },&#xD;
+      buttons:{&#xD;
+        #"SYSTEM_SYSRULES_ButtonLayout"(&#xD;
+			primaryButtons: {&#xD;
+			  #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(&#xD;
+				label: "Submit",&#xD;
+				style: "PRIMARY",&#xD;
+				value: #"_a-0000dc65-81d6-8000-a73e-010000010000_2374",&#xD;
+				saveInto: ri!button_txt&#xD;
+			  )&#xD;
+			},&#xD;
+			secondaryButtons: {&#xD;
+			  #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(&#xD;
+				label: #"_a-0000dc65-81d6-8000-a73e-010000010000_2373",&#xD;
+				style:"DESTRUCTIVE",&#xD;
+				skipValidation: true,&#xD;
+				value: #"_a-0000dc65-81d6-8000-a73e-010000010000_2381",&#xD;
+				saveInto: ri!button_txt&#xD;
+			  )&#xD;
+			}&#xD;
+		)&#xD;
+      }&#xD;
+    ))&#xD;
+    )</definition>
+        <namedTypedValue>
+            <name>button_txt</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>userInfo</name>
+            <type>
+                <name>EPAS_UserDetails</name>
+                <namespace>com.cognizant.epas.types</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>duplicateUser</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69964"/>
+    </history>
+</contentHaul>

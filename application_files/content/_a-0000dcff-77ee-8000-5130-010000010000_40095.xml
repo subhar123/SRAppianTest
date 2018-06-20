@@ -1,0 +1,327 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69996</versionUuid>
+    <rule>
+        <name>EPAS_reviewEndPointAdjudicationByFacilitator</name>
+        <uuid>_a-0000dcff-77ee-8000-5130-010000010000_40095</uuid>
+        <description>End Point Adjudication Review By Facilitator</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42705</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!pagingInfoDocChecklist: #"SYSTEM_SYSRULES_pagingInfo"(
+    startIndex: 1,
+    batchSize: - 1
+  ),
+  local!pagingInfoDocOther: #"SYSTEM_SYSRULES_pagingInfo"(
+    startIndex: 1,
+    batchSize: - 1
+  ),
+  local!gridSelection: #"SYSTEM_SYSRULES_gridSelection"(
+    pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+      startIndex: 1,
+      batchSize: - 1
+    )
+  ),
+  local!pagingInfoPrimReview: #"SYSTEM_SYSRULES_pagingInfo"(
+    startIndex: 1,
+    batchSize: - 1
+  ),
+  local!pagingInfoSecReview: #"SYSTEM_SYSRULES_gridSelection"(
+    pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+      startIndex: 1,
+      batchSize: - 1
+    )
+  ),
+  local!studySelectedUser: ri!StudySetupInfo.studySelectedUser,
+  local!userDetails: #"_a-0000dcff-77ee-8000-5130-010000010000_40111"(
+    cast(
+      101,
+      local!studySelectedUser.userInfoId
+    )
+  ),
+  local!primUser: index(
+    local!userDetails,
+    wherecontains(
+      "Primary Reviewer",
+      local!userDetails.role
+    ),
+    null
+  ),
+  local!uniquePrimUser: union(
+    local!primUser,
+    local!primUser
+  ),
+  local!secUser: index(
+    local!userDetails,
+    wherecontains(
+      "Secondary Reviewer",
+      local!userDetails.role
+    ),
+    null
+  ),
+  local!uniqueSecUser: union(
+    local!secUser,
+    local!secUser
+  ),
+  local!primRvwUser,
+  local!secRvwUser,
+  #"SYSTEM_SYSRULES_formLayout"(
+    label: "Review Study Documents For Study : " &amp; ri!AdjudicationInfo.studyName,
+    instructions: "Please Review Documents for Event Package Creation",
+    firstColumnContents: {
+      #"SYSTEM_SYSRULES_milestoneField"(
+        label: " ",
+        steps: #"_a-0000dcff-77ee-8000-5130-010000010000_40096",
+        active: 3
+      ),
+      #"SYSTEM_SYSRULES_sectionLayout"(
+        label: "",
+        firstColumnContents: {
+          #"SYSTEM_SYSRULES_textField"(
+            label: "Subject ID:",
+            labelPosition: "ADJACENT",
+            value: ri!AdjudicationInfo.subjectId,
+            readOnly: true()
+          ),
+          #"SYSTEM_SYSRULES_textField"(
+            label: "Site Name:",
+            labelPosition: "ADJACENT",
+            value: ri!AdjudicationInfo.endpointType,
+            readOnly: true()
+          )
+        },
+        secondColumnContents: {
+          #"SYSTEM_SYSRULES_linkField"(
+            label: "Study Name:",
+            labelPosition: "ADJACENT",
+            align: "LEFT",
+            links: {
+              #"SYSTEM_SYSRULES_recordLink"(
+                label: if(
+                  isnull(
+                    ri!AdjudicationInfo.studyName
+                  ),
+                  "",
+                  ri!AdjudicationInfo.studyName
+                ),
+                recordType: #"_a-0000dd0c-08f6-8000-5130-010000010000_41179",
+                identifier: ri!AdjudicationInfo.studySetupId
+              )
+            }
+          ),
+          #"SYSTEM_SYSRULES_textField"(
+            label: "Endpoint Name:",
+            labelPosition: "ADJACENT",
+            value: ri!AdjudicationInfo.endpointName,
+            readOnly: true()
+          ),
+          #"SYSTEM_SYSRULES_dateField"(
+            label: "Endpoint Date:",
+            labelPosition: "ADJACENT",
+            value: ri!AdjudicationInfo.endpointDate,
+            readOnly: true()
+          )
+        }
+      ),
+      #"_a-0000dcff-77ee-8000-5130-010000010000_40100"(
+        ri!AdjudicationInfo.adjudInfoId
+      ),
+      #"SYSTEM_SYSRULES_sectionLayout"(
+        label: "Adjudicators",
+        isCollapsible: true(),
+        firstColumnContents: {
+          #"_a-0000dcff-77ee-8000-5130-010000010000_40117"(
+            ri!StudySetupInfo.isRandom,
+            "Auto Selection of Primary Reviewers"
+          )
+        },
+        secondColumnContents: {
+          #"SYSTEM_SYSRULES_textField"(
+            label: "No of Primary Reviews required",
+            labelPosition: "ADJACENT",
+            readOnly: true,
+            value: = ri!StudySetupInfo.noOfPrimReviewers
+          )
+        }
+      ),
+      #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(
+        local!uniquePrimUser,
+        local!primRvwUser,
+        "Primary Reviewers",
+        false()
+      ),
+      #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(
+        local!uniqueSecUser,
+        local!secRvwUser,
+        "Secondary Reviewers",
+        false()
+      ),
+ #"SYSTEM_SYSRULES_sectionLayout"(
+        label: "Comments",
+        firstColumnContents: {
+          #"SYSTEM_SYSRULES_paragraphField"(
+            value: ri!adjudicationComments,
+            required: true(),
+            saveInto: {
+              ri!adjudicationComments,
+              a!save(
+                ri!userComments,
+                if(
+                  isnull(
+                    ri!adjudicationComments
+                  ),
+                  null,
+                  {
+                    adjudId: ri!AdjudicationInfo.adjudInfoId,
+                    userRole: #"_a-0000dcd7-2308-8000-5130-010000010000_35298"[1],
+                    userName: loggedInUser(),
+                    comments: ri!adjudicationComments,
+                    enteredOn: now()
+                  }
+                )
+              )
+            }
+          )
+        },
+        secondColumnContents: {
+          if(
+            isnull(
+              ri!AdjudicationInfo.adjudInfoId
+            ),
+            {},
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40364"(
+              ri!AdjudicationInfo.adjudInfoId
+            )
+          )
+        },
+        isCollapsible: true
+      ),
+      #"SYSTEM_SYSRULES_ButtonLayout"(
+        primaryButtons: {
+          #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+            label: "Submit For Review",
+            value: "Submit",
+             validationGroup: "submit",
+            confirmMessage: "A notification will be sent to primary reviewer, proceed?",
+            saveInto: {
+              ri!buttonAction,
+              a!save(
+                ri!AdjudicationInfo.adjudicationStatus,
+                #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[3]
+              )
+              /*a!save(*/
+              /*  ri!AdjudicationInfo.adjudSelectedUser,*/
+              /*  apply(*/
+              /*    rule!EPAS_setSelectedUserCdt,*/
+              /*    append(*/
+              /*      local!secRvwUser.userId*/
+              /*    )*/
+              /*  )*/
+              /*)*/
+            },
+            style: "PRIMARY"
+          )
+        },
+        secondaryButtons: {
+          #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+            label: "Reject",
+            value: "Reject",
+            skipValidation: true(),
+            saveInto: {
+              ri!buttonAction,
+              a!save(
+                ri!AdjudicationInfo.adjudicationStatus,
+                #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2]
+              ),
+              a!save(
+                ri!AdjudicationInfo.adjudSelectedUser,
+                null
+              )
+            },
+            style: "DESTRUCTIVE"
+          )
+        }
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>AdjudicationInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>StudySetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>adjudicationComments</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>buttonAction</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>userComments</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69996"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70004</versionUuid>
+    <rule>
+        <name>EPAS_displayCommentsInfo</name>
+        <uuid>_a-0000dcff-77ee-8000-5130-010000010000_40364</uuid>
+        <description>To Display Comments Information </description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42721</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>= load(
+      local!qPagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+    startIndex: 1,
+    batchSize: -1
+
+  ),
+    local!pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+    startIndex: 1,
+    batchSize: 3,
+    sort: #"SYSTEM_SYSRULES_sortInfo"(
+      field: "enteredOn",
+      ascending: false
+    )
+  ),
+  local!comments: #"SYSTEM_SYSRULES_queryEntity"(
+    entity: #"_a-0000dcff-77ee-8000-5130-010000010000_40362",
+    query: #"SYSTEM_SYSRULES_query"(
+      logicalExpression: #"SYSTEM_SYSRULES_queryLogicalExpression"(
+        operator: "AND",
+        filters: #"SYSTEM_SYSRULES_queryFilter"(
+          field: "adjudId",
+          operator: "=",
+          value: ri!caseId
+        )
+      ),
+      pagingInfo: local!qPagingInfo
+    )
+  ),
+  local!result: if(
+    local!comments.totalCount = 0,
+    null,
+    reject(
+      fn!isnull,
+      local!comments.data.comments
+    )
+  ),
+local!finalComments:   
+if(
+    local!comments.totalCount = 0,
+    null,
+
+index(
+      local!comments.data,
+      wherecontains(
+        cast(103,local!result),
+        cast(103,local!comments.data.comments)
+      ),
+      null
+    )
+    ),
+
+  with(
+      local!auditTrail: 
+      if(
+        isnull(local!finalComments),
+        null,
+      todatasubset(
+    local!finalComments,
+    local!pagingInfo
+  )),
+    if(
+      or(
+      isnull(local!auditTrail.data),
+      local!auditTrail.totalCount = 0
+      ),
+      {},
+      /*a!sectionLayout(*/
+      /*  label: "Comments",*/
+      /*  isCollapsible: true(),*/
+      /*  firstColumnContents: */
+        {
+      /*a!paragraphField(*/
+      /*  label: " ",*/
+      /*  value: local!auditTrail */
+      /*)*/
+          #"SYSTEM_SYSRULES_gridField"(
+            label: "Comments",
+            totalCount: local!auditTrail.totalCount,
+            columns: {
+              #"SYSTEM_SYSRULES_gridTextColumn"(
+                label: "Comments",
+                field: "comments",
+                data: local!auditTrail.data.comments
+              ),
+              #"SYSTEM_SYSRULES_gridImageColumn"(
+                label: "Commented By",
+                field: "userName",
+                data: apply(
+                  #"_a-0000dcd1-5675-8000-5130-010000010000_33327",
+                  local!auditTrail.data.userName
+                )
+              ),
+              #"SYSTEM_SYSRULES_gridTextColumn"(
+                label: "User Role",
+                field: "userRole",
+                data: local!auditTrail.data.userRole
+              ),
+              #"SYSTEM_SYSRULES_gridTextColumn"(
+                label: "Commented On",
+                field: "enteredOn",
+                data: apply(
+                  #"_a-0000dd0c-ffa4-8000-5130-010000010000_42770",
+                  local!auditTrail.data.enteredOn
+                )
+                
+              )
+            },
+            value: local!pagingInfo,
+            saveInto: local!pagingInfo
+          )
+        }
+      /*)*/
+     
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>caseId</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70004"/>
+    </history>
+</contentHaul>

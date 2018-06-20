@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70027</versionUuid>
+    <rule>
+        <name>EPAS_RecordStudySetupDashBoard</name>
+        <uuid>_a-0000dd0b-f547-8000-5130-010000010000_41122</uuid>
+        <description>Study Setup Record Dashboard</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42714</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+ local!studySetupInfo: #"_a-0000dcff-77ee-8000-5130-010000010000_40380"(rf!studySetupId),&#xD;
+&#xD;
+ local!studySelectedUser: #"_a-0000dcff-77ee-8000-5130-010000010000_40532"(&#xD;
+    rf!studySetupId&#xD;
+  ),&#xD;
+  local!userDetails: #"_a-0000dcff-77ee-8000-5130-010000010000_40111"(&#xD;
+    cast(&#xD;
+      101,&#xD;
+      local!studySelectedUser.userInfoId&#xD;
+    )&#xD;
+  ),&#xD;
+  local!primUser: index(&#xD;
+    local!userDetails,&#xD;
+    wherecontains(&#xD;
+      "Primary Reviewer",&#xD;
+      local!userDetails.role&#xD;
+    ),&#xD;
+    null&#xD;
+  ),&#xD;
+  local!uniquePrimUser: union(&#xD;
+    local!primUser,&#xD;
+    local!primUser&#xD;
+  ),&#xD;
+  local!secUser: index(&#xD;
+    local!userDetails,&#xD;
+    wherecontains(&#xD;
+      "Secondary Reviewer",&#xD;
+      local!userDetails.role&#xD;
+    ),&#xD;
+    null&#xD;
+  ),&#xD;
+  local!uniqueSecUser: union(&#xD;
+    local!secUser,&#xD;
+    local!secUser&#xD;
+  ),&#xD;
+    local!facUser: index(&#xD;
+    local!userDetails,&#xD;
+    wherecontains(&#xD;
+      "Facilitator",&#xD;
+      local!userDetails.role&#xD;
+    ),&#xD;
+    null&#xD;
+  ),&#xD;
+  local!uniqueFacUser: union(&#xD;
+    local!facUser,&#xD;
+    local!facUser&#xD;
+  ),&#xD;
+  local!primRvwUser,&#xD;
+  local!secRvwUser,&#xD;
+  local!facRvwUser,&#xD;
+ &#xD;
+&#xD;
+{&#xD;
+ #"_a-0000dcd7-2308-8000-5130-010000010000_35335"(&#xD;
+     local!studySetupInfo,&#xD;
+     "record"&#xD;
+     ),&#xD;
+  #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(&#xD;
+          local!uniqueFacUser,&#xD;
+          local!facRvwUser,&#xD;
+          "Facilitator",&#xD;
+          false()&#xD;
+        ),	&#xD;
+ #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(&#xD;
+          local!uniquePrimUser,&#xD;
+          local!primRvwUser,&#xD;
+          "Primary Reviewers",&#xD;
+          false()&#xD;
+        ),&#xD;
+ #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(&#xD;
+          local!uniqueSecUser,&#xD;
+          local!secRvwUser,&#xD;
+          "Secondary Reviewers",&#xD;
+          false()&#xD;
+        ),	 &#xD;
+#"_a-0000dd0b-f547-8000-5130-010000010000_41125"(rf!studySetupId),&#xD;
+#"_a-0000dd0c-08f6-8000-5130-010000010000_41140"(rf!studySetupId)&#xD;
+	 &#xD;
+&#xD;
+&#xD;
+}&#xD;
+)</definition>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70027"/>
+    </history>
+</contentHaul>

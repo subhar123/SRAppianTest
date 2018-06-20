@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70033</versionUuid>
+    <rule>
+        <name>EPAS_DisplayEndpointRecordGridSection</name>
+        <uuid>_a-0000dd0c-08f6-8000-5130-010000010000_41137</uuid>
+        <description>Rule contains section for Display Endpoint Details</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42718</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!itemsToken,
+  local!responsInfo,
+  local!questionInfo: ri!endPointSetupInfo[1].questionsInfo,
+  local!docList: ri!endPointSetupInfo[1].docChecklistInfo,
+  local!pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+    startIndex: 1,
+    batchSize: - 1
+  ),
+  local!datasubset: todatasubset(
+    local!docList,
+    local!pagingInfo
+  ),
+    local!qDatasubset: todatasubset(
+    local!questionInfo,
+    local!pagingInfo
+  ),
+  if(
+    isnull(
+      ri!endPointSetupInfo.endpointId
+    ),
+    {},
+    #"SYSTEM_SYSRULES_sectionLayout"(
+      label: "Endpoint: " &amp; ri!endPointSetupInfo.endpointId,
+      firstColumnContents: {
+        #"SYSTEM_SYSRULES_richTextDisplayField"(
+          label: " ",
+          value: #"SYSTEM_SYSRULES_richTextItem"(
+            text:"&lt;&lt;Back",
+            style: "STRONG",
+            link: #"SYSTEM_SYSRULES_dynamicLink"(value:null, saveInto: ri!context)
+          )
+        ),
+        /*        a!textField(*/
+        /*  label: "Endpoint Name",*/
+        /*  labelPosition: "ADJACENT",*/
+        /*  readOnly: true(),*/
+        /*  align: "LEFT",*/
+        /*  value: ri!endPointSetupInfo.endpointId*/
+        /*),*/
+        /* rule!EAS_ImageForYesNo(ri!endPointSetupInfo.secondaryAdjudicationNeeded,"Secondary Adjudication Needed"),*/
+        /*a!textField(*/
+        /*  label: "Secondary Adjudication Needed",*/
+        /*  labelPosition: "ADJACENT",*/
+        /*  align: "LEFT",*/
+        /*  readOnly: true(),*/
+        /*  value: ri!endPointSetupInfo.secondaryAdjudicationNeeded*/
+        /*),*/
+           if(
+         isnull(local!datasubset.data),
+          {},
+          {
+           /*a!richTextDisplayField(*/
+           /*   value: a!richTextItem(*/
+           /*     text: "Document List",*/
+           /*     style: "STRONG"*/
+           /*   )*/
+           /* ),*/
+           /*a!richTextDisplayField(*/
+           /*  value: a!richTextBulletedList(*/
+           /*    items: {index(*/
+           /*     local!datasubset.data,*/
+           /*     "docName",*/
+           /*     {}*/
+           /*   )*/
+              
+           /*   }*/
+           /*  )*/
+           /*)*/
+           #"SYSTEM_SYSRULES_gridField"(
+          label: " ",
+          totalCount: local!datasubset.totalCount,
+          columns: {
+            #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "Document List",
+              field: "docType",
+              data: index(
+                local!datasubset.data,
+                "docType",
+                {}
+              )
+            )
+          },
+          value: local!pagingInfo,
+          saveInto: local!pagingInfo
+        )
+          }
+          )
+      },
+      secondColumnContents: {
+ 
+            
+           if(
+          isnull(
+            local!questionInfo
+          ),
+          {},
+          {
+            /*a!richTextDisplayField(*/
+            /*  value: a!richTextItem(*/
+            /*    text: "Question Details",*/
+            /*    style: "STRONG"*/
+            /*  )*/
+            /*),*/
+            /*a!richTextDisplayField(*/
+            /*  label: "Question Details",*/
+            /*  labelPosition: "COLLAPSED",*/
+            /*  value: {*/
+            /*    a!applyComponents(*/
+            /*      function: rule!EPAS_RichTextQuestionItem,*/
+            /*      array: local!questionInfo*/
+            /*    )*/
+            /*  }*/
+            /*)*/
+            #"SYSTEM_SYSRULES_richTextDisplayField"(
+          label: " "
+          
+        ),   
+         #"SYSTEM_SYSRULES_gridLayout"(
+           label: " ",
+                    totalCount: count(local!questionInfo),
+                    headerCells: {
+                      #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Question",align:"LEFT"),
+                      /* For the "Remove" column */
+                      #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(label: "Option")
+                    },
+                     columnConfigs:{
+                       #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"DISTRIBUTE"),
+                       #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"DISTRIBUTE")
+                     },
+                     rows:#"SYSTEM_SYSRULES_applyComponents"(
+                       function:#"_a-0000dcb6-5d2b-8000-5130-010000010000_32918"(index:_,
+                       questionsInfo:local!questionInfo,
+                       response:local!responsInfo,
+                       itemsToken:local!itemsToken
+                       ),
+                      array: if(or(isnull(local!questionInfo), count(local!questionInfo) &lt; 1), {}, 1+enumerate(count(local!questionInfo)))/*if(or(isnull(index(local!questionInfo,"optionsInfo",{})), count(index(local!questionInfo,"optionsInfo",{})) &lt; 1), {}, 1+enumerate(count(index(local!questionInfo,"optionsInfo",{}))))*/,
+                      arrayVariable:local!itemsToken
+                     )
+                  )
+          }
+        )
+        ,
+        /* a!gridField(*/
+        /*  label: "",*/
+        /*  totalCount: local!qDatasubset.totalCount,*/
+        /*  columns: {*/
+        /*    a!gridTextColumn(*/
+        /*      label: "Document List",*/
+        /*      field: "docName",*/
+        /*      data: index(*/
+        /*        local!qDatasubset.data,*/
+        /*        "questionName",*/
+        /*        {}*/
+        /*      )*/
+			  
+        /*    )*/
+        /*  },*/
+        /*  value: local!pagingInfo,*/
+        /*  saveInto: local!pagingInfo*/
+        /*)*/
+      },
+      /*isInitiallyCollapsed: true,*/
+      isCollapsible: true,
+      validations: {}
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>endPointSetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>context</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70033"/>
+    </history>
+</contentHaul>

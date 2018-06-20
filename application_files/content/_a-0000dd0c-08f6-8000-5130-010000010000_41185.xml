@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70051</versionUuid>
+    <rule>
+        <name>EPAS_StatusPercentageCalc</name>
+        <uuid>_a-0000dd0c-08f6-8000-5130-010000010000_41185</uuid>
+        <description>Calculates the Status %</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42723</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>if(&#xD;
+  ri!status = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[1],&#xD;
+    #"SYSTEM_SYSRULES_documentImage"(&#xD;
+    document: #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+      icon: "HARVEY_0"&#xD;
+    )),&#xD;
+  if(&#xD;
+	ri!status = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2],&#xD;
+	    #"SYSTEM_SYSRULES_documentImage"(&#xD;
+		document: #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+		icon: "HARVEY_25"&#xD;
+    )),&#xD;
+	if(&#xD;
+	  ri!status = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[3],&#xD;
+	  	#"SYSTEM_SYSRULES_documentImage"(&#xD;
+		document: #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+		icon: "HARVEY_50"&#xD;
+    )),&#xD;
+	  if(&#xD;
+		ri!status = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[4],&#xD;
+		#"SYSTEM_SYSRULES_documentImage"(&#xD;
+		document: #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+		icon: "HARVEY_75"&#xD;
+    )),&#xD;
+		if(&#xD;
+		  ri!status = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[5],&#xD;
+		 #"SYSTEM_SYSRULES_documentImage"(&#xD;
+		document: #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+		icon: "HARVEY_100"&#xD;
+    )),&#xD;
+		 #"SYSTEM_SYSRULES_documentImage"(&#xD;
+		document: #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+		icon: "STATUS_WARN"&#xD;
+    ))&#xD;
+		)&#xD;
+	  )&#xD;
+	)&#xD;
+  )&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>status</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70051"/>
+    </history>
+</contentHaul>

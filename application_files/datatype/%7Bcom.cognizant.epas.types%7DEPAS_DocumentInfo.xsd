@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="com.cognizant.epas.types"
+  xmlns:tns="com.cognizant.epas.types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="EPAS_DocumentInfo">
+    <xsd:annotation>
+      <xsd:appinfo source="appian.jpa">@Table(name="epasdocumentinfo")</xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="docInfoId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Id @GeneratedValue @Column(name="docinfoid")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="adjudId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">       
+		  @Column(name="adjudid", columnDefinition = "bigint")
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="docName" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="docname", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="docType" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="doctype", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="docId" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="docid", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="uploadedUserId" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="uploadeduserid", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69928</versionUuid>
+    <rule>
+        <name>EPAS_studySetupEdit</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35331</uuid>
+        <description>Contains Editable Study Section for the Wizard</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!labelPosition: "ADJACENT",
+  local!studyName: #"_a-0000dcd7-2308-8000-5130-010000010000_35323"().studyName,
+  #"SYSTEM_SYSRULES_sectionLayout"(
+    label: "Study Setup",
+    firstColumnContents: {
+      #"SYSTEM_SYSRULES_textField"(
+        label: "Study Name",
+        required: true(),
+        value: ri!studyInfo.studyName,
+        saveInto: ri!studyInfo.studyName,
+        readonly: ri!readOnly,
+        helpTooltip: if(
+          ri!readOnly,
+          "",
+          "Study Name should be Unique"
+        ),
+        validations: {
+          if(
+            isnull(
+              ri!studyInfo.studyName
+            ),
+            "",
+            if(
+              contains(
+                local!studyName,
+                ri!studyInfo.studyName
+              ),
+              "Study Name already Exist. Please enter the different Name",
+              ""
+            )
+          )
+        },
+        validationGroup: "submit",
+        labelPosition: local!labelPosition
+      ),
+      #"SYSTEM_SYSRULES_paragraphField"(
+        label: "Study Description",
+        required: true,
+        instructions: len(
+          ri!studyInfo.description
+        ) &amp; " chars out of 2000 characters entered",
+        refreshAfter: "KEYPRESS",
+        validations: if(
+          len(
+            ri!studyInfo.description
+          ) &gt; 500,
+          "Please enter less than 2000 characters",
+          ""
+        ),
+        value: ri!studyInfo.description,
+        saveInto: ri!studyInfo.description,
+        readonly: ri!readOnly,
+        helpTooltip: if(
+          ri!readOnly,
+          "",
+          "Study Description should be less than 2000"
+        ),
+        validationGroup: "submit",
+        labelPosition: local!labelPosition
+      ),
+      #"SYSTEM_SYSRULES_dropdownField"(
+        label: "Study Status",
+        required: true(),
+        choiceLabels: #"_a-0000dc65-81d6-8000-a73e-010000010000_2454",
+        choiceValues: #"_a-0000dc65-81d6-8000-a73e-010000010000_2454",
+        placeHolderLabel: "Select",
+        value: ri!studyInfo.status,
+        saveInto: ri!studyInfo.status,
+        readonly: ri!readOnly,
+        helpTooltip: if(
+          ri!readOnly,
+          "",
+          "Default Study Status is Active"
+        ),
+        validationGroup: "submit",
+        labelPosition: local!labelPosition
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>studyInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>readOnly</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>context</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69928"/>
+    </history>
+</contentHaul>

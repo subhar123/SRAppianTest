@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="com.cognizant.epas.types"
+  xmlns:tns="com.cognizant.epas.types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="%7Bcom.cognizant.epas.types%7DEPAS_OptionsInfo.xsd"/>
+  <xsd:complexType name="EPAS_QuestionsInfo">
+    <xsd:annotation>
+      <xsd:appinfo source="appian.jpa">@Table(name="epasquestionsinfo")</xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="questionId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Id @GeneratedValue @Column(NAME="questionid")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="endPointSetId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">       
+		  @Column(name="endpointsetid", columnDefinition = "bigint")
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="questionName" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="questionname", columnDefinition="varchar(2000) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="questionType" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="questiontype", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="toBeComparedWithRvwrs" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="tobecomparedwithrvwrs")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="unbounded" name="optionsInfo" type="tns:EPAS_OptionsInfo">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+          @OneToMany
+		  @JoinColumn(name="questnid", nullable=false, unique=false)
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

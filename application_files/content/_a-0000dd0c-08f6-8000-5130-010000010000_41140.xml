@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70035</versionUuid>
+    <rule>
+        <name>EPAS_gridAdjudInfoForStudy</name>
+        <uuid>_a-0000dd0c-08f6-8000-5130-010000010000_41140</uuid>
+        <description>Grid Details for Adjud Info for Study</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42714</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+  local!pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(&#xD;
+    startIndex: 1,&#xD;
+    batchSize: -1,&#xD;
+    sort: #"SYSTEM_SYSRULES_sortInfo"(&#xD;
+      field: "adjudInfoId",&#xD;
+      ascending: false&#xD;
+    )&#xD;
+  ),&#xD;
+&#xD;
+  local!studyMainValue: #"_a-0000dd0c-08f6-8000-5130-010000010000_41144"(ri!studySetupId),&#xD;
+  with(&#xD;
+  local!datasubset: todatasubset(local!studyMainValue,local!pagingInfo),&#xD;
+  if(local!datasubset.totalCount=0,{},&#xD;
+    #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+      label:"Adjudication Details for the Study",&#xD;
+      isCollapsible: true(),&#xD;
+      firstColumnContents:{&#xD;
+      &#xD;
+    #"SYSTEM_SYSRULES_gridField"(&#xD;
+      label :"",&#xD;
+      totalCount: local!datasubset.totalCount,&#xD;
+      columns: {&#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Adjudication #",&#xD;
+          field: "adjudInfoId",&#xD;
+          data: index(local!datasubset.data, "adjudInfoId", null),&#xD;
+          links: apply(#"_a-0000dd0c-08f6-8000-5130-010000010000_41147",&#xD;
+                  local!datasubset.data&#xD;
+        )),&#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Endpoint Name",&#xD;
+          field: "endpointName",&#xD;
+          data: index(local!datasubset.data, "endpointName", null)&#xD;
+        ),&#xD;
+/*         a!gridImageColumn(&#xD;
+                    label: "End Point Date",&#xD;
+                    field: "dueDate",&#xD;
+                    data: &#xD;
+                    a!applyComponents(function:rule!LIO_webImageDynamic,&#xD;
+                    array:merge(todate(index(local!datasubset.data, "endPointDate", null)),&#xD;
+                    repeat(local!datasubset.totalCount,true()),&#xD;
+                    repeat(local!datasubset.totalCount,false())))&#xD;
+&#xD;
+                  ), */&#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "End Point Date",&#xD;
+          field: "endpointDate",&#xD;
+data: apply(#"_a-0000dd0c-ffa4-8000-5130-010000010000_41918",index(local!datasubset.data, "endpointDate", {}))        ),        &#xD;
+		#"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Subject Id",&#xD;
+          field: "subjectId",&#xD;
+          data: index(local!datasubset.data, "subjectId", null)&#xD;
+        ),&#xD;
+		#"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Site Name",&#xD;
+          field: "endpointType",&#xD;
+          data: index(local!datasubset.data, "endpointType", null)&#xD;
+        ),&#xD;
+	    #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Status",&#xD;
+          field: "adjudicationStatus",&#xD;
+          data: index(local!datasubset.data, "adjudicationStatus", null)&#xD;
+        ),&#xD;
+        #"SYSTEM_SYSRULES_gridImageColumn"(&#xD;
+          label: " ",&#xD;
+          data: apply(&#xD;
+#"_a-0000dd0c-08f6-8000-5130-010000010000_41142",&#xD;
+local!datasubset.data&#xD;
+)&#xD;
+        ),&#xD;
+                #"SYSTEM_SYSRULES_gridImageColumn"(&#xD;
+          label: "Created By ",&#xD;
+          data: apply(&#xD;
+#"_a-0000dcd1-5675-8000-5130-010000010000_33327",&#xD;
+index(local!datasubset.data, "createdBy", {})&#xD;
+)&#xD;
+        ),&#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Created On",&#xD;
+          field: "requestedDate",&#xD;
+          data: apply(#"_a-0000dd0c-ffa4-8000-5130-010000010000_41918",index(local!datasubset.data, "createdOn", {}))&#xD;
+        )&#xD;
+      },&#xD;
+      value: local!pagingInfo,&#xD;
+      saveInto: local!pagingInfo&#xD;
+    )&#xD;
+      }&#xD;
+      )&#xD;
+  )&#xD;
+  &#xD;
+  )&#xD;
+)&#xD;
+</definition>
+        <namedTypedValue>
+            <name>studySetupId</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70035"/>
+    </history>
+</contentHaul>

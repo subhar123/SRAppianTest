@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tempoFeedHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>3f3d2f02-9e33-46d9-b22a-97d1e5ebcbf6</versionUuid>
+    <tempoFeed>
+        <uuid>a1c1b844-a4a6-4661-bd41-8a643d2ef434</uuid>
+        <name>EPAS Study Setup Feed</name>
+        <description>Feed for EPAS Study Setup Info</description>
+        <showInCatalog>true</showInCatalog>
+        <systemFeed>false</systemFeed>
+    </tempoFeed>
+    <roleMap/>
+    <history>
+        <historyInfo versionUuid="3f3d2f02-9e33-46d9-b22a-97d1e5ebcbf6"/>
+    </history>
+</tempoFeedHaul>

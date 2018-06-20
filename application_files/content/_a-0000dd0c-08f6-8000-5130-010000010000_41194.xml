@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70055</versionUuid>
+    <rule>
+        <name>EPAS_taskReportColumns</name>
+        <uuid>_a-0000dd0c-08f6-8000-5130-010000010000_41194</uuid>
+        <description></description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42719</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>with(
+  local!columnData: index(ri!data, ri!columnConfig.field, {}),
+  local!columnDataCount: count(local!columnData),
+  if( ri!columnConfig.configuredFormatting = "PRIORITY_ICON",
+  {  #"SYSTEM_SYSRULES_gridImageColumn"(
+                    label: ri!columnConfig.label,
+                    data: if(local!columnDataCount=0, {}, apply(#"14bdcd18-ccc7-4a15-b5b4-4f1aabe7fc3b",
+                           local!columnData)),
+                    size: "ICON"
+                  )}
+  ,
+
+  #"SYSTEM_SYSRULES_gridTextColumn"(
+    label: ri!columnConfig.label,
+    field: ri!columnConfig.field,
+    data: if(
+      local!columnDataCount &gt; 0,
+      apply(
+        if(
+          ri!columnConfig.configuredFormatting = "TASK_STATUS",
+          #"_a-0000dd0c-ffa4-8000-5130-010000010000_41927"(data: local!columnData, index: _),
+         
+         #"_a-0000dd0c-ffa4-8000-5130-010000010000_41925"(data: local!columnData, index: _)
+        ),
+        1 + enumerate(local!columnDataCount)
+      ),
+      {}
+    ),
+    links: if(
+      ri!columnConfig.configuredDrilldown = "TASK_DETAILS",
+      apply(
+        #"SYSTEM_SYSRULES_processTaskLink"(task: _),
+        index(ri!data, ri!columnConfig.drilldownField, {})
+      ),
+      null
+    )
+  ))
+)</definition>
+        <namedTypedValue>
+            <name>columnConfig</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>data</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="false" allowForAll="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="administrators">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+            </groups>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70055"/>
+    </history>
+</contentHaul>

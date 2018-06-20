@@ -1,0 +1,645 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69981</versionUuid>
+    <rule>
+        <name>EPAS_displayQuestionarieFormV1</name>
+        <uuid>_a-0000dcff-77ee-8000-5130-010000010000_39680</uuid>
+        <description></description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!gridSelection: #"SYSTEM_SYSRULES_gridSelection"(
+    pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+      startIndex: 1,
+      batchSize: 10,
+      sort: #"SYSTEM_SYSRULES_sortInfo"(
+        field: "questionName",
+        ascending: true
+      )
+    )
+  ),
+  local!itemsToken,
+  local!editOptions: {},
+  local!typeQuesInfo: 'type!{com.cognizant.epas.types}EPAS_QuestionsInfo'(questionType:"Objective"),
+  local!currentQuestion: local!typeQuesInfo,
+  local!optionsInfo: if(
+    not(
+      isnull(
+        index(
+          local!currentQuestion,
+          "optionsInfo",
+          {}
+        )
+      )
+    ),
+    index(
+      local!currentQuestion,
+      "optionsInfo",
+      {}
+    ),
+    {}
+  )/*
+    if(isnull(index(ri!currentQuestion,"questionName",{})),{},index(ri!currentQuestion,"optionsInfo",{}))*/,
+  local!buttonAction,
+  local!currentEndPoint: index(
+    ri!endPointSetupInfo,
+    ri!selectedIndex,
+    ri!currentEndpoint
+  ),
+  /*local!allQuestion: index(*/
+  /*  local!currentEndpoint,*/
+  /*  "questionsInfo",*/
+  /*  {}*/
+  /*),*/
+  local!allQuestion: index(
+    ri!currentEndpoint,
+    "questionsInfo",
+    {}
+  ),
+  with(
+
+    local!datasubset: if(
+      or(
+        isnull(
+          local!allQuestion
+        ),
+        count(
+          local!allQuestion
+        ) &lt; 1
+      ),
+      {},
+      todatasubset(
+        local!allQuestion,
+        local!gridSelection.pagingInfo
+      )
+    ),
+    {
+      #"SYSTEM_SYSRULES_sectionLayout"(
+        label: "Configure Questionaire",
+        firstColumnContents: {
+          /*a!textField(
+    label:"debug optionsInfo",
+    value:local!optionsInfo
+    ),*/
+          #"SYSTEM_SYSRULES_paragraphField"(
+            label: "Question",
+            required: true,
+            labelPosition: "ADJACENT",
+            helpTooltip: "Questionnaire for each End Point",
+            instructions: "Questions should be of length 100", 
+            validations: if(len(local!currentQuestion.questionName)&gt;100, "Please Enter the Question of length 100 char"," "),
+            value: index(
+              local!currentQuestion,
+              "questionName",
+              {}
+            ),
+            saveInto: local!currentQuestion.questionName
+          ),
+          /*Depending on secondaryReviewerAdjudication, this can b a radiobutton as well.
+      Add an if condition to handle this*/
+          #"SYSTEM_SYSRULES_dropdownField"(
+            label: "Question Type",
+            labelPosition: "ADJACENT",
+            disabled: true(),
+            choiceLabels: {
+              "Objective",
+              "Subjective"
+            },
+            choiceValues: {
+              "Objective",
+              "Subjective"
+            },
+            value: if(
+              isnull(
+                index(
+                  local!currentQuestion,
+                  "questionType",
+                  {}
+                )
+              ),
+              null,
+              index(
+                local!currentQuestion,
+                "questionType",
+                {}
+              )
+            ),
+            placeholderLabel: "---Select---",
+            helpTooltip: "Questionaire can be Objective or Subjective",
+            saveInto: local!currentQuestion.questionType
+          ),
+          #"SYSTEM_SYSRULES_dropdownField"(
+            label: "To Be Compared",
+            labelPosition: "ADJACENT",
+            choiceLabels: #"_a-0000dc65-81d6-8000-a73e-010000010000_2477",
+            choiceValues: append(
+              #"_a-0000dcd7-2308-8000-5130-010000010000_35344",
+              #"_a-0000dcd7-2308-8000-5130-010000010000_35345"
+            ),
+            placeholderLabel: "---Select---",
+            helpTooltip: "Questionaire to be compared with Secondary Reviewer",
+            value: local!currentQuestion.toBeComparedWithRvwrs,
+            saveInto: local!currentQuestion.toBeComparedWithRvwrs
+          ),
+          #"SYSTEM_SYSRULES_ButtonLayout"(
+            secondaryButtons: {
+              #"SYSTEM_SYSRULES_ButtonWidget"(
+                label: if(ri!actionValue="edit","Update Options","Add Options"),
+                style: "NORMAL",
+                value: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41933",
+                saveInto: {
+                  local!buttonAction
+                },
+                disabled: if(
+                  local!currentQuestion.questionType = "Subjective",
+                  true(),
+                  false()
+                )
+              )
+            }
+          )
+        },
+        secondColumnContents: {
+          if(
+            local!buttonAction = #"_a-0000dd0c-ffa4-8000-5130-010000010000_41933",
+            {
+              #"SYSTEM_SYSRULES_gridLayout"(
+                totalCount: count(
+                  local!optionsInfo
+                ),
+                headerCells: {
+                  #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                    label: "Option",
+                    align: "LEFT"
+                  ),
+                  /* For the "Remove" column */
+                  #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                    label: ""
+                  )
+                },
+                columnConfigs: {
+                  #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                    width: "DISTRIBUTE"
+                  ),
+                  #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                    width: "NARROW"
+                  )
+                },
+                rows: #"SYSTEM_SYSRULES_applyComponents"(
+                  function: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41943"(
+                    index: _,
+                    optionsInfo: local!optionsInfo,
+                    itemsToken: local!itemsToken
+                  ),
+                  array: if(
+                    or(
+                      isnull(
+                        local!optionsInfo
+                      ),
+                      count(
+                        local!optionsInfo
+                      ) &lt; 1
+                    ),
+                    {},
+                    1 + enumerate(
+                      count(
+                        local!optionsInfo
+                      )
+                    )
+                  )/*if(or(isnull(index(local!questionInfo,"optionsInfo",{})), count(index(local!questionInfo,"optionsInfo",{})) &lt; 1), {}, 1+enumerate(count(index(local!questionInfo,"optionsInfo",{}))))*/,
+                  arrayVariable: local!itemsToken
+                )
+              ),
+              #"SYSTEM_SYSRULES_linkField"(
+                label: "Add Link",
+                labelPosition: "COLLAPSED",
+                links: #"SYSTEM_SYSRULES_dynamicLink"(
+                  label: "+Add Item",
+                  /*
+           * For your use case, set the value to a blank instance of your CDT using
+           * the type constructor, e.g. type!PurchaseRequestItem(). Only specify the field
+           * if you want to give it a default value e.g. due: today()+1.
+           */
+                  value: {
+                    optionName: ""
+                  },
+                  saveInto: {
+                    a!save(
+                      local!optionsInfo,
+                      append(
+                        local!optionsInfo,
+                        save!value
+                      )
+                    ),
+                    /*` When modifying the size of the array used in a!applyComponents, */
+                    /* make the same change in the "token" array variable               */
+                    a!save(
+                      local!itemsToken,
+                      append(
+                        local!itemsToken,
+                        save!value
+                      )
+                    )/*,
+            a!save(ri!questionInfo, append(ri!questionInfo,local!questionInfo)),            
+            a!save(local!questionInfo,null)  */
+                    
+                  }
+                )
+              ),
+              #"SYSTEM_SYSRULES_ButtonLayout"(
+                secondaryButtons: {
+                  #"SYSTEM_SYSRULES_ButtonWidget"(
+                    label: "Save",
+                    style: "NORMAL",
+                    value: "Save",
+                    saveInto: {
+                      local!buttonAction,
+                      a!save(
+                        local!currentQuestion.optionsInfo,
+                        local!optionsInfo
+                        /*append(*/
+                        /*  local!currentQuestion.optionsInfo,*/
+                        /*  local!optionsInfo*/
+                        /*)*/
+                      )
+                    }
+                  )
+                }
+              )
+            },
+            {}
+          )/*,
+      
+      a!textField(
+        label:"debug",
+        value:ri!questionIndex
+      )
+      */
+          
+        }
+      ),
+      #"SYSTEM_SYSRULES_sectionLayout"(
+        label: "",
+        firstColumnContents: {
+          if(
+            or(
+              isnull(
+                local!allQuestion
+              ),
+              count(
+                local!allQuestion
+              ) &lt; 1
+            ),
+            {},
+            #"SYSTEM_SYSRULES_gridField"(
+              totalCount: local!datasubset.totalCount,
+              identifiers: 1 + enumerate(
+                count(
+                  local!datasubset.data
+                )
+              ),
+              /*index(local!datasubset.data, "id" , {}),*/
+              validations: if(
+                count(
+                  local!gridSelection.selected
+                ) &gt; 1,
+                "You may only select one question",
+                null
+              ),
+              columns: {
+                #"SYSTEM_SYSRULES_gridTextColumn"(
+                  label: "Question name",
+                  field: "questionName",
+                  data: index(
+                    local!datasubset.data,
+                    "questionName",
+                    null
+                  )
+                ),
+                #"SYSTEM_SYSRULES_gridTextColumn"(
+                  label: "Question Type",
+                  field: "questionType",
+                  data: index(
+                    local!datasubset.data,
+                    "questionType",
+                    null
+                  )
+                ),
+                #"SYSTEM_SYSRULES_gridTextColumn"(
+                  label: "To Be Compared",
+                  field: "toBeCompared",
+                  data: index(
+                    local!datasubset.data,
+                    "toBeComparedWithRvwrs",
+                    null
+                  )
+                ),
+                
+              },
+              value: local!gridSelection,
+              saveInto: {
+                local!gridSelection,
+                a!save(
+                  ri!questionIndex,
+                  index(
+                    save!value,
+                    "selected",
+                    null
+                  )
+                )
+              },
+              selection: true
+            )
+          ),
+          #"SYSTEM_SYSRULES_ButtonLayout"(
+            primaryButtons: {
+              #"SYSTEM_SYSRULES_ButtonWidget"(
+                label: if(ri!actionValue="edit","Update Questions","Add Questions"),
+                style: "NORMAL",
+                value: "addQuestion",
+                disabled: if(
+                  local!currentQuestion.questionType = "Subjective",
+                  false(),
+                  if(
+                    and(local!buttonAction="Save",
+                      count(
+                        local!optionsInfo
+                      ) &gt;= 1,
+                      local!currentQuestion.questionType = "Objective"
+                    ),
+                    false(),
+                    true()
+                  )
+                ),
+                saveInto: {
+                  ri!actionValue,
+                  local!buttonAction,
+                  if(
+                    isnull(
+                      local!gridSelection.selected
+                    ),
+                    a!save(
+                      local!allQuestion,
+                      append(
+                        local!allQuestion,
+                        local!currentQuestion
+                      )
+                    ),
+                    a!save(
+                      local!allQuestion[local!gridSelection.selected],
+                      local!currentQuestion
+                    )
+                  ),
+                  a!save(
+                    local!currentQuestion,
+                    local!typeQuesInfo
+                  ),
+                  a!save(
+                    local!optionsInfo,
+                    {}
+                  ),
+                  a!save(
+                    local!itemsToken,
+                    {}
+                  ),
+                  a!save(
+                    local!gridSelection.selected,
+                    null
+                  )
+                }
+              ),
+              if(ri!actionValue="edit",
+              {},
+              {
+              #"SYSTEM_SYSRULES_ButtonWidget"(
+                label: "Edit Question",
+                style: "NORMAL",
+                value: "edit",
+                disabled: if(
+                  isnull(
+                    local!gridSelection.selected
+                  ),
+                  true(),
+                  false()
+                ),
+                saveInto: {
+                  ri!actionValue,
+                  a!save(
+                    local!currentQuestion,
+                    cast(
+                      typeof(
+                        'type!{com.cognizant.epas.types}EPAS_QuestionsInfo'()
+                      ),
+                      index(
+                        local!allQuestion,
+                        local!gridSelection.selected,
+                        {}
+                      )
+                    )
+                  ),
+                  a!save(
+                    local!optionsInfo,
+                    local!currentQuestion.optionsInfo/*rule!EAS_getArrayElement(*/
+                    /*      cdtName: local!currentQuestion[1].optionsInfo,*/
+                    /*      attributeName: "optionName"*/
+                    /*    )*/
+                    /*split(*/
+                    /*  apply(*/
+                    /*    rule!EAS_getArrayElement(*/
+                    /*      cdtName: _,*/
+                    /*      attributeName: "optionName"*/
+                    /*    ),*/
+                    /*    {*/
+                    /*      local!currentQuestion*/
+                    /*    }*/
+                    /*  ),*/
+                    /*  ";"*/
+                    /*)*/
+                    
+                  ),
+                  a!save(
+                    local!itemsToken,
+                    local!optionsInfo
+                  )
+                }
+              ),
+              }
+              ),
+              #"SYSTEM_SYSRULES_ButtonWidget"(
+                label: "Delete Question",
+                style: "NORMAL",
+                value: "delete",
+                disabled: if(
+                  isnull(
+                    local!gridSelection.selected
+                  ),
+                  true(),
+                  false()
+                ),
+                saveInto: {
+                  ri!actionValue,
+                  a!save(
+                    local!allQuestion,
+                    remove(
+                      local!allQuestion,
+                      local!gridSelection.selected
+                    )
+                  ),
+                  a!save(
+                    local!gridSelection.selected,
+                    null
+                  )
+                }
+              ),
+              #"SYSTEM_SYSRULES_ButtonWidget"(
+                label: "Configure",
+                style: "PRIMARY",
+                value: "submit",
+                disabled: if(isnull(local!allQuestion),true,false),
+                skipValidation: true,
+                saveInto: {
+                  ri!actionValue,
+                  a!save(
+                    local!gridSelection.selected,
+                    null
+                  ),
+                  a!save(
+                    ri!currentEndpoint.questionsInfo,
+                    local!allQuestion
+                  ),
+                  a!save(
+                    ri!endPointSetupInfo[ri!selectedIndex],
+                    ri!currentEndPoint
+                  ),
+                  a!save(
+                    ri!currentStep,
+                    ri!currentStep - 1
+                  ),
+                  a!save(
+                    local!allQuestion,
+                    null
+                  ),
+                  a!save(
+                    ri!isConfigureQues,
+                    false()
+                  )
+                }
+              )
+            },
+            secondaryButtons: {
+              #"SYSTEM_SYSRULES_ButtonWidget"(
+                label: "Back",
+                style: "NORMAL",
+                value: "Back",
+                saveInto: {
+                                    a!save(
+                    ri!isConfigureQues,
+                    false()
+                  ),
+
+                  a!save(
+                    ri!currentStep,
+                    ri!currentStep - 1
+                  )
+                }
+              )
+            }
+          )
+        }
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>actionValue</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>currentEndpoint</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>currentStep</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>questionIndex</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>endPointSetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>selectedIndex</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>isConfigureQues</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69981"/>
+    </history>
+</contentHaul>

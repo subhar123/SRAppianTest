@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<groupHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <group>
+        <name>EPAS Study Administrators</name>
+        <securityMap>SECURITYMAP_PUBLIC</securityMap>
+        <uuid>_e-0001dcd6-cfce-8000-512d-010000010000_172</uuid>
+        <groupTypeUuid>_f-0001dcd6-cfce-8000-512d-010000010000_8</groupTypeUuid>
+        <parentUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</parentUuid>
+        <description>Contains a list of all Users Responsible for Study Configuration</description>
+        <delegatedCreation>false</delegatedCreation>
+        <memberPolicy>MEMBERPOLICY_CLOSED</memberPolicy>
+        <viewingPolicy>VIEWINGPOLICY_LOW</viewingPolicy>
+        <attributes/>
+    </group>
+    <members>
+        <users/>
+        <groups/>
+    </members>
+    <admins>
+        <users/>
+        <groups>
+            <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+        </groups>
+    </admins>
+    <ruleSet/>
+</groupHaul>

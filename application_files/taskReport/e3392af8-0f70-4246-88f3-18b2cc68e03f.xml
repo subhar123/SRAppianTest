@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<taskReportHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>40f9a464-684d-4ba3-9591-aafb14104b6e</versionUuid>
+    <taskReport a:uuid="e3392af8-0f70-4246-88f3-18b2cc68e03f" name="End Point Adjudication &amp; Study Time Charts">
+        <a:description></a:description>
+        <a:uiExpr>=#"_a-0000dd0c-08f6-8000-5130-010000010000_41207"()</a:uiExpr>
+        <a:urlStub>1S2e-A</a:urlStub>
+    </taskReport>
+    <roleMap>
+        <role name="report_administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="40f9a464-684d-4ba3-9591-aafb14104b6e"/>
+    </history>
+</taskReportHaul>

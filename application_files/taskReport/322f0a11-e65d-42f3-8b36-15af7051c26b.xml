@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<taskReportHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>af48e860-b56f-4a5c-b11e-ada84c13ed66</versionUuid>
+    <taskReport a:uuid="322f0a11-e65d-42f3-8b36-15af7051c26b" name="Study vs End Point Adjudication">
+        <a:description>Study vs EndPoint Adjudication Task Report</a:description>
+        <a:uiExpr>=#"_a-0000dd0c-ffa4-8000-5130-010000010000_41413"()</a:uiExpr>
+        <a:urlStub>n7s_Gg</a:urlStub>
+    </taskReport>
+    <roleMap>
+        <role name="report_administrator">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="af48e860-b56f-4a5c-b11e-ada84c13ed66"/>
+    </history>
+</taskReportHaul>

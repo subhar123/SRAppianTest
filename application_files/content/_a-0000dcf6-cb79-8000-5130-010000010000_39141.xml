@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69978</versionUuid>
+    <rule>
+        <name>EPAS_MilestoneForWizard</name>
+        <uuid>_a-0000dcf6-cb79-8000-5130-010000010000_39141</uuid>
+        <description>Milestone for Add Pen Wizard</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42722</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=load(&#xD;
+  #"SYSTEM_SYSRULES_milestoneField"(&#xD;
+    steps: ri!steps,&#xD;
+    links: {&#xD;
+      #"SYSTEM_SYSRULES_applyComponents"(&#xD;
+        function:#"_a-0000dcf6-cb79-8000-5130-010000010000_39144"(&#xD;
+          index: _,&#xD;
+          currentStep: ri!currentStep,&#xD;
+          visitedStep: ri!visitedStep&#xD;
+        ),&#xD;
+        array: enumerate(length(ri!steps)) + 1&#xD;
+      )&#xD;
+    },&#xD;
+    active: ri!currentStep&#xD;
+  )&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>currentStep</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>visitedStep</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>steps</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69978"/>
+    </history>
+</contentHaul>

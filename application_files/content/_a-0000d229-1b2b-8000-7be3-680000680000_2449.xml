@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70128</versionUuid>
+    <report>
+        <name>Opt Processing Time Trends</name>
+        <uuid>_a-0000d229-1b2b-8000-7be3-680000680000_2449</uuid>
+        <description>The intent is to compare performance trends over time, in terms of volume, average completion time, and percent overdue. The line graph format is not ideal, but it gets the point across. The grouping is by day -- could change the "When" column to group by month instead.</description>
+        <parentUuid>_a-0000d229-1b2b-8000-7be3-680000680000_2442</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <reportData>
+            <metadata>
+                <baseFilters>
+                    <dueTodayFilter>
+                        <apply>false</apply>
+                    </dueTodayFilter>
+                    <runningFilter>
+                        <apply>false</apply>
+                    </runningFilter>
+                    <lastNDaysFilter>
+                        <apply>false</apply>
+                        <dayCount>0.0</dayCount>
+                    </lastNDaysFilter>
+                    <completedFilter>
+                        <apply>false</apply>
+                    </completedFilter>
+                    <lastNCompletedFilter>
+                        <apply>false</apply>
+                        <completedCount>0</completedCount>
+                    </lastNCompletedFilter>
+                    <outsideNStandardDeviationsFilter>
+                        <apply>false</apply>
+                        <standardDeviationCount>0.0</standardDeviationCount>
+                    </outsideNStandardDeviationsFilter>
+                    <aheadOfScheduleFilter>
+                        <apply>false</apply>
+                    </aheadOfScheduleFilter>
+                    <behindScheduleFilter>
+                        <apply>false</apply>
+                    </behindScheduleFilter>
+                </baseFilters>
+                <batchSize>15</batchSize>
+                <columns>
+                    <column>
+                        <drillPath>
+                            <enabled>false</enabled>
+                        </drillPath>
+                        <expression>=#"_a-0000d5c2-d6d9-8000-3ca7-0a000064044c_25541"(pp!starttime)</expression>
+                        <formatToken>string</formatToken>
+                        <group>true</group>
+                        <lastFormatToken>string</lastFormatToken>
+                        <localId>2</localId>
+                        <name>When</name>
+                        <show>true</show>
+                    </column>
+                    <column>
+                        <columnAggregationFunction>24</columnAggregationFunction>
+                        <drillPath>
+                            <enabled>true</enabled>
+                            <expression>pp!id</expression>
+                            <linkType>7</linkType>
+                        </drillPath>
+                        <expression>=pp!id</expression>
+                        <formatToken>number</formatToken>
+                        <group>false</group>
+                        <lastAggregateToken>number</lastAggregateToken>
+                        <lastFormatToken>number</lastFormatToken>
+                        <localId>0</localId>
+                        <name>Requests</name>
+                        <show>true</show>
+                    </column>
+                    <column>
+                        <columnAggregationFunction>23</columnAggregationFunction>
+                        <drillPath>
+                            <enabled>false</enabled>
+                        </drillPath>
+                        <expression>=running_completion_time()/7.0</expression>
+                        <formatToken>durations</formatToken>
+                        <group>false</group>
+                        <lastAggregateToken>durations</lastAggregateToken>
+                        <lastFormatToken>durations</lastFormatToken>
+                        <localId>11</localId>
+                        <name>Average Completion Time (Weeks)</name>
+                        <show>true</show>
+                    </column>
+                    <column>
+                        <columnAggregationFunction>22</columnAggregationFunction>
+                        <drillPath>
+                            <enabled>false</enabled>
+                        </drillPath>
+                        <expression>=if(num_overdue_tasks()&gt;0,1,0)</expression>
+                        <formatToken>number</formatToken>
+                        <group>false</group>
+                        <lastAggregateToken>number</lastAggregateToken>
+                        <lastFormatToken>number</lastFormatToken>
+                        <localId>10</localId>
+                        <name>Overdue Requests</name>
+                        <show>true</show>
+                    </column>
+                </columns>
+                <contexts/>
+                <contextType>1</contextType>
+                <quickFilters/>
+                <recursive>false</recursive>
+                <sortColumnLocalId>2</sortColumnLocalId>
+                <sortOrder>0</sortOrder>
+                <startIndex>0</startIndex>
+                <type>1</type>
+            </metadata>
+            <display>
+                <description>The intent is to compare performance trends over time, in terms of volume, average completion time, and percent overdue. The line graph format is not ideal, but it gets the point across. The grouping is by day -- could change the "When" column to group by month instead.</description>
+                <displayThresholds>false</displayThresholds>
+                <displayType>0</displayType>
+                <name>Opt Processing Time Trends</name>
+                <quickFilterDisplay>1</quickFilterDisplay>
+                <showLegend>true</showLegend>
+                <showQuickFiltersInToolbar>true</showQuickFiltersInToolbar>
+                <supportedTypes>
+                    <supportedType>0</supportedType>
+                    <supportedType>1</supportedType>
+                    <supportedType>2</supportedType>
+                    <supportedType>3</supportedType>
+                </supportedTypes>
+                <thresholdColumnLocalId>10</thresholdColumnLocalId>
+                <thresholdColumnName>Performance</thresholdColumnName>
+                <thresholds>
+                    <threshold>
+                        <iconUuid>SYSTEM_DOC_PERFORMANCE_INDICATOR_GREEN</iconUuid>
+                        <defaultIconName>indicatorgreen</defaultIconName>
+                        <label>In Compliance</label>
+                        <upperBound>0.2</upperBound>
+                    </threshold>
+                    <threshold>
+                        <iconUuid>SYSTEM_DOC_PERFORMANCE_INDICATOR_RED</iconUuid>
+                        <defaultIconName>indicatorred</defaultIconName>
+                        <label>Not in Compliance</label>
+                    </threshold>
+                </thresholds>
+                <useCustomToolbar>false</useCustomToolbar>
+                <useDefaultBarGraphXML>true</useDefaultBarGraphXML>
+                <useDefaultLineGraphXML>true</useDefaultLineGraphXML>
+                <useDefaultPieGraphXML>true</useDefaultPieGraphXML>
+            </display>
+            <modified>false</modified>
+            <showDisplayOptions>false</showDisplayOptions>
+            <showTitle>false</showTitle>
+            <showToolbar>false</showToolbar>
+            <view>0</view>
+            <writeAccess>false</writeAccess>
+        </reportData>
+    </report>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70128"/>
+    </history>
+</contentHaul>

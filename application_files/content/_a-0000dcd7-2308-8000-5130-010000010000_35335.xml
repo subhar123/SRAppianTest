@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69931</versionUuid>
+    <rule>
+        <name>EPAS_studySetupDisplay</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35335</uuid>
+        <description>Display for Study Setup Details</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!labelPosition: "ADJACENT",
+  local!readOnly: if(
+    ri!context = "record",
+    true(),
+    false()
+  ),
+  #"SYSTEM_SYSRULES_sectionLayout"(
+    label: "Study Details ",
+    firstColumnContents: {
+      if(
+        ri!context = "record",
+        #"SYSTEM_SYSRULES_textField"(
+          label: "Study Id",
+          readOnly: true(),
+          value: "EAS-ST-" &amp; ri!studyInfo.studySetupId,
+          labelPosition: local!labelPosition
+        ),
+        {}
+        
+      ),
+      #"SYSTEM_SYSRULES_textField"(
+        label: "Study Name",
+        readOnly: true(),
+        value: ri!studyInfo.studyName,
+        labelPosition: local!labelPosition
+      ),
+      if(
+        ri!context = "record",
+        #"SYSTEM_SYSRULES_textField"(
+          label: "Study Description",
+          readOnly: true(),
+          value: ri!studyInfo.description,
+          labelPosition: local!labelPosition
+        ),
+        {}
+      )
+    },
+    secondColumnContents: {
+      if(
+        ri!context = "record",
+        {
+          #"SYSTEM_SYSRULES_imageField"(
+            label: "Document Time-line",
+            labelPosition: "ADJACENT",
+            images: {
+              #"_a-0000dcd5-c570-8000-5130-010000010000_34399"(
+                ri!studyInfo.docTimeline,
+                true,
+                false
+              )
+            }
+          ),
+          #"SYSTEM_SYSRULES_imageField"(
+            label: "Study Created",
+            labelPosition: "ADJACENT",
+            images: {
+              #"SYSTEM_SYSRULES_documentImage"(
+                document: #"SYSTEM_SYSRULES_iconIndicator"(
+                  "STATUS_OK"
+                ),
+                caption: ""
+              )
+            },
+            size: "ICON"
+          ),
+          #"SYSTEM_SYSRULES_imageField"(
+            label: "Created By",
+            labelPosition: "ADJACENT",
+            images: {
+              #"_a-0000dcd1-5675-8000-5130-010000010000_33327"(
+                touser(
+                  ri!studyInfo.createdBy
+                )
+              )
+            },
+            size: "THUMBNAIL"
+          )
+        },
+        {
+          #"SYSTEM_SYSRULES_textField"(
+            label: "Study Description",
+            readOnly: true(),
+            value: ri!studyInfo.description,
+            labelPosition: local!labelPosition
+          ),
+          if(
+            ri!context = "other",
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Document Time-line",
+              readOnly: true(),
+              value: ri!studyInfo.docTimeline,
+              labelPosition: local!labelPosition
+            ),
+            #"SYSTEM_SYSRULES_integerField"(
+              label: "Document Time-line",
+              required: true(),
+              value: ri!studyInfo.docTimeline,
+              saveInto: ri!studyInfo.docTimeline,
+              helpTooltip: "Timeline in Days for the CRA to upload documents for adjudication",
+              validationGroup: "submit",
+              labelPosition: local!labelPosition
+            )
+          )
+        }
+      )
+    }
+  )
+)</definition>
+        <namedTypedValue>
+            <name>studyInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>context</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69931"/>
+    </history>
+</contentHaul>

@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70059</versionUuid>
+    <rule>
+        <name>EPAS_AdjandStatusTimewiseCharts</name>
+        <uuid>_a-0000dd0c-08f6-8000-5130-010000010000_41207</uuid>
+        <description>AdjandStatusTimewiseCharts</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42717</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+  local!studypagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(startIndex: 1,batchSize: - 1),&#xD;
+   local!adjpagingInfo:#"SYSTEM_SYSRULES_pagingInfo"(startIndex:1,batchSize:-1),&#xD;
+   local!weeks:{"Week 1","Week 2","Week 3","Week 4","Week 5"},&#xD;
+&#xD;
+  with(&#xD;
+    local!studydatasubset: a!queryProcessAnalytics(&#xD;
+      report: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41467",&#xD;
+      contextProcessModels: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41459",&#xD;
+      query: #"SYSTEM_SYSRULES_query"(&#xD;
+        pagingInfo: local!studypagingInfo&#xD;
+      )&#xD;
+    ),&#xD;
+    	local!adjdatasubset:a!queryProcessAnalytics(&#xD;
+      report:#"_a-0000dd0c-ffa4-8000-5130-010000010000_41471", &#xD;
+      contextProcessModels:#"_a-0000dd0c-08f6-8000-5130-010000010000_41169",&#xD;
+      query:#"SYSTEM_SYSRULES_query"(&#xD;
+        pagingInfo:local!adjpagingInfo&#xD;
+      )&#xD;
+    ),&#xD;
+      local!studydailydatasubset: a!queryProcessAnalytics(&#xD;
+      report: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41479"[1],&#xD;
+      contextProcessModels: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41459",&#xD;
+      query: #"SYSTEM_SYSRULES_query"(&#xD;
+        pagingInfo: local!studypagingInfo&#xD;
+      )&#xD;
+    ),&#xD;
+      local!ajddailydatasubset:a!queryProcessAnalytics(&#xD;
+      report:#"_a-0000dd0c-ffa4-8000-5130-010000010000_41487"[1], &#xD;
+      contextProcessModels:#"_a-0000dd0c-08f6-8000-5130-010000010000_41169",&#xD;
+      query:#"SYSTEM_SYSRULES_query"(&#xD;
+        pagingInfo:local!adjpagingInfo&#xD;
+      )&#xD;
+    ),	&#xD;
+     local!adjweeklydatasubset:a!queryProcessAnalytics(&#xD;
+      report:#"_a-0000dd0c-ffa4-8000-5130-010000010000_41487"[2], &#xD;
+      contextProcessModels:#"_a-0000dd0c-08f6-8000-5130-010000010000_41169",&#xD;
+      query:#"SYSTEM_SYSRULES_query"(&#xD;
+        pagingInfo:#"SYSTEM_SYSRULES_pagingInfo"(startIndex:1,batchSize:2)&#xD;
+      )&#xD;
+    ),&#xD;
+    local!studyweeklydatasubset: a!queryProcessAnalytics(&#xD;
+      report: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41479"[2],&#xD;
+      contextProcessModels: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41459",&#xD;
+      query: #"SYSTEM_SYSRULES_query"(&#xD;
+        pagingInfo: local!studypagingInfo&#xD;
+      )&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_dashboardLayout"(&#xD;
+      firstColumnContents:{  &#xD;
+        #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+          firstColumnContents:{&#xD;
+            if(or(count(local!studydatasubset.data)=0,isnull(local!studydatasubset.data)),{},&#xD;
+              #"SYSTEM_SYSRULES_columnChartField"(&#xD;
+              label:"Cases By Months",&#xD;
+/*               instructions: "Total number of Studies and Adjudication created per month.",&#xD;
+ */              categories:#"_a-0000dcd7-2308-8000-5130-010000010000_36552"(local!studydatasubset.data.c2,local!adjdatasubset.data.c0),&#xD;
+              series: {&#xD;
+              #"SYSTEM_SYSRULES_chartSeries"(label: "Study", data:studydatasubset.data.c0,color: "BLUEGRAY"),&#xD;
+              #"SYSTEM_SYSRULES_chartSeries"(label: "End Point Adjudication", data:adjdatasubset.data.c3,color: "GREEN")&#xD;
+            },&#xD;
+                stacking: "NORMAL"&#xD;
+            ))&#xD;
+          },&#xD;
+      secondColumnContents:{&#xD;
+        if(or(count(local!studyweeklydatasubset.data)=0,isnull(local!studyweeklydatasubset.data)),{},&#xD;
+          #"SYSTEM_SYSRULES_columnChartField"(&#xD;
+            label: "Cases By Weeks",&#xD;
+/*             instructions: "Total number of Studies and Adjudication created in current month.", */&#xD;
+   categories:local!weeks,&#xD;
+            series :{&#xD;
+              #"SYSTEM_SYSRULES_chartSeries"(label:"Study",&#xD;
+                data:{local!studyweeklydatasubset.data.c5},&#xD;
+                color: "BLUEGRAY"),&#xD;
+              #"SYSTEM_SYSRULES_chartSeries"(label:"End Point Adjudication",&#xD;
+                data:{local!adjweeklydatasubset.data.c5},&#xD;
+                color: "GREEN")&#xD;
+              }&#xD;
+            ))&#xD;
+      }&#xD;
+      ),&#xD;
+      #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+        &#xD;
+        firstColumnContents:{&#xD;
+         if(or(count(local!studydailydatasubset.data)=0,isnull(local!studydailydatasubset.data)),{}, #"SYSTEM_SYSRULES_lineChartField"(&#xD;
+              label:"Studies By Date",&#xD;
+/*               instructions: "Total number of Studies and Adjudication created per day.", */&#xD;
+              categories:text(todate(local!studydailydatasubset.data.c2),"mmm dd"),&#xD;
+              series :{&#xD;
+                #"SYSTEM_SYSRULES_chartSeries"(label:"Study",&#xD;
+                data:{local!studydailydatasubset.data.c4},color: "BLUEGRAY")&#xD;
+              }&#xD;
+        ))&#xD;
+&#xD;
+        },&#xD;
+        secondColumnContents:{&#xD;
+          if(or(count(local!ajddailydatasubset.data)=0,isnull(local!ajddailydatasubset.data)),{},#"SYSTEM_SYSRULES_lineChartField"(&#xD;
+              label:"End Point Adjudication By Date",&#xD;
+/*               instructions: "Total number of Studies and Adjudication created per day.", */&#xD;
+              categories:text(todate(local!ajddailydatasubset.data.c2),"mmm dd"),&#xD;
+              series :{&#xD;
+                #"SYSTEM_SYSRULES_chartSeries"(label:"End Point Adjudication",&#xD;
+                data:{local!ajddailydatasubset.data.c4},color: "GREEN")&#xD;
+              }&#xD;
+        ))&#xD;
+&#xD;
+        }&#xD;
+      )&#xD;
+    }&#xD;
+    )&#xD;
+  )&#xD;
+)</definition>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70059"/>
+    </history>
+</contentHaul>

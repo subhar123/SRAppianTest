@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="com.cognizant.epas.types"
+  xmlns:tns="com.cognizant.epas.types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="EPAS_ResponseInfo">
+    <xsd:annotation>
+      <xsd:appinfo source="appian.jpa">@Table(name="epasresponseinfo")</xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="responseInfoid" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Id @GeneratedValue @Column(name="responseinfoid")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="adjudId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">       
+		  @Column(name="adjudid", columnDefinition = "bigint")
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="questionId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">       
+		  @Column(name="questionid", columnDefinition = "bigint")
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="optionId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">       
+		  @Column(name="optionid", columnDefinition = "bigint")
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="questionName" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="questionname", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="response" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="response", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="reviewerId" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="reviewerId", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="userId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="userid", columnDefinition="bigint")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="typeOfReviewer" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="typeofreviewer", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isConflict" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="isconflict", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

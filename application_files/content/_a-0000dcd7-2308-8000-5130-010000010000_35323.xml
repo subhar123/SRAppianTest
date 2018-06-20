@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69925</versionUuid>
+    <queryRule>
+        <name>EPAS_getAllStudySetupInfo</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35323</uuid>
+        <description>Query Rule to get all records for Study Setup Info tables</description>
+        <folderUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42710</folderUuid>
+        <dataStoreEntityCompositeUuid>35ae1c7b-7905-4cec-845c-12e50ec45df2@_a-0000dcb6-5d2b-8000-5130-010000010000_32104</dataStoreEntityCompositeUuid>
+        <params/>
+        <filters/>
+        <orderings>
+            <ordering>
+                <ascending>false</ascending>
+                <field>
+                    <name>studySetupId</name>
+                    <type>{http://www.w3.org/2001/XMLSchema}int</type>
+                </field>
+            </ordering>
+        </orderings>
+    </queryRule>
+    <roleMap public="false">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69925"/>
+    </history>
+</contentHaul>

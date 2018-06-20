@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="com.cognizant.epas.types"
+  xmlns:tns="com.cognizant.epas.types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:complexType name="EPAS_DocChecklistInfo">
+    <xsd:annotation>
+      <xsd:appinfo source="appian.jpa">@Table(name="epasdocchecklistinfo")</xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="docChecklistId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Id @GeneratedValue @Column(NAME="docchecklistid")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="endPointSetId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">       
+		  @Column(name="endpointsetid", columnDefinition = "bigint")
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="docType" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="doctype", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

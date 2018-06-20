@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70110</versionUuid>
+    <rule>
+        <name>SE_OPT_gridTasksPerModel</name>
+        <uuid>_a-0000d89c-0dc5-8000-3ca7-0a000064044c_60138</uuid>
+        <description>Grid of tasks per model. Filter by task design-time name.</description>
+        <parentUuid>_a-0000d89c-0dc5-8000-3ca7-0a000064044c_60233</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=load(
+  local!batchSize:if(isnull(ri!batchSize),10,ri!batchSize),
+  paging: #"SYSTEM_SYSRULES_pagingInfo"(startIndex: 1, batchSize: local!batchSize),
+
+  with(
+    local!datasubset:a!queryProcessAnalytics( 
+        report:#"_a-0000d89c-0dc5-8000-3ca7-0a000064044c_60137", 
+        contextProcessModels:ri!mids,
+        query:#"SYSTEM_SYSRULES_query"(
+          pagingInfo:paging,
+          logicalExpression:
+           #"SYSTEM_SYSRULES_queryLogicalExpression"(
+             operator:"AND",
+             filters:{
+              if(isnull(ri!taskname), null, #"SYSTEM_SYSRULES_queryFilter"(field:"c10",operator:"includes",value:ri!taskName)),
+              if(isnull(ri!username), null, #"SYSTEM_SYSRULES_queryFilter"(field:"c9",operator:"includes",value:ri!username))
+            }
+            )
+          )
+       ),
+       {
+        #"SYSTEM_SYSRULES_gridField"(
+          label: ri!label,
+          instructions: "",
+          totalCount: local!datasubset.totalCount,
+          value:paging, saveInto:paging,
+          columns: {
+            #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "Task",
+              field: local!datasubset.columnConfigs[1].field,
+              data: if(
+                local!datasubset.totalCount=0,
+                {},
+                local!datasubset.data.c0
+              ),
+              links:if(local!datasubset.totalCount=0,{},
+                apply(
+                  #"SYSTEM_SYSRULES_processTaskLink"(label: _, task: _),
+                  merge(
+                    local!datasubset.data.c0,
+                    local!datasubset.data.dp3
+                  )
+                ))
+            ),
+            #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "Received",
+              field: "c2",
+              data: if(
+                local!datasubset.totalCount=0,
+                {},
+                apply(fn!todate,local!datasubset.data.c2)    
+              )
+            ),
+
+	    #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "Owner",
+              field: "c9",
+              data: if(
+                local!datasubset.totalCount=0,
+                {},
+                apply(#"_a-0000d690-12fb-8000-0f1a-010000010000_1352",
+                local!datasubset.data.c9)    
+              )
+            ),
+            #"SYSTEM_SYSRULES_gridTextColumn"(
+              label: "Status",
+              field: "c11",
+              data: if(
+                local!datasubset.totalCount=0,
+                {},
+                local!datasubset.data.c11
+              )
+            )
+            /*,*/
+            /*a!gridTextColumn(*/
+            /*  label: "Processing Days",*/
+              /*field: local!datasubset.columns.c7,*/
+            /*  data: if(*/
+            /*    local!datasubset.totalCount=0,*/
+            /*    {},*/
+            /*    local!datasubset.data.c7*/
+                
+            /*    )*/
+            /*  )*/
+        
+          }
+        )
+       }
+      )
+    )</definition>
+        <namedTypedValue>
+            <name>mids</name>
+            <type>
+                <name>Integer?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>taskname</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>username</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>batchsize</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>label</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70110"/>
+    </history>
+</contentHaul>

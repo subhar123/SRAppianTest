@@ -1,0 +1,398 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69987</versionUuid>
+    <rule>
+        <name>EPAS_uploadDocumentsByCra</name>
+        <uuid>_a-0000dcff-77ee-8000-5130-010000010000_40024</uuid>
+        <description>Interface is to Upload Required Document by CRA</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42705</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!itemsToken: if(
+    #"_a-0000d62a-67b3-8000-da6f-010000010000_951"(
+      ri!uploadDocType
+    ),
+    {
+      null
+    },
+    ri!uploadDocType
+  ),
+    local!docList: if(
+    #"_a-0000d62a-67b3-8000-da6f-010000010000_951"(
+      ri!AdjudicationInfo.endPointSetupId
+    ),
+    {
+      null
+    }, 
+
+      #"_a-0000dcff-77ee-8000-5130-010000010000_40030"(ri!AdjudicationInfo.endPointSetupId).docType
+
+  ),
+  local!uploadDocType: if(
+    #"_a-0000d62a-67b3-8000-da6f-010000010000_951"(
+       ri!uploadDocType
+    ),
+    {
+      null
+    }, 
+    ri!uploadDocType
+  ),
+  local!uploadDocName: if(
+    #"_a-0000d62a-67b3-8000-da6f-010000010000_951"(
+      ri!uploadDocName
+    ),
+    {
+      null
+    },
+    ri!uploadDocName
+  ),
+  local!files: if(
+    #"_a-0000d62a-67b3-8000-da6f-010000010000_951"(
+      ri!files
+    ),
+    {
+      null
+    },
+    ri!files
+  ),
+  /*local!studyName: if(*/
+  /*  isnull(*/
+  /*    ri!AdjudicationInfo.studyName*/
+  /*  ),*/
+  /*  null,*/
+  /*  rule!getStydyInfoById(*/
+  /*    ri!AdjudicationInfo.studyName*/
+  /*  ).studyName*/
+  /*),*/
+  #"SYSTEM_SYSRULES_formLayout"(
+    label: "Upload Documents for Adjudication – Study : " &amp; ri!AdjudicationInfo.studyName,
+    instructions: "Please upload documents for event package creation",
+    firstColumnContents: {
+
+      #"SYSTEM_SYSRULES_milestoneField"(
+        label: " ",
+        steps: #"_a-0000dcff-77ee-8000-5130-010000010000_40016",
+        active: 2
+      ),
+      #"_a-0000dcff-77ee-8000-5130-010000010000_40026"(ri!AdjudicationInfo),
+
+      
+        
+        #"SYSTEM_SYSRULES_sectionLayout"(
+          label: "Upload Documents",
+          firstColumnContents: {
+            #"SYSTEM_SYSRULES_gridLayout"(
+              label: "",
+              headerCells: {
+                #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                  label: "Study Document Type",
+                  align: "LEFT"
+                ),
+                #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                  label: "Document Type Name",
+                  align: "LEFT"
+                ),
+                #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                  label: "",
+                  align: "LEFT"
+                ),
+                #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+                  label: ""
+                )
+              },
+              columnConfigs: {
+                #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                  width: "DISTRIBUTE"
+                ),
+                #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                  width: "DISTRIBUTE"
+                ),
+                #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                  width: "DISTRIBUTE"
+                ),
+                #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+                  width: "NARROW"
+                )
+              },
+              validations: {
+                if(
+                  count(
+                    local!uploadDocType
+                  ) = 0,
+                  null,
+                  if(
+                    #"_a-0000d806-c17f-8000-5892-010000010000_3484"(
+                      wherecontains(
+                        true(),
+                        apply(
+                          #"9484d4d5-0d2d-4644-99fb-28f44daa081b",
+                          {
+                            local!uploadDocType
+                          }
+                        )
+                      )
+                    ) &gt; 0,
+                    #"SYSTEM_SYSRULES_validationMessage"(validateAfter: "SUBMIT", message:"Please select valid study document type."),
+                    ""
+                  )
+                ),
+                if(
+                  count(
+                    local!uploadDocType
+                  ) &lt; 1,
+                  #"SYSTEM_SYSRULES_validationMessage"(
+                    validateAfter: "SUBMIT",
+                    message: "Upload at least one document."
+                  ),
+                  null
+                )
+              },
+              rows: #"SYSTEM_SYSRULES_applyComponents"(
+                function: #"_a-0000dcff-77ee-8000-5130-010000010000_40036"(
+                  index: _,
+                  uploadDocType: local!uploadDocType,
+                  uploadDocName: local!uploadDocName,
+                  files: local!files,
+                  itemsToken: local!itemsToken,
+                  docList: local!docList
+                ),
+                array: if(
+                  or(
+                    isnull(
+                      local!uploadDocType
+                    ),
+                    count(
+                      local!uploadDocType
+                    ) &lt; 1
+                  ),
+                  {},
+                  1 + enumerate(
+                    count(
+                      local!uploadDocType
+                    )
+                  )
+                ),
+                arrayVariable: local!itemsToken
+              )
+            ),
+            #"SYSTEM_SYSRULES_linkField"(
+              label: "Add Link",
+              labelPosition: "COLLAPSED",
+              links: #"SYSTEM_SYSRULES_dynamicLink"(
+                label: "+Add Item",
+                value: {
+                  null
+                },
+                saveInto: {
+                  a!save(
+                    local!uploadDocType,
+                    append(
+                      local!uploadDocType,
+                      save!value
+                    )
+                  ),
+                  a!save(
+                    local!uploadDocName,
+                    append(
+                      local!uploadDocName,
+                      save!value
+                    )
+                  ),
+                  a!save(
+                    local!files,
+                    append(
+                      local!files,
+                      save!value
+                    )
+                  ),
+                  a!save(
+                    local!itemsToken,
+                    append(
+                      local!itemsToken,
+                      save!value
+                    )
+                  )
+                }
+              )
+            )
+          },
+          isCollapsible: true
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout"(
+        label: "Comments",
+        firstColumnContents: {
+          #"SYSTEM_SYSRULES_paragraphField"(
+            value: ri!adjudicationComments,
+            required: true(),
+            saveInto: {
+              ri!adjudicationComments,
+              a!save(
+                ri!userComments,
+                if(
+                  isnull(
+                    ri!adjudicationComments
+                  ),
+                  null,
+                  {
+                    adjudId: ri!AdjudicationInfo.adjudInfoId,
+                    userRole: #"_a-0000dcd7-2308-8000-5130-010000010000_35298"[1],
+                    userName: loggedInUser(),
+                    comments: ri!adjudicationComments,
+                    enteredOn: now()
+                  }
+                )
+              )
+            }
+          )
+        },
+        secondColumnContents: {
+          if(
+            isnull(
+              ri!AdjudicationInfo.adjudInfoId
+            ),
+            {},
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40364"(
+              ri!AdjudicationInfo.adjudInfoId
+            )
+          )
+        },
+        isCollapsible: true
+      )
+      
+    },
+    buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+      primaryButtons: {
+        #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+          label: "Submit",
+          value: "Submit",
+          saveInto: {
+            ri!actionValue,
+                          a!save(
+                ri!AdjudicationInfo.adjudicationStatus,
+                #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2]
+              ),
+            a!save(
+              ri!uploadDocType,
+              local!uploadDocType
+            ),
+            a!save(
+              ri!uploadDocName,
+              local!uploadDocName
+            ),
+            a!save(
+              ri!files,
+              local!files
+            )
+          },
+          style: "PRIMARY"
+        )
+      },
+      secondaryButtons: {
+        #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+          label: #"_a-0000dc65-81d6-8000-a73e-010000010000_2373",
+          skipValidation: true,
+          value: "cancel",
+          saveInto: {
+            ri!actionValue
+           
+            
+          }
+        )
+      }
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>AdjudicationInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>actionValue</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>uploadDocName</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>files</name>
+            <type>
+                <name>CollaborationDocument?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>uploadDocType</name>
+            <type>
+                <name>Text?list</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>adjudicationComments</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>userComments</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69987"/>
+    </history>
+</contentHaul>

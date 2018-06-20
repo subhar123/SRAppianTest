@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<tempoFeedHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>1f222641-9b6b-4001-aa84-fec6af2caaea</versionUuid>
+    <tempoFeed>
+        <uuid>ee8c266c-cff8-43b9-b8ba-9671a4eef872</uuid>
+        <name>EPAS Adjudication Info Feed</name>
+        <description>Feed for Adjudication Info</description>
+        <showInCatalog>true</showInCatalog>
+        <systemFeed>false</systemFeed>
+    </tempoFeed>
+    <roleMap/>
+    <history>
+        <historyInfo versionUuid="1f222641-9b6b-4001-aa84-fec6af2caaea"/>
+    </history>
+</tempoFeedHaul>

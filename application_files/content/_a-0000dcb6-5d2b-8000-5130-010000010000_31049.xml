@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70137</versionUuid>
+    <rule>
+        <name>EPAS_endpointConfigGrid</name>
+        <uuid>_a-0000dcb6-5d2b-8000-5130-010000010000_31049</uuid>
+        <description>Grid layout for Endpoint Configuration</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42722</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>&#xD;
+	#"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+					  label:"Configure Endpoint",&#xD;
+					  firstColumnContents:{&#xD;
+					 /*   a!textField(&#xD;
+					      label:"DEBUG DATA",&#xD;
+					      value:ri!endPointSetupInfo&#xD;
+					    ),*/&#xD;
+					      #"SYSTEM_SYSRULES_gridLayout"(&#xD;
+            instructions: "Multiple Endpoint can be created for Single Study. Endpoint Name should be Unique",&#xD;
+            headerCells:{&#xD;
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(&#xD;
+            label:"End Point Name"&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(&#xD;
+            label:"Secondary Adjudication Required"&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(&#xD;
+            label:"Configure Question"&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(&#xD;
+            label:"Configure Document"&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(&#xD;
+            label:"Questionnaire Status"&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(&#xD;
+            label:"Document Setup Status"&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(&#xD;
+             label:" "&#xD;
+            )&#xD;
+            },&#xD;
+          columnConfigs:{&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"DISTRIBUTE"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"DISTRIBUTE"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"DISTRIBUTE"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"DISTRIBUTE"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"DISTRIBUTE"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"DISTRIBUTE"),&#xD;
+          #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(width:"NARROW")&#xD;
+          },&#xD;
+          rows:#"SYSTEM_SYSRULES_applyComponents"(&#xD;
+            function:#"_a-0000dcd7-2308-8000-5130-010000010000_35376"(&#xD;
+              endPointSetupInfo:ri!endPointSetupInfo, &#xD;
+              index:_, &#xD;
+              endPointSetupInfoToken:ri!endPointupInfoToken,&#xD;
+              currentStep:ri!currentStep,&#xD;
+              currentEndpoint:ri!currentEndpoint,&#xD;
+              selectedIndex:ri!selectedIndex,&#xD;
+              isConfigureQues:ri!isConfigureQues,&#xD;
+              isConfigureDocs:ri!isConfigureDocs&#xD;
+             &#xD;
+            ),&#xD;
+            array:if(or(isnull(ri!endPointSetupInfo), count(ri!endPointSetupInfo) &lt; 1), {}, 1+enumerate(count(ri!endPointSetupInfo))),&#xD;
+            arrayVariable:ri!endPointupInfoToken&#xD;
+            )&#xD;
+          /*validations: {if(isnull(local!unionName),"",)}   */&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_linkField"(&#xD;
+                label: "Add Link",&#xD;
+                labelPosition: "COLLAPSED",&#xD;
+                links: #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+                  label: "+Add Item",&#xD;
+                  /*&#xD;
+                   * For your use case, set the value to a blank instance of your CDT using&#xD;
+                   * the type constructor, e.g. type!PurchaseRequestItem(). Only specify the field&#xD;
+                   * if you want to give it a default value e.g. due: today()+1.&#xD;
+                   */&#xD;
+                  value:'type!{com.cognizant.epas.types}EPAS_EndPointSetupInfo'(),&#xD;
+                  saveInto: {&#xD;
+                    a!save(ri!endPointSetupInfo, append(ri!endPointSetupInfo,save!value)),&#xD;
+                    /*if(isnull(local!selectedIndex),{},a!save(ri!endPointSetupInfo[local!selectedIndex],ri!currentEndpoint)),*/&#xD;
+                    /*` When modifying the size of the array used in a!applyComponents, */&#xD;
+                    /* make the same change in the "token" array variable               */&#xD;
+                    a!save(ri!endPointupInfoToken, append(ri!endPointupInfoToken,save!value))&#xD;
+                   }&#xD;
+                )&#xD;
+              )&#xD;
+              &#xD;
+&#xD;
+					    &#xD;
+					  }&#xD;
+					)&#xD;
+	</definition>
+        <namedTypedValue>
+            <name>endPointSetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>endPointupInfoToken</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>currentStep</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>currentEndpoint</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>selectedIndex</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>isConfigureQues</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>isConfigureDocs</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70137"/>
+    </history>
+</contentHaul>

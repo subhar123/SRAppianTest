@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69932</versionUuid>
+    <rule>
+        <name>EPAS_primaryReviewersConfigDetails</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35338</uuid>
+        <description>Primary Reviewers Configuration Details</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+  local!labelPosition: "ADJACENT",&#xD;
+  with(&#xD;
+    localCountUser: if(&#xD;
+      isnull(&#xD;
+        ri!context&#xD;
+      ),&#xD;
+      0,&#xD;
+      length(&#xD;
+        ri!context&#xD;
+      )&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+      label: "Primary Reviewers Configuration",&#xD;
+      isCollapsible: true(),&#xD;
+      firstColumnContents: {&#xD;
+        if(&#xD;
+          ri!readOnly,&#xD;
+          {&#xD;
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35348"(&#xD;
+              ri!studySetupInfo.isRandom,&#xD;
+              "Auto System Reviewers Selections"&#xD;
+            ),&#xD;
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35348"(&#xD;
+              ri!studySetupInfo.changeNoOfAdjud,&#xD;
+              "Change number of Adjudicators"&#xD;
+            )&#xD;
+          },&#xD;
+          {&#xD;
+            #"SYSTEM_SYSRULES_dropdownField"(&#xD;
+              label: "Auto Reviewers Selections",&#xD;
+              required: true(),&#xD;
+              choiceLabels: {&#xD;
+                #"_a-0000dcd7-2308-8000-5130-010000010000_35342"&#xD;
+              },&#xD;
+              choiceValues: {&#xD;
+               append(#"_a-0000dcd7-2308-8000-5130-010000010000_35344",#"_a-0000dcd7-2308-8000-5130-010000010000_35345")&#xD;
+              },&#xD;
+              placeholderLabel: "--Select--",&#xD;
+              readonly: ri!readOnly,&#xD;
+              helpTooltip: if(&#xD;
+                ri!readOnly,&#xD;
+                "",&#xD;
+                "Yes: System will randomly select Primary Reviewers, No: CRA/Facilitator will randomly select the Primary Reviewers"&#xD;
+              ),&#xD;
+              validationGroup: "submit",&#xD;
+              labelPosition: local!labelPosition,&#xD;
+              value: ri!studySetupInfo.isRandom,&#xD;
+              saveInto: {&#xD;
+                ri!studySetupInfo.isRandom/*a!save(ri!context, if(ri!studySetupInfo.isRandom = "Yes",null,ri!context))*/&#xD;
+                &#xD;
+              }&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_dropdownField"(&#xD;
+              label: "Change number of Adjudicators",&#xD;
+              required: true(),&#xD;
+              choiceLabels: {&#xD;
+               #"_a-0000dcd7-2308-8000-5130-010000010000_35342"&#xD;
+              },&#xD;
+              choiceValues: {&#xD;
+                append(#"_a-0000dcd7-2308-8000-5130-010000010000_35344",#"_a-0000dcd7-2308-8000-5130-010000010000_35345")&#xD;
+              },&#xD;
+              placeholderLabel: "--Select--",&#xD;
+              readonly: ri!readOnly,&#xD;
+              helpTooltip: if(&#xD;
+                ri!readOnly,&#xD;
+                "",&#xD;
+                "Yes: Facilitator can change no of Primary Reviewers, No: Facilitator cannot change no of Primary Reviewers"&#xD;
+              ),&#xD;
+              validationGroup: "submit",&#xD;
+              labelPosition: local!labelPosition,&#xD;
+              value: ri!studySetupInfo.changeNoOfAdjud,&#xD;
+              saveInto: ri!studySetupInfo.changeNoOfAdjud&#xD;
+            )&#xD;
+          }&#xD;
+        )&#xD;
+      },&#xD;
+      secondColumnContents: {&#xD;
+        if(&#xD;
+          ri!readOnly,&#xD;
+          {&#xD;
+            #"SYSTEM_SYSRULES_imageField"(&#xD;
+              label: "Number of Primary Reviewers",&#xD;
+              labelPosition: "ADJACENT",&#xD;
+              images: {&#xD;
+                #"_a-0000dcd5-c570-8000-5130-010000010000_34399"(&#xD;
+                  ri!studySetupInfo.noOfPrimaryReviewers,&#xD;
+                  false,&#xD;
+                  true&#xD;
+                )&#xD;
+              }&#xD;
+            ),&#xD;
+            #"_a-0000dcd7-2308-8000-5130-010000010000_35348"(&#xD;
+              ri!studySetupInfo.displayOtherAdjud,&#xD;
+              "Display other Adjudicators"&#xD;
+            )&#xD;
+          },&#xD;
+          {&#xD;
+            #"SYSTEM_SYSRULES_integerField"(&#xD;
+              label: "Number of Primary Reviewers",&#xD;
+              required: true(),&#xD;
+              readonly: true(),&#xD;
+              helpTooltip: if(&#xD;
+                ri!readOnly,&#xD;
+                "",&#xD;
+                "Number of Primary reviewers required for Adjudication"&#xD;
+              ),&#xD;
+              validationGroup: "submit",&#xD;
+              /*validations: {*/&#xD;
+              /*  if(*/&#xD;
+              /*    or(*/&#xD;
+              /*      isnull(*/&#xD;
+              /*        ri!studySetupInfo.noOfPrimaryReviewers*/&#xD;
+              /*      ),*/&#xD;
+              /*      ri!studySetupInfo.isRandom = "Yes"*/&#xD;
+              /*    ),*/&#xD;
+              /*    "",*/&#xD;
+              /*    if(*/&#xD;
+              /*      ri!studySetupInfo.noOfPrimaryReviewers = localCountUser,*/&#xD;
+              /*      "",*/&#xD;
+              /*      "Number of Primary Reviewer is not same as Selected Primary Reviewers"*/&#xD;
+              /*    )*/&#xD;
+              /*  )*/&#xD;
+              /*},*/&#xD;
+              labelPosition: local!labelPosition,&#xD;
+              value: localCountUser,&#xD;
+              /*value: ri!studySetupInfo.noOfPrimaryReviewers,*/&#xD;
+              saveInto: ri!studySetupInfo.noOfPrimaryReviewers&#xD;
+            ),&#xD;
+            #"SYSTEM_SYSRULES_dropdownField"(&#xD;
+              label: "Display other Adjudicators",&#xD;
+              required: true(),&#xD;
+              choiceLabels: {&#xD;
+                 #"_a-0000dcd7-2308-8000-5130-010000010000_35342"&#xD;
+              },&#xD;
+              choiceValues: {&#xD;
+               append(#"_a-0000dcd7-2308-8000-5130-010000010000_35344",#"_a-0000dcd7-2308-8000-5130-010000010000_35345")&#xD;
+              },&#xD;
+              placeholderLabel: "--Select--",&#xD;
+              readonly: ri!readOnly,&#xD;
+              helpTooltip: if(&#xD;
+                ri!readOnly,&#xD;
+                "",&#xD;
+                "Primary reviewers can see name of other primary reviewers"&#xD;
+              ),&#xD;
+              validationGroup: "submit",&#xD;
+              labelPosition: local!labelPosition,&#xD;
+              value: ri!studySetupInfo.displayOtherAdjud,&#xD;
+              saveInto: ri!studySetupInfo.displayOtherAdjud&#xD;
+            )&#xD;
+          }&#xD;
+        )&#xD;
+      }&#xD;
+    )&#xD;
+  )&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>studySetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>readOnly</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>context</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69932"/>
+    </history>
+</contentHaul>

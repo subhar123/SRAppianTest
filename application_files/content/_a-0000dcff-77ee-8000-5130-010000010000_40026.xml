@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69988</versionUuid>
+    <rule>
+        <name>EPAS_endPointAdjudHeaderInfo</name>
+        <uuid>_a-0000dcff-77ee-8000-5130-010000010000_40026</uuid>
+        <description>Interface display End Point Adjudication Header Info</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42705</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>
+  #"SYSTEM_SYSRULES_sectionLayout"(
+    label:"",
+    firstColumnContents:{
+
+         #"SYSTEM_SYSRULES_textField"(
+           label:"Subject ID:",
+           labelPosition:"ADJACENT",
+           value:ri!adjudicationInfo.subjectId,
+           readOnly:true()
+         ),
+         #"SYSTEM_SYSRULES_textField"(
+           label:"Site Name:",
+           labelPosition:"ADJACENT",
+           value:ri!adjudicationInfo.endpointType,
+           readOnly:true()
+         )
+    },
+    secondColumnContents:{
+
+        #"SYSTEM_SYSRULES_linkField"(
+              label: "Study Name:",
+              labelPosition: "ADJACENT",
+              align: "LEFT",
+              links: {
+        #"SYSTEM_SYSRULES_recordLink"(
+            label: ri!adjudicationInfo.studyName,
+            recordType: #"_a-0000dd0c-08f6-8000-5130-010000010000_41179",
+            identifier: ri!adjudicationInfo.studySetupId
+          )
+          }),
+        #"SYSTEM_SYSRULES_textField"(
+          label:"Endpoint Name:",
+          labelPosition:"ADJACENT",
+          value:ri!adjudicationInfo.endpointName,
+          readOnly:true()
+        ),
+        #"SYSTEM_SYSRULES_dateField"(
+          label:"Endpoint Date:",
+          labelPosition:"ADJACENT",
+          value:ri!adjudicationInfo.endpointDate,
+          readOnly:true()
+        )
+    }
+  )
+</definition>
+        <namedTypedValue>
+            <name>adjudicationInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69988"/>
+    </history>
+</contentHaul>

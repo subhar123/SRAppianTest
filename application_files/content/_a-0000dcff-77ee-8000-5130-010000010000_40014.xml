@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69982</versionUuid>
+    <rule>
+        <name>EPAS_createEndPointAdjudication</name>
+        <uuid>_a-0000dcff-77ee-8000-5130-010000010000_40014</uuid>
+        <description>Interface is to Create End Point Adjudication initiated by CRA</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42705</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!studySetupInfo: #"_a-0000dcd7-2308-8000-5130-010000010000_35323"(),
+  local!endpointSetupUInfo,
+  local!studyName,
+  with(
+    local!endpointSetupUInfo: if(
+      or(
+        isnull(
+          ri!adjudicationInfo.studyName
+        ),
+        ri!adjudicationInfo.studyName = "--Select--"
+      ),
+      null,
+     #"_a-0000dcff-77ee-8000-5130-010000010000_40017"(ri!adjudicationInfo.studySetupId) 
+    ),
+    #"SYSTEM_SYSRULES_formLayout"(
+      label: "Create End Point Adjudication",
+      instructions: "This action will enable the CRA to create event packages and configure end points.",
+      firstColumnContents: {
+        #"SYSTEM_SYSRULES_sectionLayout"(
+          label: " ",
+          firstColumnContents: {
+            #"SYSTEM_SYSRULES_milestoneField"(
+              label: " ",
+              steps: #"_a-0000dcff-77ee-8000-5130-010000010000_40016",
+              active: 1
+            ),
+            
+          }
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout"(
+          label: " ",
+          firstColumnContents: {
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Subject ID:",
+              labelPosition: "ADJACENT",
+              required: "true",
+              helpTooltip: "Subject ID for the Event Package",
+              value: ri!adjudicationInfo.subjectId,
+              saveInto: ri!adjudicationInfo.subjectId
+            ),
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Site Name:",
+              labelPosition: "ADJACENT",
+              required: "true",
+              helpTooltip: "Site Name for the Event",
+              value: ri!adjudicationInfo.endpointType,
+              saveInto: ri!adjudicationInfo.endpointType
+            )
+          },
+          secondColumnContents: {
+            #"SYSTEM_SYSRULES_dropdownField"(
+              label: "Study Name:",
+              labelPosition: "ADJACENT",
+              helpTooltip: "Select Study Name for the Event",
+              required: "true",
+              choiceLabels: {
+                local!studySetupInfo.studyName
+              },
+              /*choiceValues:{ri!studyInfo.studyName},*/
+              choiceValues: {
+                  local!studySetupInfo.studyName
+                
+              },
+              /*choiceValues:{ri!studyInfo.studyId},*/
+              value: if(
+                or(
+                  isnull(
+                    ri!adjudicationInfo.studyName
+                  ),
+                  ri!adjudicationInfo.studyName = "--Select--"
+                ),
+                null(),
+                ri!adjudicationInfo.studyName
+              ),
+              /*value: local!studyName,*/
+              placeholderLabel: "---Select---",
+              saveInto: {
+                ri!adjudicationInfo.studyName,
+                a!save(
+                  ri!adjudicationInfo.endpointName,
+                  null
+                  
+                ),
+                a!save(
+                  ri!adjudicationInfo.studySetupId,
+                  index(local!studySetupInfo.studySetupId,wherecontains(ri!adjudicationInfo.studyName,local!studySetupInfo.studyName),null)
+                )
+
+                
+              }
+            ),
+            #"SYSTEM_SYSRULES_dropdownField"(
+              label: "Endpoint Name:",
+              labelPosition: "ADJACENT",
+              helpTooltip: "Select Endpoint Name for the Study",
+              required: "true",
+              choiceLabels: if(
+                isnull(
+                  local!endpointSetupUInfo
+                ),
+                null(),
+                {
+                  local!endpointSetupUInfo.endpointName
+                }
+              ),
+              choiceValues: if(
+                isnull(
+                  local!endpointSetupUInfo
+                ),
+                null(),
+                {
+                  local!endpointSetupUInfo.endpointName
+                }
+              ),
+              value: ri!adjudicationInfo.endpointName,
+              saveInto: 
+              {
+              ri!adjudicationInfo.endpointName,
+              a!save(ri!adjudicationInfo.endPointSetupId,
+              index(local!endpointSetupUInfo.endPointSetupId,
+              wherecontains(ri!adjudicationInfo.endpointName,local!endpointSetupUInfo.endpointName),null))
+              },
+              placeholderLabel: "---Select---"
+            ),
+            #"SYSTEM_SYSRULES_dateField"(
+              label: "Endpoint Date:",
+              required: "true",
+              labelPosition: "ADJACENT",
+              helpTooltip: "Valid Date for the selected Endpoint",
+              validations: if(
+                ri!adjudicationInfo.endpointDate &lt; today(),
+                "Please enter the Future Date as End Point Date",
+                ""
+              ),
+              value: ri!adjudicationInfo.endpointDate,
+              saveInto: ri!adjudicationInfo.endpointDate
+            )
+          }
+        )
+      },
+      buttons: #"SYSTEM_SYSRULES_ButtonLayout"(
+        primaryButtons: {
+          #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+            label: "Submit",
+            value: "Next",
+            saveInto: ri!actionValue,
+            style: "PRIMARY"
+          )
+        },
+        secondaryButtons: {
+          #"SYSTEM_SYSRULES_ButtonWidgetSubmit"(
+            label: #"_a-0000dc65-81d6-8000-a73e-010000010000_2373",
+            skipValidation: true,
+            value: "cancel",
+            saveInto: ri!actionValue
+          )
+        }
+      )
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>adjudicationInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>actionValue</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69982"/>
+    </history>
+</contentHaul>

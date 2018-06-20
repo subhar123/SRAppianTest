@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="com.cognizant.epas.types"
+  xmlns:tns="com.cognizant.epas.types" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <xsd:include schemaLocation="%7Bcom.cognizant.epas.types%7DEPAS_EndPointSetupInfo.xsd"/>
+  <xsd:include schemaLocation="%7Bcom.cognizant.epas.types%7DEPAS_StudySelectedUser.xsd"/>
+  <xsd:complexType name="EPAS_StudySetupInfo">
+    <xsd:annotation>
+      <xsd:appinfo source="appian.jpa">@Table(name="epasstudysetupinfo")</xsd:appinfo>
+    </xsd:annotation>
+    <xsd:sequence>
+      <xsd:element name="studySetupId" type="xsd:long">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Id @GeneratedValue @Column(NAME="studysetupid")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="studyName" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="studyname", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="description" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="description", columnDefinition="varchar(2000) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="status" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="status", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="noOfPrimReviewers" type="xsd:int">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="noofprimreviewers", columnDefinition="integer")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="noOfSecReviewers" type="xsd:int">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="noofsecreviewers", columnDefinition="integer")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="isRandom" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="israndom")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="changeNoOfAdjud" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="changenoofadjud")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="displayOtherAdjud" type="xsd:boolean">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="displayotheradjud")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="currentRvwrIndex" type="xsd:int">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="currentrvwrindex", columnDefinition="integer")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="docTimeline" type="xsd:int">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Column(NAME="doctimeline", columnDefinition="integer")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="feedId" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="feedId", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="processId" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="processId", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="createdBy" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="createdby", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="createdOn" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+                  @Column(NAME="createdon", columnDefinition="timestamp")
+                                                                </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="lastUpdatedBy" type="xsd:string">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+@Column(NAME="lastupdatedby", columnDefinition="char(100) NULL")
+</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="lastUpdatedOn" type="xsd:dateTime">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+                  @Column(NAME="lastupdatedon", columnDefinition="timestamp")
+                                                                </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element name="version" nillable="true" type="xsd:int">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">@Version @Column(NAME="version", columnDefinition="integer NOT NULL")</xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="unbounded" name="studySelectedUser" type="tns:EPAS_StudySelectedUser">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+          @OneToMany
+		  @JoinColumn(name="studyid", nullable=false, unique=false)
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+      <xsd:element maxOccurs="unbounded" name="endPointSetupInfo" type="tns:EPAS_EndPointSetupInfo">
+        <xsd:annotation>
+          <xsd:appinfo source="appian.jpa">
+          @OneToMany
+		  @JoinColumn(name="studyid", nullable=false, unique=false)
+        </xsd:appinfo>
+        </xsd:annotation>
+      </xsd:element>
+    </xsd:sequence>
+  </xsd:complexType>
+</xsd:schema>

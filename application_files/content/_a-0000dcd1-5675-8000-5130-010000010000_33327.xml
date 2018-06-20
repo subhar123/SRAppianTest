@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70136</versionUuid>
+    <rule>
+        <name>EPAS_displayUserProfileImage</name>
+        <uuid>_a-0000dcd1-5675-8000-5130-010000010000_33327</uuid>
+        <description>Displays user profile image</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42722</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>=with(&#xD;
+/*img:displayvalue(touser(ri!user),cons!EPAS_APPLN_USERS,cons!EPAS_USER_ROFILE_IMAGES,todocument(6130)),*/&#xD;
+&#xD;
+img: #"_a-0000dd0c-ffa4-8000-5130-010000010000_43441",&#xD;
+#"SYSTEM_SYSRULES_documentImage"(document:img,caption:if(ri!user="","Frank Gerrad",ri!user))&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>user</name>
+            <type>
+                <name>User</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>legacy</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70136"/>
+    </history>
+</contentHaul>

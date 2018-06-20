@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70041</versionUuid>
+    <rule>
+        <name>EPAS_usertaskReportByStatusPie</name>
+        <uuid>_a-0000dd0c-08f6-8000-5130-010000010000_41155</uuid>
+        <description>Task report to display in pie chart</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42719</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+    local!statusFilter: 0,&#xD;
+    local!pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(&#xD;
+    startIndex: 1,&#xD;
+    batchSize: -1&#xD;
+  ),&#xD;
+  with(&#xD;
+      local!reports: a!queryProcessAnalytics(&#xD;
+      report: #"_a-0000dd0c-08f6-8000-5130-010000010000_41168",&#xD;
+      contextProcessModels: #"_a-0000dd0c-08f6-8000-5130-010000010000_41169"&#xD;
+    ),&#xD;
+      local!taskByStatus: a!queryProcessAnalytics(&#xD;
+      report: #"_a-0000dd0c-08f6-8000-5130-010000010000_41171"&#xD;
+    ),&#xD;
+      &#xD;
+    #"SYSTEM_SYSRULES_sectionLayout"(&#xD;
+      &#xD;
+    label:"",&#xD;
+    firstColumnContents:{&#xD;
+&#xD;
+    if(#"_a-0000d62a-67b3-8000-da6f-010000010000_951"(local!taskByStatus.data),{},&#xD;
+           #"SYSTEM_SYSRULES_pieChartField"(&#xD;
+             label:"My Task Status",&#xD;
+      series: {&#xD;
+        apply(&#xD;
+          #"SYSTEM_SYSRULES_chartSeries"(label:_, data: _),&#xD;
+          merge(&#xD;
+            index(local!taskByStatus.data,"c5" , null),&#xD;
+            index(local!taskByStatus.data, "c0", null)&#xD;
+          )&#xD;
+        )&#xD;
+      },&#xD;
+      showDataLabels :true,&#xD;
+      showTooltips:true&#xD;
+    ))&#xD;
+    &#xD;
+    },&#xD;
+    secondColumnContents:{&#xD;
+      #"_a-0000dd0c-08f6-8000-5130-010000010000_41173"()   &#xD;
+      }&#xD;
+    )&#xD;
+  )&#xD;
+)&#xD;
+</definition>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="false" allowForAll="true" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="administrators">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+            </groups>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70041"/>
+    </history>
+</contentHaul>

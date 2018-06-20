@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70014</versionUuid>
+    <rule>
+        <name>EPAS_RecordAdjudInfoDashBoard</name>
+        <uuid>_a-0000dcff-77ee-8000-5130-010000010000_40528</uuid>
+        <description>Summary Dashboard for Adjudication Info Record</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42713</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!auditTrail: #"_a-0000dcff-77ee-8000-5130-010000010000_40535"(
+    rf!adjudInfoId
+  ),
+  local!questionInfoCdt: #"_a-0000dcff-77ee-8000-5130-010000010000_40410"(
+    rf!endPointSetupId
+  ),
+  local!studySelectedUser: #"_a-0000dcff-77ee-8000-5130-010000010000_40532"(
+    rf!studySetupId
+  ),
+  local!userDetails: #"_a-0000dcff-77ee-8000-5130-010000010000_40111"(
+    cast(
+      101,
+      local!studySelectedUser.userInfoId
+    )
+  ),
+  local!primUser: index(
+    local!userDetails,
+    wherecontains(
+      "Primary Reviewer",
+      local!userDetails.role
+    ),
+    null
+  ),
+  local!uniquePrimUser: union(
+    local!primUser,
+    local!primUser
+  ),
+  local!secUser: index(
+    local!userDetails,
+    wherecontains(
+      "Secondary Reviewer",
+      local!userDetails.role
+    ),
+    null
+  ),
+  local!uniqueSecUser: union(
+    local!secUser,
+    local!secUser
+  ),
+  local!primRvwUser,
+  local!secRvwUser,
+  local!responseInfo: #"_a-0000dcff-77ee-8000-5130-010000010000_40541"(
+    rf!adjudInfoId
+  ),
+  local!primResp: 
+  
+  if(isnull(local!responseInfo),
+  null,
+    index(
+    local!responseInfo,
+    wherecontains(
+      #"_a-0000dcd7-2308-8000-5130-010000010000_35298"[3],
+      local!responseInfo.typeOfReviewer
+    ),
+    null
+  )
+  ),
+  local!secResp: 
+  if(isnull(local!responseInfo),
+  null,
+  index(
+    local!responseInfo,
+    wherecontains(
+      #"_a-0000dcd7-2308-8000-5130-010000010000_35298"[4],
+      local!responseInfo.typeOfReviewer
+    ),
+    null
+  )),
+  with(
+    #"SYSTEM_SYSRULES_dashboardLayout"(
+      firstColumnContents: {
+        #"SYSTEM_SYSRULES_milestoneField"(
+          label: "",
+          steps: {
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[1],
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2],
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[3],
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[4],
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[5]
+          },
+          active: lookup(
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40527",
+            rf!adjudicationStatus,
+            - 1
+          )
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout"(
+          label: "Summary",
+          firstColumnContents: {
+            #"SYSTEM_SYSRULES_linkField"(
+              label: "Study Id",
+              labelPosition: "ADJACENT",
+              align: "LEFT",
+              links: {
+                {
+                  #"SYSTEM_SYSRULES_recordLink"(
+                    label: if(
+                      rf!studyName = "--Select--",
+                      "",
+                      rf!studyName
+                    ),
+                    recordType: #"_a-0000dd0c-08f6-8000-5130-010000010000_41179",
+                    identifier: rf!studySetupId
+                  )
+                }
+              }
+            ),
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Endpoint Name",
+              readOnly: true,
+              labelPosition: "ADJACENT",
+              value: rf!endpointName
+            ),
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Subject Id",
+              readOnly: true,
+              labelPosition: "ADJACENT",
+              value: rf!subjectId
+            ),
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Site Name",
+              readOnly: true,
+              labelPosition: "ADJACENT",
+              value: rf!endpointType
+            ),
+            #"SYSTEM_SYSRULES_textField"(
+              label: "End Point Date",
+              readOnly: true,
+              labelPosition: "ADJACENT",
+              value: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41918"(
+                rf!endpointDate
+              )
+            ),
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Adjudication Status",
+              readOnly: true,
+              labelPosition: "ADJACENT",
+              value: rf!adjudicationStatus
+            )
+          },
+          secondColumnContents: {
+            /*a!imageField(label:"Requestor",images:a!documentImage(document:cons!EAS_AMGEN_ICON),size:"SMALL",labelPosition:"ADJACENT"),*/
+            #"SYSTEM_SYSRULES_imageField"(
+              label: "Within SLA",
+              labelPosition: "ADJACENT",
+              images: {
+                #"SYSTEM_SYSRULES_documentImage"(
+                  document: #"SYSTEM_SYSRULES_iconIndicator"(
+                    "STATUS_OK"
+                  ),
+                  caption: ""
+                )
+              },
+              size: "ICON"
+            ),
+            #"SYSTEM_SYSRULES_progressBarField"(
+              label: "Completion %",
+              percentage: {
+                if(
+                  rf!adjudicationStatus = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[1],
+                  20,
+                  if(
+                    rf!adjudicationStatus = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[2],
+                    40,
+                    if(
+                      rf!adjudicationStatus = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[3],
+                      60,
+                      if(
+                        rf!adjudicationStatus = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[4],
+                        80,
+                        if(
+                          rf!adjudicationStatus = #"_a-0000dcff-77ee-8000-5130-010000010000_40527"[5],
+                          100,
+                          0
+                        )
+                      )
+                    )
+                  )
+                )
+              },
+              labelPosition: "ADJACENT"
+            ),
+            #"SYSTEM_SYSRULES_imageField"(
+              label: "Created By",
+              labelPosition: "ADJACENT",
+              images: {
+                #"_a-0000dcd1-5675-8000-5130-010000010000_33327"(
+                  touser(
+                    rf!createdBy
+                  )
+                )
+              },
+              size: "THUMBNAIL"
+            ),
+            #"SYSTEM_SYSRULES_textField"(
+              label: "Created On",
+              readOnly: true,
+              labelPosition: "ADJACENT",
+              value: #"_a-0000dd0c-ffa4-8000-5130-010000010000_41918"(
+                rf!createdOn
+              )
+            )
+          }
+        ),
+        #"_a-0000dcff-77ee-8000-5130-010000010000_40100"(
+          rf!adjudInfoId
+        ),
+        #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(
+          local!uniquePrimUser,
+          local!primRvwUser,
+          "Primary Reviewers",
+          false()
+        ),
+        #"_a-0000dcd7-2308-8000-5130-010000010000_35352"(
+          local!uniqueSecUser,
+          local!secRvwUser,
+          "Secondary Reviewers",
+          false()
+        ),
+        if(
+          or(
+            len(local!primResp)=0,
+          isnull(
+            local!primResp
+          )),
+          {},
+          #"_a-0000dcff-77ee-8000-5130-010000010000_40428"(
+            local!primResp,
+            "Primary Reviewer Response",
+            local!questionInfoCdt.questionName,
+            ""
+          )
+        ),
+        if(
+          or(
+            len(local!secResp)=0,
+          isnull(
+            local!secResp
+          )),
+          {},
+          #"_a-0000dcff-77ee-8000-5130-010000010000_40428"(
+            local!secResp,
+            "Secondary Reviewer Response",
+            local!questionInfoCdt.questionName,
+            ""
+          )
+        ),
+        #"SYSTEM_SYSRULES_sectionLayout"(
+          label: "Comments and Audit Trial",
+          isCollapsible: true(),
+          firstColumnContents: {
+            if(
+              isnull(
+                rf!adjudInfoId
+              ),
+              {},
+              #"_a-0000dcff-77ee-8000-5130-010000010000_40364"(
+                rf!adjudInfoId
+              )
+            )
+          },
+          secondColumnContents: {
+            #"_a-0000dcff-77ee-8000-5130-010000010000_40537"(
+              local!auditTrail
+            )
+          }
+        )
+      }
+    )
+  )
+)</definition>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70014"/>
+    </history>
+</contentHaul>

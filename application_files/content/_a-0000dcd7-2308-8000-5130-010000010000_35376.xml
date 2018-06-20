@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69957</versionUuid>
+    <rule>
+        <name>EPAS_ucEndPointSetupRowEachBKV1</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35376</uuid>
+        <description></description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_gridRowLayout"(&#xD;
+  id: ri!index,&#xD;
+  contents: {&#xD;
+    #"SYSTEM_SYSRULES_textField"(&#xD;
+      label: "End Point Name" &amp; ri!index,&#xD;
+      required: true(),&#xD;
+      value: if(&#xD;
+        isnull(&#xD;
+          index(ri!endPointSetupInfo[ri!index],"endpointName",{})&#xD;
+        ),&#xD;
+        null,&#xD;
+        index(ri!endPointSetupInfo[ri!index],"endpointName",{})&#xD;
+      ),&#xD;
+      saveInto: ri!endPointSetupInfo[ri!index].endpointName/*validations: {if(contains(ri!endPointSetupInfo[ri!index].endpointName, local!endPointList),"Endpoint Name should be Unique"," ") }*/&#xD;
+      &#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_dropdownField"(&#xD;
+      label: "Secondary Adjudication Required",&#xD;
+      required: true(),&#xD;
+      placeholderLabel: "---select---",&#xD;
+      choiceLabels: {&#xD;
+        #"_a-0000dcd7-2308-8000-5130-010000010000_35342"&#xD;
+      },&#xD;
+      choiceValues: {&#xD;
+        append(&#xD;
+          #"_a-0000dcd7-2308-8000-5130-010000010000_35344",&#xD;
+          #"_a-0000dcd7-2308-8000-5130-010000010000_35345"&#xD;
+        )&#xD;
+      },&#xD;
+      value: if(&#xD;
+        isnull(&#xD;
+          index(ri!endPointSetupInfo[ri!index],"secondaryAdjudNeeded",{})&#xD;
+        ),&#xD;
+        null,&#xD;
+        index(ri!endPointSetupInfo[ri!index],"secondaryAdjudNeeded",{})&#xD;
+      ),&#xD;
+      saveInto: ri!endPointSetupInfo[ri!index].secondaryAdjudNeeded&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_linkField"(&#xD;
+      label: "",&#xD;
+      links: {&#xD;
+        #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+          label: ri!endPointSetupInfo[ri!index].endpointId &amp; " Questions " &amp; ri!index,&#xD;
+          value: ri!currentStep + 1,&#xD;
+          saveInto: {&#xD;
+            ri!currentStep,&#xD;
+            a!save(&#xD;
+              ri!selectedIndex,&#xD;
+              ri!index&#xD;
+            ),&#xD;
+            a!save(&#xD;
+              ri!isConfigureQues,&#xD;
+              true()&#xD;
+            ),&#xD;
+            a!save(&#xD;
+              ri!currentEndpoint,&#xD;
+              index(&#xD;
+                ri!endPointSetupInfo,&#xD;
+                ri!index,&#xD;
+                {}&#xD;
+              )&#xD;
+            )&#xD;
+          }&#xD;
+        )&#xD;
+      }&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_linkField"(&#xD;
+      label: "",&#xD;
+      links: {&#xD;
+        #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+          label: ri!endPointSetupInfo[ri!index].endpointId &amp; " Documents " &amp; ri!index,&#xD;
+          value: ri!currentStep + 2,&#xD;
+          saveInto: {&#xD;
+            ri!currentStep,&#xD;
+            a!save(&#xD;
+              ri!selectedIndex,&#xD;
+              ri!index&#xD;
+            ),&#xD;
+            a!save(&#xD;
+              ri!isConfigureDocs,&#xD;
+              true()&#xD;
+            ),&#xD;
+            a!save(&#xD;
+              ri!currentEndpoint,&#xD;
+              index(&#xD;
+                ri!endPointSetupInfo,&#xD;
+                ri!index,&#xD;
+                {}&#xD;
+              )&#xD;
+            )&#xD;
+          }&#xD;
+        )&#xD;
+      }&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_imageField"(&#xD;
+      label: "Question Setup Status",&#xD;
+      images: #"SYSTEM_SYSRULES_documentImage"(&#xD;
+        document: if(&#xD;
+          isnull(&#xD;
+            index(ri!endPointSetupInfo[ri!index],"questionsInfo",{})&#xD;
+           &#xD;
+          ),&#xD;
+          #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+            icon: "STATUS_NOTDONE"&#xD;
+          ),&#xD;
+          #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+            icon: "STATUS_OK"&#xD;
+          )&#xD;
+        ),&#xD;
+        alttext: if(&#xD;
+          isnull(&#xD;
+            index(ri!endPointSetupInfo[ri!index],"questionsInfo",{})&#xD;
+          ),&#xD;
+          "No",&#xD;
+          "Yes"&#xD;
+        ),&#xD;
+        caption: if(&#xD;
+          isnull(&#xD;
+            index(ri!endPointSetupInfo[ri!index],"questionsInfo",{})&#xD;
+          ),&#xD;
+          "No",&#xD;
+          "Yes"&#xD;
+        )&#xD;
+      ),&#xD;
+      size: "ICON"&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_imageField"(&#xD;
+      label: "Document Setup Status",&#xD;
+      images: #"SYSTEM_SYSRULES_documentImage"(&#xD;
+        document: if(&#xD;
+          isnull(&#xD;
+            index(ri!endPointSetupInfo[ri!index],"docChecklistInfo",{})&#xD;
+            &#xD;
+          ),&#xD;
+          #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+            icon: "STATUS_NOTDONE"&#xD;
+          ),&#xD;
+          #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+            icon: "STATUS_OK"&#xD;
+          )&#xD;
+        ),&#xD;
+        alttext: if(&#xD;
+          isnull(&#xD;
+            index(ri!endPointSetupInfo[ri!index],"docChecklistInfo",{})&#xD;
+          ),&#xD;
+          "No",&#xD;
+          "Yes"&#xD;
+        ),&#xD;
+        caption: if(&#xD;
+          isnull(&#xD;
+            index(ri!endPointSetupInfo[ri!index],"docChecklistInfo",{})&#xD;
+          ),&#xD;
+          "No",&#xD;
+          "Yes"&#xD;
+        )&#xD;
+      ),&#xD;
+      size: "ICON"&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_imageField"(&#xD;
+      label: "delete " &amp; ri!index,&#xD;
+      images: #"SYSTEM_SYSRULES_documentImage"(&#xD;
+        document: #"SYSTEM_SYSRULES_iconIndicator"(&#xD;
+          icon: "STATUS_NOTDONE"&#xD;
+        ),&#xD;
+        altText: "Remove",&#xD;
+        link: #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+          value: ri!index,&#xD;
+          saveInto: {&#xD;
+            a!save(&#xD;
+              ri!endPointSetupInfo,&#xD;
+              remove(&#xD;
+                ri!endPointSetupInfo,&#xD;
+                save!value&#xD;
+              )&#xD;
+            ),&#xD;
+            a!save(&#xD;
+              ri!endPointSetupInfoToken,&#xD;
+              remove(&#xD;
+                ri!endPointSetupInfoToken,&#xD;
+                save!value&#xD;
+              )&#xD;
+            )&#xD;
+          }&#xD;
+        )&#xD;
+      ),&#xD;
+      size: "ICON"&#xD;
+    )&#xD;
+  }&#xD;
+)</definition>
+        <namedTypedValue>
+            <name>endPointSetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>endPointSetupInfoToken</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>currentStep</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>currentEndpoint</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>selectedIndex</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>isConfigureQues</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>isConfigureDocs</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69957"/>
+    </history>
+</contentHaul>

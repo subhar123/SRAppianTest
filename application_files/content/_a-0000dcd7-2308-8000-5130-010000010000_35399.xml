@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69959</versionUuid>
+    <rule>
+        <name>EPAS_displayStudySetupDocumentUploadFormV1</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35399</uuid>
+        <description>SAIL Interface to Upload Study Setup Documents</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+  local!typeDocument: {
+    'type!{com.cognizant.epas.types}EPAS_DocChecklistInfo'()
+  },
+  local!allDocuments: if(
+    isnull(
+      index(
+        ri!currentEndpoint,
+        "docChecklistInfo",
+        {}
+      )
+    ),
+    local!typeDocument,
+    index(
+      ri!currentEndpoint,
+      "docChecklistInfo",
+      {}
+    )
+  ),
+  local!itemsToken: local!allDocuments,
+  with(
+    #"SYSTEM_SYSRULES_sectionLayout"(
+      label: "Configure Document(s)",
+      firstColumnContents: {
+        /*a!textField(
+          label:"current endpt in document",
+          value:ri!currentEndpoint
+        ),*/
+        #"SYSTEM_SYSRULES_gridLayout"(
+          totalCount: count(
+            local!allDocuments
+          ),
+          instructions: "Document Checklist for Document Upload against each Endpoint",
+          headerCells: {
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+              label: "Document Type",
+              align: "LEFT"
+            ),
+            /* For the "Remove" column */
+            #"SYSTEM_SYSRULES_gridLayoutHeaderCell"(
+              label: ""
+            )
+          },
+          columnConfigs: {
+            #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+              width: "DISTRIBUTE"
+            ),
+            #"SYSTEM_SYSRULES_gridLayoutColumnConfig"(
+              width: "NARROW"
+            )
+          },
+          rows: #"SYSTEM_SYSRULES_applyComponents"(
+            function: #"_a-0000dcd7-2308-8000-5130-010000010000_35401"(
+              index: _,
+              docListInfo: local!allDocuments,
+              itemsToken: local!itemsToken
+            ),
+            array: if(
+              or(
+                isnull(
+                  local!allDocuments
+                ),
+                count(
+                  local!allDocuments
+                ) &lt; 1
+              ),
+              {},
+              1 + enumerate(
+                count(
+                  local!allDocuments
+                )
+              )
+            ),
+            arrayVariable: local!itemsToken
+          )
+        ),
+        #"SYSTEM_SYSRULES_linkField"(
+          label: "Add Link",
+          labelPosition: "COLLAPSED",
+          links: #"SYSTEM_SYSRULES_dynamicLink"(
+            label: "+Add Item",
+            /*
+             * For your use case, set the value to a blank instance of your CDT using
+             * the type constructor, e.g. type!PurchaseRequestItem(). Only specify the field
+             * if you want to give it a default value e.g. due: today()+1.
+             */
+            value: 'type!{com.cognizant.epas.types}EPAS_DocChecklistInfo'(),
+            saveInto: {
+              a!save(
+                local!allDocuments,
+                reject(
+                  fn!isnull,
+                  append(
+                    local!allDocuments,
+                    save!value
+                  )
+                )
+              ),
+              /*` When modifying the size of the array used in a!applyComponents, */
+              /* make the same change in the "token" array variable               */
+              a!save(
+                local!itemsToken,
+                append(
+                  local!itemsToken,
+                  save!value
+                )
+              )
+            }
+          )
+        ),
+        #"SYSTEM_SYSRULES_ButtonLayout"(
+          primaryButtons: {
+            #"SYSTEM_SYSRULES_ButtonWidget"(
+              label: "Configure",
+              style: "PRIMARY",
+              value: "submit",
+              saveInto: {
+                a!save(
+                  ri!currentEndpoint.docChecklistInfo,
+                  local!allDocuments
+                ),
+                a!save(
+                  ri!endPointSetupInfo[ri!selectedIndex],
+                  ri!currentEndPoint
+                ),
+                a!save(
+                  ri!currentStep,
+                  ri!currentStep - 2
+                ),
+                a!save(
+                  ri!isConfigureDocs,
+                  false()
+                )/*,
+                  a!save(local!allDocuments,null)*/
+                
+              }
+            )
+          },
+          secondaryButtons: {
+            #"SYSTEM_SYSRULES_ButtonWidget"(
+              label: "Back",
+              style: "NORMAL",
+              value: "Back",
+              saveInto: {
+                a!save(
+                  ri!currentStep,
+                  ri!currentStep - 2
+                ),
+                a!save(
+                  ri!isConfigureDocs,
+                  false()
+                )/*,
+                  a!save(local!allDocuments,null)*/
+                
+              }
+            )
+          }
+        )
+      }
+    )
+  )
+)</definition>
+        <namedTypedValue>
+            <name>currentEndpoint</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>currentStep</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>endPointSetupInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>selectedIndex</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>isConfigureDocs</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69959"/>
+    </history>
+</contentHaul>

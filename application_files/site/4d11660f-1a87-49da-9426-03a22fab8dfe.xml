@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<siteHaul xmlns:a="http://www.appian.com/ae/types/2009" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <versionUuid>8dae13f6-0fb8-48ba-b04d-62a26e25107b</versionUuid>
+  <site a:uuid="4d11660f-1a87-49da-9426-03a22fab8dfe" name="EPAS Administration">
+    <description>Site for EPAS Admin</description>
+    <urlStub>epas-administration</urlStub>
+    <page>
+      <staticName>User Mgmt</staticName>
+      <description/>
+      <urlStub>user-mgmt</urlStub>
+      <uiObject a:uuid="001fdcf9-6209-8000-5131-010000010000" xsi:type="a:ProcessModel"/>
+      <iconId>f0f0</iconId>
+      <visibilityExpr>fn!true()</visibilityExpr>
+      <pageWidth>STANDARD</pageWidth>
+    </page>
+    <page>
+      <staticName>Study vs End Point Adjudication</staticName>
+      <description/>
+      <urlStub>study-vs-end-point-adjudicatio</urlStub>
+      <uiObject a:uuid="322f0a11-e65d-42f3-8b36-15af7051c26b" xsi:type="a:TaskReport"/>
+      <iconId>f080</iconId>
+      <visibilityExpr>fn!true()</visibilityExpr>
+      <pageWidth>STANDARD</pageWidth>
+    </page>
+    <page>
+      <staticName>Study &amp; End Point Adjudication Statistics</staticName>
+      <description/>
+      <urlStub>study-end-point-adjudication-s</urlStub>
+      <uiObject a:uuid="e3392af8-0f70-4246-88f3-18b2cc68e03f" xsi:type="a:TaskReport"/>
+      <iconId>f080</iconId>
+      <visibilityExpr>fn!true()</visibilityExpr>
+      <pageWidth>STANDARD</pageWidth>
+    </page>
+    <visibility>268435456</visibility>
+    <headerBackgroundColor/>
+    <selectedTabBackgroundColor/>
+    <faviconRef a:uuid="SYSTEM_CONTENT_SITES_DEFAULT_FAVICON" xsi:type="a:CollaborationDocument"/>
+    <faviconHref/>
+    <logoRef a:uuid="SYSTEM_CONTENT_SITES_DEFAULT_LOGO" xsi:type="a:CollaborationDocument"/>
+    <logoHref/>
+    <headerBackgroundColorExpr/>
+    <selectedTabBackgroundColorExpr/>
+    <accentColor>#1D659C</accentColor>
+    <accentColorExpr xsi:nil="true"/>
+    <logoExpr xsi:nil="true"/>
+    <faviconExpr xsi:nil="true"/>
+    <showName>false</showName>
+    <tempoLinkVisibility>HIDDEN</tempoLinkVisibility>
+    <showRecordNews>false</showRecordNews>
+  </site>
+  <roleMap>
+    <role name="site_administrator">
+      <users/>
+      <groups>
+        <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+      </groups>
+    </role>
+  </roleMap>
+  <history>
+    <historyInfo versionUuid="8dae13f6-0fb8-48ba-b04d-62a26e25107b"/>
+  </history>
+</siteHaul>

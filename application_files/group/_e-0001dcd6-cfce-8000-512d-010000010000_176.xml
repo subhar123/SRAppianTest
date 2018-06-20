@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<groupHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <group>
+        <name>EPAS Secondary Reviewers</name>
+        <securityMap>SECURITYMAP_PUBLIC</securityMap>
+        <uuid>_e-0001dcd6-cfce-8000-512d-010000010000_176</uuid>
+        <groupTypeUuid>_f-0001dcd6-cfce-8000-512d-010000010000_8</groupTypeUuid>
+        <parentUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</parentUuid>
+        <description>Contains a list of Users responsible for assessing the endpoint data of patient and  will assess a patient data only when there is a conflict amongst primary reviewers for data assessment .</description>
+        <delegatedCreation>false</delegatedCreation>
+        <memberPolicy>MEMBERPOLICY_CLOSED</memberPolicy>
+        <viewingPolicy>VIEWINGPOLICY_LOW</viewingPolicy>
+        <attributes/>
+    </group>
+    <members>
+        <users/>
+        <groups/>
+    </members>
+    <admins>
+        <users>
+            <userUuid>epas_admin</userUuid>
+        </users>
+        <groups>
+            <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_171</groupUuid>
+        </groups>
+    </admins>
+    <ruleSet/>
+</groupHaul>

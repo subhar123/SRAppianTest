@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<groupTypeHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <groupType>
+        <name>EPAS Groups</name>
+        <uuid>_f-0001dcd6-cfce-8000-512d-010000010000_8</uuid>
+        <description>All Group Types that belong to the EPAS</description>
+        <attributes/>
+    </groupType>
+</groupTypeHaul>

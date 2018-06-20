@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69939</versionUuid>
+    <rule>
+        <name>EPAS_configReviewersFacilitatorsGrid</name>
+        <uuid>_a-0000dcd7-2308-8000-5130-010000010000_35352</uuid>
+        <description>Grid Layout for Primary / Secondary Reviewers and Facilitators</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(
+    local!gridSelectionPrim: #"SYSTEM_SYSRULES_gridSelection"(
+    pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(
+      startIndex: 1,
+      batchSize: 5
+    )
+  ), 
+  local!selected,
+  with(
+ 
+  local!datasubset: todatasubset(ri!datasubset,local!gridSelectionPrim.pagingInfo),
+  {
+    #"SYSTEM_SYSRULES_sectionLayout"(
+      label: if(ri!selection,"Select "&amp;ri!label,"Selected "&amp;ri!label),
+       isCollapsible: true(),
+             validations: if(
+          or(
+            isnull(
+              local!datasubset.data
+            ),
+            len(
+              local!datasubset.data
+            ) = 0
+          ),
+          "Please add " &amp; ri!label &amp; " throught User Management before proceeding with Create and Configure Study",
+          ""
+        ),
+    firstColumnContents: {
+   if(local!datasubset.totalCount = 0,
+    {},
+    
+  #"SYSTEM_SYSRULES_gridField"(
+    label: " ",
+    instructions:if(ri!selection,"Please Select to Add "&amp;ri!label,""),
+    totalCount: local!datasubset.totalCount,
+    requireSelection: true,
+    requiredMessage : "Please Select "&amp;ri!label,
+    validationGroup: if(ri!selection,"submit"," "),
+    selection: ri!selection,
+    identifiers: index(
+      local!datasubset.data,
+      "userId",
+      {}
+    ),
+    columns: {
+       #"SYSTEM_SYSRULES_gridImageColumn"(
+				      label:"Reviewer",
+				      field:"userId",
+				      data:apply(#"_a-0000dcd1-5675-8000-5130-010000010000_33327"(_),apply(fn!touser,index(
+                    local!datasubset.data,
+                    "userAccountId",
+                    {}
+                  )))
+				    ),
+      #"SYSTEM_SYSRULES_gridTextColumn"(
+        label: "First Name",
+        field: "firstName",
+        data: index(
+          local!datasubset.data,
+          "firstName",
+          {}
+        )
+      ),
+      #"SYSTEM_SYSRULES_gridTextColumn"(
+        label: "Last Name",
+        field: "lastName",
+        data: index(
+          local!datasubset.data,
+          "lastName",
+          {}
+        )
+      ),
+       #"SYSTEM_SYSRULES_gridTextColumn"(
+        label: "Email Address",
+        field: "email",
+        data: index(
+          local!datasubset.data,
+          "email",
+          {}
+        )
+      ),
+      #"SYSTEM_SYSRULES_gridTextColumn"(
+        label: "Phone #",
+        field: "contactPhone",
+        data: index(
+          local!datasubset.data,
+          "contactPhone",
+          {}
+        )
+      )
+    },
+    value: local!gridSelectionPrim,
+    saveInto: {
+      local!gridSelectionPrim,
+      a!save(
+        local!selected,
+        index(
+          save!value,
+          "selected",
+          null
+        )
+      ),
+      a!save(
+        ri!userInfo,
+        append(
+          apply(
+            fn!displayValue(
+              _,
+              index(
+                local!datasubset.data,
+                "userId",
+                {}
+              ),
+              local!datasubset.data,
+              {}
+            ),
+            local!gridSelectionPrim.selected
+          )
+        )
+      )
+    }
+  )
+  )
+  }
+  )
+  }
+ )
+
+)</definition>
+        <namedTypedValue>
+            <name>datasubset</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>userInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>label</name>
+            <type>
+                <name>string</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+            <value/>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>selection</name>
+            <type>
+                <name>boolean</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69939"/>
+    </history>
+</contentHaul>

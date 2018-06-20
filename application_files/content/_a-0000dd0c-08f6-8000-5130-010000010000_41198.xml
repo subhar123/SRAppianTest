@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70057</versionUuid>
+    <rule>
+        <name>EPAS_StudyReport</name>
+        <uuid>_a-0000dd0c-08f6-8000-5130-010000010000_41198</uuid>
+        <description>Study Details for Report : from studySetupInfo Entity</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42718</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>load(&#xD;
+  local!pagingInfo: #"SYSTEM_SYSRULES_pagingInfo"(&#xD;
+    startIndex: 1,&#xD;
+    batchSize: 10,&#xD;
+    sort: #"SYSTEM_SYSRULES_sortInfo"(&#xD;
+      field: "studySetupId",&#xD;
+      ascending: false&#xD;
+    )&#xD;
+  ),&#xD;
+  with(&#xD;
+    local!datasubset: #"SYSTEM_SYSRULES_queryEntity"(&#xD;
+      entity: #"_a-0000dcd7-2308-8000-5130-010000010000_35312",&#xD;
+      query: #"SYSTEM_SYSRULES_query"(&#xD;
+/*         selection: a!querySelection(columns: {&#xD;
+          a!queryColumn(field: "studySetupId"),&#xD;
+          a!queryColumn(field: "noOfPrimaryReviewers"),&#xD;
+          a!queryColumn(field: "noOfSecondaryReviewers"),&#xD;
+          a!queryColumn(field: "createdBy"),&#xD;
+          a!queryColumn(field: "createdTimeStamp"),&#xD;
+          a!queryColumn(field: "DocumentTimeline"),&#xD;
+        }), */&#xD;
+        pagingInfo: local!pagingInfo&#xD;
+      )&#xD;
+    ),&#xD;
+    #"SYSTEM_SYSRULES_gridField"(&#xD;
+      label:"Study Details",&#xD;
+      instructions :"Details of all the Studies configured.",&#xD;
+      totalCount: local!datasubset.totalCount,&#xD;
+      columns: {&#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Study ID",&#xD;
+          field: "studySetupId",&#xD;
+          data: index(local!datasubset.data, "studySetupId", null),&#xD;
+          links:&#xD;
+            if( #"_a-0000d62a-67b3-8000-da6f-010000010000_951"( local!datasubset.data ), null, &#xD;
+                apply( #"SYSTEM_SYSRULES_recordLink"( recordType:#"_a-0000dd0c-08f6-8000-5130-010000010000_41179", identifier:_ ) &#xD;
+                , index( local!datasubset.data, "studySetupId", null ) &#xD;
+                ) )&#xD;
+        ),&#xD;
+       #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Study Name",&#xD;
+          field: "studyName",&#xD;
+          data:index(local!datasubset.data, "studyName",null)&#xD;
+        ),&#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Description",&#xD;
+          field: "description",&#xD;
+          data: index(local!datasubset.data, "description",null)&#xD;
+        ),&#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "No of Primary Reviewers",&#xD;
+          field: "noOfPrimReviewers",&#xD;
+          data: index(local!datasubset.data,"noOfPrimReviewers",null)&#xD;
+        ),		&#xD;
+/*          a!gridImageColumn(&#xD;
+          label: "No of Primary Reviewers",&#xD;
+          field: "noOfPrimaryReviewers",&#xD;
+          data: a!applyComponents(function:rule!CMN_webImageDynamic,&#xD;
+                    array:merge(index(local!datasubset.data,"noOfPrimaryReviewers",{}),&#xD;
+                    repeat(count(local!datasubset.totalCount),false()),&#xD;
+                    repeat(count(local!datasubset.totalCount),false()))),&#xD;
+          size:"ICON"          &#xD;
+        ),  */&#xD;
+/*         a!gridImageColumn(&#xD;
+          label: "No of Secondary Reviewers",&#xD;
+          field: "noOfSecondaryReviewers",&#xD;
+          data: a!applyComponents(function:rule!CMN_webImageDynamic,&#xD;
+                    array:merge(index(local!datasubset.data,"noOfSecondaryReviewers",{}),&#xD;
+                    repeat(count(local!datasubset.totalCount),false()),&#xD;
+                    repeat(count(local!datasubset.totalCount),false()))),&#xD;
+          size:"ICON"                              &#xD;
+        ), */&#xD;
+/*         a!gridTextColumn(&#xD;
+          label: "Created By",&#xD;
+          field: "createdBy",&#xD;
+          data: index(local!datasubset.data, "createdBy", null)&#xD;
+        ), */&#xD;
+        #"SYSTEM_SYSRULES_gridImageColumn"(&#xD;
+          label: "Created By",&#xD;
+          field: "createdBy",&#xD;
+          data: apply(#"_a-0000dcd1-5675-8000-5130-010000010000_33327"(_),&#xD;
+                touser(index(local!datasubset.data, "createdBy", null))&#xD;
+          )                       &#xD;
+        ), &#xD;
+        #"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Created On",&#xD;
+          field: "createdOn",&#xD;
+          data: text(todate(index(local!datasubset.data, "createdOn", null)),"mmm/dd/yy")&#xD;
+        ),&#xD;
+		#"SYSTEM_SYSRULES_gridTextColumn"(&#xD;
+          label: "Doc(s) due Days",&#xD;
+          field: "docTimeline",&#xD;
+          data: index(local!datasubset.data,"docTimeline",{})&#xD;
+        ),&#xD;
+/*         a!gridImageColumn(&#xD;
+          label: "Doc(s) due Days",&#xD;
+          field: "DocumentTimeline",&#xD;
+          data: a!applyComponents(function:rule!CMN_webImageDynamic,&#xD;
+                    array:merge(index(local!datasubset.data,"DocumentTimeline",{}),&#xD;
+                    repeat(count(local!datasubset.totalCount),false()),&#xD;
+                    repeat(count(local!datasubset.totalCount),false()))),&#xD;
+          size:"ICON"                              &#xD;
+        ),  */&#xD;
+        #"SYSTEM_SYSRULES_gridImageColumn"(&#xD;
+          label: "Status",&#xD;
+          field: "status",&#xD;
+          data:if(&#xD;
+              #"_a-0000d62a-67b3-8000-da6f-010000010000_951"(local!datasubset.data),&#xD;
+               null,&#xD;
+               apply(#"_a-0000dd0c-08f6-8000-5130-010000010000_41203"(_),&#xD;
+               index(local!datasubset.data,"status",null))&#xD;
+	             ),&#xD;
+	             size:"ICON"&#xD;
+        ) &#xD;
+      },&#xD;
+      value: local!pagingInfo,&#xD;
+      saveInto: local!pagingInfo&#xD;
+    )&#xD;
+  )&#xD;
+)&#xD;
+</definition>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70057"/>
+    </history>
+</contentHaul>

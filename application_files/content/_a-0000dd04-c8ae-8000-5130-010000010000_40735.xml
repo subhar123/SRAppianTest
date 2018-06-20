@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70022</versionUuid>
+    <queryRule>
+        <name>EPAS_getAllResponseInfo</name>
+        <uuid>_a-0000dd04-c8ae-8000-5130-010000010000_40735</uuid>
+        <description>Query Rule to get All Response Info</description>
+        <folderUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42709</folderUuid>
+        <dataStoreEntityCompositeUuid>9e33119c-db34-4d41-89d7-282493ca1430@_a-0000dcb6-5d2b-8000-5130-010000010000_32104</dataStoreEntityCompositeUuid>
+        <params/>
+        <filters/>
+        <orderings/>
+    </queryRule>
+    <roleMap public="false">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70022"/>
+    </history>
+</contentHaul>

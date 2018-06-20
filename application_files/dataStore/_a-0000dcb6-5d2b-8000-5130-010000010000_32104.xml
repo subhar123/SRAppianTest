@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<dataStoreHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_69905</versionUuid>
+    <dataStore>
+        <uuid>_a-0000dcb6-5d2b-8000-5130-010000010000_32104</uuid>
+        <name>EPAS_DS</name>
+        <description>EPAS Framework Data Store</description>
+        <dataSourceKey>jdbc/AppianBusinessDS</dataSourceKey>
+        <adaptingExplicitSqlNames>false</adaptingExplicitSqlNames>
+        <autoUpdateSchema>false</autoUpdateSchema>
+        <entities>
+            <entity>
+                <uuid>1165acae-8081-4490-940e-db6dc937eb86</uuid>
+                <name>userDetails</name>
+                <type>{com.cognizant.epas.types}EPAS_UserDetails</type>
+            </entity>
+            <entity>
+                <uuid>35ae1c7b-7905-4cec-845c-12e50ec45df2</uuid>
+                <name>studySetupInfo</name>
+                <type>{com.cognizant.epas.types}EPAS_StudySetupInfo</type>
+            </entity>
+            <entity>
+                <uuid>eaa21998-b81b-47cf-8f74-8d31010bae10</uuid>
+                <name>adjudicationInfo</name>
+                <type>{com.cognizant.epas.types}EPAS_AdjudicationInfo</type>
+            </entity>
+            <entity>
+                <uuid>e4f6eec3-82cf-4d0b-ab92-f6f5d2314bb2</uuid>
+                <name>endPointSetupInfo</name>
+                <type>{com.cognizant.epas.types}EPAS_EndPointSetupInfo</type>
+            </entity>
+            <entity>
+                <uuid>88c63601-b59a-4dac-83ba-9f488373aa0d</uuid>
+                <name>docChecklistInfo</name>
+                <type>{com.cognizant.epas.types}EPAS_DocChecklistInfo</type>
+            </entity>
+            <entity>
+                <uuid>5509a3a3-5810-45ed-8964-287c3b434e26</uuid>
+                <name>documentInfo</name>
+                <type>{com.cognizant.epas.types}EPAS_DocumentInfo</type>
+            </entity>
+            <entity>
+                <uuid>997227c5-d88d-467b-86bd-4f29151df83f</uuid>
+                <name>userComments</name>
+                <type>{com.cognizant.epas.types}EPAS_UserComments</type>
+            </entity>
+            <entity>
+                <uuid>be4737e7-271b-4ccf-ac61-c0c410c71d00</uuid>
+                <name>auditTrail</name>
+                <type>{com.cognizant.epas.types}EPAS_AuditTrail</type>
+            </entity>
+            <entity>
+                <uuid>e1b7481e-1708-4202-8b75-4eafd3f9a220</uuid>
+                <name>questionInfo</name>
+                <type>{com.cognizant.epas.types}EPAS_QuestionsInfo</type>
+            </entity>
+            <entity>
+                <uuid>058f6d9c-ea43-4ecb-8216-d2ee4fdef5b3</uuid>
+                <name>studySelectedUser</name>
+                <type>{com.cognizant.epas.types}EPAS_StudySelectedUser</type>
+            </entity>
+            <entity>
+                <uuid>9e33119c-db34-4d41-89d7-282493ca1430</uuid>
+                <name>responseInfo</name>
+                <type>{com.cognizant.epas.types}EPAS_ResponseInfo</type>
+            </entity>
+        </entities>
+    </dataStore>
+    <isPublished>true</isPublished>
+    <roleMap>
+        <role inherit="false" allowForAll="false" name="administrators">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_171</groupUuid>
+            </groups>
+        </role>
+        <role inherit="false" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="readers">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_69905"/>
+    </history>
+</dataStoreHaul>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<contentHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>_a-0000e0e6-ca6a-8000-6ee0-010000010000_70101</versionUuid>
+    <rule>
+        <name>EPAS_applyComponentsForOptions</name>
+        <uuid>_a-0000dd0c-ffa4-8000-5130-010000010000_41943</uuid>
+        <description>Apply Components for Options</description>
+        <parentUuid>_a-0000dd0c-ffa4-8000-5130-010000010000_42706</parentUuid>
+        <visibility>
+            <advertise>false</advertise>
+            <hierarchy>true</hierarchy>
+            <indexable>true</indexable>
+            <quota>false</quota>
+            <searchable>true</searchable>
+            <system>false</system>
+            <unlogged>false</unlogged>
+        </visibility>
+        <definition>#"SYSTEM_SYSRULES_gridRowLayout"(&#xD;
+  id:ri!index,&#xD;
+  contents:{&#xD;
+    #"SYSTEM_SYSRULES_textField"(&#xD;
+      label:"",&#xD;
+      value:if(isnull(ri!optionsInfo[ri!index]),null(),index(ri!optionsInfo[ri!index],"optionName",{}))/*rule!EAS_getArrayElement(cdtName:ri!optionsInfo[ri!index],attributeName:"optionName"))*/,&#xD;
+      validations: if(len(ri!optionsInfo[ri!index].optionName)&gt;100,"Please enter the options of length 100","" ),&#xD;
+      saveInto:ri!optionsInfo[ri!index].optionName&#xD;
+    ),&#xD;
+    /*a!textField(&#xD;
+      label:"debug",&#xD;
+      value:index(ri!optionsInfo[ri!index],"optionName",{})&#xD;
+    ),*/&#xD;
+    #"SYSTEM_SYSRULES_imageField"(&#xD;
+      label: "delete " &amp; ri!index,&#xD;
+      images: #"SYSTEM_SYSRULES_documentImage"(&#xD;
+        document: #"SYSTEM_SYSRULES_iconIndicator"("REMOVE"),&#xD;
+        altText: "Remove",&#xD;
+        /*caption: "Remove " &amp; index(ri!optionsInfo[ri!index],"summary",{}),*/&#xD;
+        link: #"SYSTEM_SYSRULES_dynamicLink"(&#xD;
+          value: ri!index,&#xD;
+          saveInto: {&#xD;
+            a!save(ri!optionsInfo, remove(ri!optionsInfo, save!value)),&#xD;
+            /* When modifying the size of the array used in a!applyComponents,  */&#xD;
+            /* make the same change in the "token" array variable               */&#xD;
+            a!save(ri!itemsToken, remove(ri!itemsToken, save!value))&#xD;
+          }&#xD;
+        )&#xD;
+      ),&#xD;
+      size: "ICON"&#xD;
+    )&#xD;
+  }&#xD;
+)&#xD;
+&#xD;
+/*split(apply(,{local!currentQuestion}),";")*/</definition>
+        <namedTypedValue>
+            <name>index</name>
+            <type>
+                <name>int</name>
+                <namespace>http://www.w3.org/2001/XMLSchema</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>optionsInfo</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <namedTypedValue>
+            <name>itemsToken</name>
+            <type>
+                <name>Variant</name>
+                <namespace>http://www.appian.com/ae/types/2009</namespace>
+            </type>
+        </namedTypedValue>
+        <preferredEditor>interface</preferredEditor>
+        <offlineEnabled>false</offlineEnabled>
+    </rule>
+    <roleMap public="true">
+        <role inherit="true" allowForAll="false" name="readers">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="authors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="true" allowForAll="false" name="administrators">
+            <users>
+                <userUuid>Administrator</userUuid>
+            </users>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyReaders">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAuthors">
+            <users/>
+            <groups/>
+        </role>
+        <role inherit="false" allowForAll="false" name="denyAdministrators">
+            <users/>
+            <groups/>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="_a-0000e0e6-ca6a-8000-6ee0-010000010000_70101"/>
+    </history>
+</contentHaul>

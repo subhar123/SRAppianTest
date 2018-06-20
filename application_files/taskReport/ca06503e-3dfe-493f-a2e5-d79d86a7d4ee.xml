@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<taskReportHaul xmlns:a="http://www.appian.com/ae/types/2009">
+    <versionUuid>1f466ee8-d6d8-4f5e-a708-43f1b8f819d2</versionUuid>
+    <taskReport a:uuid="ca06503e-3dfe-493f-a2e5-d79d86a7d4ee" name="Study Admin Dashboard">
+        <a:description></a:description>
+        <a:uiExpr>=#"_a-0000dcb6-5d2b-8000-5130-010000010000_32747"()</a:uiExpr>
+        <a:urlStub>UTJ64w</a:urlStub>
+    </taskReport>
+    <roleMap>
+        <role name="report_viewer">
+            <users/>
+            <groups>
+                <groupUuid>_e-0001dcd6-cfce-8000-512d-010000010000_177</groupUuid>
+            </groups>
+        </role>
+    </roleMap>
+    <history>
+        <historyInfo versionUuid="1f466ee8-d6d8-4f5e-a708-43f1b8f819d2"/>
+    </history>
+</taskReportHaul>
